@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pipe | Home{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        #post {
+            font-family: 'IBM Plex Mono', monospace;
+            font-style: italic;
+            font-weight: 300;
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '{{ path('app_load_unviewed_pipes', {user: app.user}) }}',
+                method: 'POST',
+                success: function (data) {
+                    $('.card').first().before('<p>test</p>');
+                },
+                error: function () {
+                    console.log(':(');
+                }
+            });
+        })
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 style="font-family: 'IBM Plex Mono', monospace;font-style: italic;">
+            Pipe
+        </h1>
+
+        {% if app.user is null %}
+            <div class="row">
+                <div class="col">
+                    Register:
+                    <span>
+                        <a href="{{ path('app_register') }}" class="btn btn-primary">Here</a>
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    Login:
+                    <span>
+                        <a href="{{ path('app_login') }}" class="btn btn-primary">Here</a>
+                    </span>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col">
+                    <form action="{{ path('app_post') }}" method="POST">
+                        <div class="row">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col">
+                                        <h2>
+                                            <label for="post" class="form-label">
+                                                Start a discussion
+                                            </label>
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="input-group mb-3">
+                                            <input type="text" name="post" id="post" class="form-control" aria-describedby="post-btn">
+                                            <button class="btn btn-outline-secondary" type="submit" id="post-btn">Post</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row mb-3" style="color: dimgrey;">
+                <div class="col">
+                    Pipes distributed to you from the last 3 hours, updating every 15 seconds.
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    {{ render(controller('App\\Controller\\PipeController::getUserPipe')) }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

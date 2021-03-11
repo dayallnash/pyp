@@ -1,0 +1,15 @@
+framework:
+    messenger:
+        buses:
+            messenger.bus.default:
+                default_middleware: true
+
+        failure_transport: failed
+
+        transports:
+            # https://symfony.com/doc/current/messenger.html#transport-configuration
+            distribution: 'doctrine://default'
+            failed: 'doctrine://default'
+
+        routing:
+            'App\Message\PostToDistribute': distribution

@@ -1,0 +1,17 @@
+{% set float = 'left' %}
+
+{% for post in posts %}
+    <div class="row">
+        <div class="col">
+            <div style="float: {{ float }}; max-width: 45%;">
+                {{ render(controller('App\\Controller\\PostController::renderPost', {post: post.post})) }}
+            </div>
+        </div>
+    </div>
+
+    {% if float == 'left' %}
+        {% set float = 'right' %}
+    {% else %}
+        {% set float = 'left' %}
+    {% endif %}
+{% endfor %}
