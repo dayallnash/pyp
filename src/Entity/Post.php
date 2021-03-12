@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PostRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,10 +40,15 @@ class Post
      */
     private $userId;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Interaction::class, mappedBy="post", orphanRemoval=true)
+     */
+    private $interactions;
+
     public function __construct()
     {
-        $this->user = new ArrayCollection();
         $this->userPipePosts = new ArrayCollection();
+        $this->interactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -50,12 +56,12 @@ class Post
         return $this->id;
     }
 
-    public function getDatetimePosted(): ?\DateTimeInterface
+    public function getDatetimePosted(): ?DateTimeInterface
     {
         return $this->datetime_posted;
     }
 
-    public function setDatetimePosted(\DateTimeInterface $datetime_posted): self
+    public function setDatetimePosted(DateTimeInterface $datetime_posted): self
     {
         $this->datetime_posted = $datetime_posted;
 
@@ -112,6 +118,36 @@ class Post
     public function setUserId(int $userId): self
     {
         $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Interaction[]
+     */
+    public function getInteractions(): Collection
+    {
+        return $this->interactions;
+    }
+
+    public function addInteraction(Interaction $interaction): self
+    {
+        if (!$this->interactions->contains($interaction)) {
+            $this->interactions[] = $interaction;
+            $interaction->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInteraction(Interaction $interaction): self
+    {
+        if ($this->interactions->removeElement($interaction)) {
+            // set the owning side to null (unless already changed)
+            if ($interaction->getPost() === $this) {
+                $interaction->setPost(null);
+            }
+        }
 
         return $this;
     }

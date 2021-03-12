@@ -4,7 +4,7 @@
 
 {% block stylesheets %}
     <style>
-        #post {
+        #post, .input-comment-italic {
             font-family: 'IBM Plex Mono', monospace;
             font-style: italic;
             font-weight: 300;
@@ -14,18 +14,44 @@
 
 {% block javascripts %}
     <script>
-        $(document).ready(function() {
+        {#$(document).ready(function() {#}
+        {#    $.ajax({#}
+        {#        url: '{{ path('app_load_unviewed_pipes', {user: app.user}) }}',#}
+        {#        method: 'POST',#}
+        {#        success: function (data) {#}
+        {#            $('.card').first().before('<p>test</p>');#}
+        {#        },#}
+        {#        error: function () {#}
+        {#            console.log(':(');#}
+        {#        }#}
+        {#    });#}
+        {#});#}
+
+        function renderCommentForm(anchor) {
+            $(anchor).parent().parent().parent().find('.js-comment-form').toggle();
+        }
+
+        function likePost(postId, thumb) {
+            thumb = $(thumb);
+
             $.ajax({
-                url: '{{ path('app_load_unviewed_pipes', {user: app.user}) }}',
+                url: '{{ path('like_post') }}',
                 method: 'POST',
-                success: function (data) {
-                    $('.card').first().before('<p>test</p>');
+                data: {
+                    postId: postId
+                },
+                success: function () {
+                    if ('thumbs-up-outline' === thumb.attr('name')) {
+                        thumb.attr('name', 'thumbs-up');
+                    } else {
+                        thumb.attr('name', 'thumbs-up-outline');
+                    }
                 },
                 error: function () {
                     console.log(':(');
                 }
             });
-        })
+        }
     </script>
 {% endblock %}
 
@@ -36,21 +62,21 @@
         </h1>
 
         {% if app.user is null %}
-            <div class="row">
-                <div class="col">
+            <div class="row mb-3 mt-3">
+                <div class="col-1">
                     Register:
-                    <span>
-                        <a href="{{ path('app_register') }}" class="btn btn-primary">Here</a>
-                    </span>
+                </div>
+                <div class="col">
+                    <a href="{{ path('app_register') }}" class="btn btn-primary">Here</a>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col">
+                <div class="col-1">
                     Login:
-                    <span>
-                        <a href="{{ path('app_login') }}" class="btn btn-primary">Here</a>
-                    </span>
+                </div>
+                <div class="col">
+                    <a href="{{ path('app_login') }}" class="btn btn-primary">Here</a>
                 </div>
             </div>
         {% else %}

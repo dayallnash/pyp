@@ -1,0 +1,24 @@
+{% for comment in interactions %}
+    {% if comment.body is not null and comment.body != '' %}
+        <div class="row">
+            <div class="col username-italic">
+                {{ userRetriever.retrieve(comment.userId).username }}:
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" style="word-wrap: break-word; max-width: 300px;">
+                {{ comment.body }}
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
+<div class="row mt-4">
+    <div class="col">
+        <form action="{{ path('save_comment', {post: post.id}) }}" method="POST">
+            <div class="input-group">
+                <input class="input-comment-italic form-control" type="text" name="comment">
+                <button class="btn btn-outline-secondary" type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+</div>

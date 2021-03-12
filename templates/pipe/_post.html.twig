@@ -1,13 +1,48 @@
 <style>
-    h5 {
+    h5, .username-italic {
         font-family: 'IBM Plex Mono', monospace;
         font-style: italic;
     }
 </style>
 
-<div class="card">
+<div class="card" style="min-width: 300px; box-sizing: content-box">
     <div class="card-body">
-        <h5 class="card-title">{{ user.username }}</h5>
-        <p class="card-text">{{ post.getPostContent }}</p>
+        <div class="row">
+            <div class="col">
+                <h5 class="card-title">{{ user.username }}</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p class="card-text">{{ post.getPostContent }}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row mt-2">
+            <div class="col">
+                <ion-icon name="{{ liked ? 'thumbs-up' : 'thumbs-up-outline' }}" onclick="likePost({{ post.id }}, this)"></ion-icon>
+                {% if likeCount > 0 %}
+                    <small>&nbsp;<code>x {{ likeCount }}</code></small>
+                {% endif %}
+            </div>
+            <div class="col">
+                <a href="#" onclick="renderCommentForm(this);">
+                    <code>
+                        {% if 0 == commentCount %}
+                            Comment
+                        {% elseif 1 == commentCount %}
+                            {{ commentCount }} comment
+                        {% else %}
+                            {{ commentCount }} comments
+                        {% endif %}
+                    </code>
+                </a>
+            </div>
+        </div>
+        <div class="row js-comment-form" style="display: none;">
+            <div class="col">
+                {{ render(controller('App\\Controller\\InteractionController::renderComment', {post: post})) }}
+            </div>
+        </div>
     </div>
 </div>
