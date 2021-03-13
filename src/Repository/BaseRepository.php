@@ -7,9 +7,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Generator;
 
 /**
- * Class BaseRepository
- *
- * @package App\Repository
+ * Class BaseRepository.
  */
 class BaseRepository extends ServiceEntityRepository
 {
@@ -23,5 +21,15 @@ class BaseRepository extends ServiceEntityRepository
         foreach ($this->createQueryBuilder('t')->orderBy('t.id', $orderBy)->getQuery()->getResult() as $result) {
             yield $result;
         }
+    }
+
+    public function delete(int $primaryKeyId): bool
+    {
+        return (bool) $this->createQueryBuilder('t')
+            ->delete()
+            ->where('t.id = :primaryKeyId')
+            ->setParameter('primaryKeyId', $primaryKeyId)
+            ->getQuery()
+            ->execute();
     }
 }

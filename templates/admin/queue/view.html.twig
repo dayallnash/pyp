@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hose | Queue | Pipe{% endblock %}
+
+{% block body %}
+    {% set count = 0 %}
+    {% set break = false %}
+    {% for message in messages %}
+        {% if not break %}
+            {% if count > 24 %}
+                {% set break = true %}
+            {% endif %}
+
+            <div class="row">
+                <div class="col">
+                    <a class="btn btn-default" href="{{ path('hose_queue_delete', {messageId: message.id}) }}">Delete</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ dump(message) }}
+                </div>
+            </div>
+            {% set count = count + 1 %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}

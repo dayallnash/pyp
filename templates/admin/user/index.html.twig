@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hose | Users | Pipe{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h5>Current User:</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form action="{{ path('hose_user_update') }}" method="POST">
+                    <div class="row">
+                        <div class="col">
+                            <label for="currentUserId">ID:</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" id="currentUserId" name="id" value="{{ currentUser.id }}" readonly required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="currentUserName">Username:</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" id="currentUserName" name="username" value="{{ currentUser.username }}" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="currentUserControls">Controls:</label>
+                        </div>
+                        <div class="col">
+                            {#                    <a href="{{ path('hose_user_delete', {userId: currentUser.id}) }}">#}
+                            <input type="button" class="btn btn-primary" value="Delete">
+                            {#                    </a>#}
+                            <input type="submit" class="btn btn-primary" value="Update">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h5>All Users:</h5>
+            </div>
+        </div>
+        {% for user in userGenerator %}
+
+        {% endfor %}
+    </div>
+{% endblock %}
