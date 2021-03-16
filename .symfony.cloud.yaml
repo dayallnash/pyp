@@ -4,11 +4,11 @@ type: php:7.4
 
 runtime:
     extensions:
-#        - apcu
-#        - mbstring
-#        - sodium
-#        - ctype
-#        - iconv
+        - apcu
+        - mbstring
+        - sodium
+        - ctype
+        - iconv
 
 variables:
     php:
