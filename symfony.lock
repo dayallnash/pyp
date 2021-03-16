@@ -93,6 +93,12 @@
     "nikic/php-parser": {
         "version": "v4.10.4"
     },
+    "paragonie/random_compat": {
+        "version": "v9.99.100"
+    },
+    "paragonie/sodium_compat": {
+        "version": "v1.14.0"
+    },
     "php": {
         "version": "7.4"
     },

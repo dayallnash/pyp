@@ -3,14 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
+use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -19,39 +20,46 @@ class SecurityController extends AbstractController
      * @Route("/register", name="app_register")
      *
      * @param Request                      $request
-     * @param SessionInterface             $session
      * @param EntityManagerInterface       $em
      * @param UserPasswordEncoderInterface $userPasswordEncoder
+     * @param GuardAuthenticatorHandler    $guardAuthenticatorHandler
+     * @param LoginFormAuthenticator       $loginFormAuthenticator
      *
      * @return Response
      */
-    public function register(Request $request, SessionInterface $session, EntityManagerInterface $em, UserPasswordEncoderInterface $userPasswordEncoder)
-    {
+    public function register(Request $request,
+        EntityManagerInterface $em,
+        UserPasswordEncoderInterface $userPasswordEncoder,
+        GuardAuthenticatorHandler $guardAuthenticatorHandler,
+        LoginFormAuthenticator $loginFormAuthenticator
+    ): Response {
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_my_account');
+            return $this->redirectToRoute('app_index');
         }
 
-        if ($request->isMethod('post')) {
-            $username = $request->request->filter('username', null, FILTER_SANITIZE_STRING);
-
-            if ($em->getRepository(User::class)->findOneBy(['username' => $username])) {
-                $this->addFlash('danger', 'Username already in use.');
-
-                return $this->render('security/register.html.twig');
-            }
-
-            $newUser = (new User())
-                ->setUsername($username);
-
-            $encodedPassword = $userPasswordEncoder->encodePassword($newUser, $request->request->filter('password', null, FILTER_SANITIZE_STRING));
-
-            $newUser->setPassword($encodedPassword);
-
-            $em->persist($newUser);
-            $em->flush();
+        if (!$request->isMethod('post')) {
+            return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('security/register.html.twig');
+        $username = $request->request->filter('username', null, FILTER_SANITIZE_STRING);
+
+        if ($em->getRepository(User::class)->findOneBy(['username' => $username])) {
+            $this->addFlash('danger', 'Username already in use.');
+
+            return $this->render('security/login.html.twig', ['error' => null, 'last_username' => null]);
+        }
+
+        $newUser = (new User())
+            ->setUsername($username);
+
+        $encodedPassword = $userPasswordEncoder->encodePassword($newUser, $request->request->filter('password', null, FILTER_SANITIZE_STRING));
+
+        $newUser->setPassword($encodedPassword);
+
+        $em->persist($newUser);
+        $em->flush();
+
+        return $guardAuthenticatorHandler->authenticateUserAndHandleSuccess($newUser, $request, $loginFormAuthenticator, 'main');
     }
 
     /**
@@ -64,7 +72,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
          if ($this->getUser()) {
-             return $this->redirectToRoute('app_my_account');
+             return $this->redirectToRoute('app_index');
          }
 
         // get the login error if there is one
@@ -80,6 +88,6 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }
