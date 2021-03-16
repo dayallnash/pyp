@@ -41,7 +41,7 @@ workers:
             memory_ratio: 128
         commands:
             # Don't forget to update your receiver name(s)
-            start: symfony console --time-limit=3600 --memory-limit=64M messenger:consume async
+            start: symfony console --time-limit=3600 --memory-limit=64M messenger:consume distribution
 
 mounts:
     "/var": { source: local, source_path: var }
