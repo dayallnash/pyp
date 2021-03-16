@@ -2,8 +2,8 @@ name: app
 
 type: php:7.4.13
 
-#runtime:
-#    extensions:
+runtime:
+    extensions:
 #        - apcu
 #        - mbstring
 #        - sodium
