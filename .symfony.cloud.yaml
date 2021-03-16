@@ -2,18 +2,17 @@ name: app
 
 type: php:7.4.13
 
-runtime:
-    extensions:
-        - apcu
-        - mbstring
-        - sodium
-        - ctype
-        - iconv
+#runtime:
+#    extensions:
+#        - apcu
+#        - mbstring
+#        - sodium
+#        - ctype
+#        - iconv
 
-#variables:
-#    php:
-#        # uncomment on PHP 7.4+
-#        #opcache.preload: /app/config/preload.php
+variables:
+    php:
+        opcache.preload: /app/config/preload.php
 
 build:
     flavor: none
