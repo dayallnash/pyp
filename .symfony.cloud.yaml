@@ -2,6 +2,9 @@ name: app
 
 type: php:7.4
 
+relationships:
+    database: "db:mysql"
+
 runtime:
     extensions:
         - apcu
@@ -9,6 +12,7 @@ runtime:
         - sodium
         - ctype
         - iconv
+        - pdo_mysql
 
 variables:
     php:
