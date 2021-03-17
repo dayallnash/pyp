@@ -7,14 +7,19 @@
     <style>
         .grid-container {
             display: grid;
-            grid-template-columns: 1fr 1fr 1.3fr 0.7fr;
-            grid-template-rows: 0fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1.3fr;
+            grid-template-rows: 1fr 0fr 1fr 1fr;
             gap: 0 0;
             grid-template-areas:
-                "sign-in-header or register-header ."
-                "sign-in-form or register-form ."
-                ". . . .";
+                ". pipe-header ."
+                "sign-in-header or register-header"
+                "sign-in-form or register-form"
+                ". . .";
         }
+
+        .pipe-header { grid-area: pipe-header; }
+
+        .pipe-header > h1 { font-size: xxx-large; }
 
         .sign-in-header { grid-area: sign-in-header; }
 
@@ -38,8 +43,11 @@
 
     <div class="container">
         <div class="grid-container">
+            <div class="pipe-header mx-auto my-auto">
+                <h1 class="h3 mb-3">Pipe</h1>
+            </div>
             <div class="sign-in-header">
-                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                <h1 class="h3 mb-3 font-weight-normal">Sign in</h1>
             </div>
             <div class="or my-auto text-center">
                 <h1>or</h1>
