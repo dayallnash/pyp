@@ -4,20 +4,50 @@
 
 {% block body %}
 
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.3fr 0.7fr;
+            grid-template-rows: 0fr 1fr 1fr;
+            gap: 0 0;
+            grid-template-areas:
+                "sign-in-header or register-header ."
+                "sign-in-form or register-form ."
+                ". . . .";
+        }
+
+        .sign-in-header { grid-area: sign-in-header; }
+
+        .or {
+            grid-area: or;
+        }
+
+        .or > h1 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 1.5rem;
+        }
+
+        .register-header { grid-area: register-header; }
+
+        .sign-in-form { grid-area: sign-in-form; }
+
+        .register-form { grid-area: register-form; }
+    </style>
+
     <div class="container">
-        <div class="row">
-            <div class="col">
+        <div class="grid-container">
+            <div class="sign-in-header">
                 <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
             </div>
-            <div class="col">
-                or
+            <div class="or my-auto text-center">
+                <h1>or</h1>
             </div>
-            <div class="col">
+            <div class="register-header">
                 <h1 class="h3 mb-3 font-weight-normal">Register</h1>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
+            <div class="sign-in-form">
                 <form method="post" action="/login">
                     {% if error %}
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -49,8 +79,7 @@
                     </button>
                 </form>
             </div>
-            <div class="col"></div>
-            <div class="col">
+            <div class="register-form">
                 <form method="post" action="/register">
                     <label for="inputUsername">Username</label>
                     <input type="text" name="username" id="inputUsername" class="form-control" required>
