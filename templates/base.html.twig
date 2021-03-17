@@ -33,14 +33,24 @@
         {% block javascripts %}{% endblock %}
     </head>
     <body>
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="alert alert-{{ label }}">
-                    {{ message }}
-                </div>
+        <div class="container">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
 
-        {% block body %}{% endblock %}
+            {% if app.user %}
+                <div class="row">
+                    <div class="col text-end">
+                        <a href="{{ path('app_logout') }}" type="button" class="btn btn-default">Logout</a>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% block body %}{% endblock %}
+        </div>
     </body>
 </html>

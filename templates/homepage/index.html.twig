@@ -56,69 +56,67 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1>
-            Pipe
-        </h1>
+    <h1>
+        Pipe
+    </h1>
 
-        {% if app.user is null %}
-            <div class="row mb-3 mt-3">
-                <div class="col-1">
-                    Register:
-                </div>
-                <div class="col">
-                    <a href="{{ path('app_register') }}" class="btn btn-primary">Here</a>
-                </div>
+    {% if app.user is null %}
+        <div class="row mb-3 mt-3">
+            <div class="col-1">
+                Register:
             </div>
+            <div class="col">
+                <a href="{{ path('app_register') }}" class="btn btn-primary">Here</a>
+            </div>
+        </div>
 
-            <div class="row">
-                <div class="col-1">
-                    Login:
-                </div>
-                <div class="col">
-                    <a href="{{ path('app_login') }}" class="btn btn-primary">Here</a>
-                </div>
+        <div class="row">
+            <div class="col-1">
+                Login:
             </div>
-        {% else %}
-            <div class="row">
-                <div class="col">
-                    <form action="{{ path('app_post') }}" method="POST">
-                        <div class="row">
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col">
-                                        <h2>
-                                            <label for="post" class="form-label">
-                                                Start a discussion
-                                            </label>
-                                        </h2>
-                                    </div>
+            <div class="col">
+                <a href="{{ path('app_login') }}" class="btn btn-primary">Here</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col">
+                <form action="{{ path('app_post') }}" method="POST">
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <h2>
+                                        <label for="post" class="form-label">
+                                            Start a discussion
+                                        </label>
+                                    </h2>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="input-group mb-3">
-                                            <input type="text" name="post" id="post" class="form-control" aria-describedby="post-btn">
-                                            <button class="btn btn-outline-secondary" type="submit" id="post-btn">Post</button>
-                                        </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <input type="text" name="post" id="post" class="form-control" aria-describedby="post-btn">
+                                        <button class="btn btn-outline-secondary" type="submit" id="post-btn">Post</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
+        </div>
 
-            <div class="row mb-3" style="color: dimgrey;">
-                <div class="col">
-                    Pipes distributed to you from the last 3 hours, updating every 15 seconds.
-                </div>
+        <div class="row mb-3" style="color: dimgrey;">
+            <div class="col">
+                Pipes distributed to you from the last 3 hours, updating every 15 seconds.
             </div>
+        </div>
 
-            <div class="row">
-                <div class="col">
-                    {{ render(controller('App\\Controller\\PipeController::getUserPipe')) }}
-                </div>
+        <div class="row">
+            <div class="col">
+                {{ render(controller('App\\Controller\\PipeController::getUserPipe')) }}
             </div>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 {% endblock %}
