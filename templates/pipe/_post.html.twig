@@ -22,7 +22,7 @@
             <div class="col">
                 <ion-icon name="{{ liked ? 'thumbs-up' : 'thumbs-up-outline' }}" onclick="likePost({{ post.id }}, this)"></ion-icon>
                 {% if likeCount > 0 %}
-                    <small>&nbsp;<code>x <span class="like-count">{{ likeCount }}</span></code></small>
+                    <small class="like-small">&nbsp;<code>x <span class="like-count">{{ likeCount }}</span></code></small>
                 {% endif %}
             </div>
             <div class="col">
