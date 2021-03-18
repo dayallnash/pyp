@@ -34,6 +34,16 @@
         function likePost(postId, thumb) {
             thumb = $(thumb);
 
+            const likeCount = thumb.parent().find('.like-count');
+
+            if ('thumbs-up-outline' === thumb.attr('name')) {
+                thumb.attr('name', 'thumbs-up');
+                likeCount.text(likeCount.text() + 1)
+            } else {
+                thumb.attr('name', 'thumbs-up-outline');
+                likeCount.text(likeCount.text() - 1)
+            }
+
             $.ajax({
                 url: '{{ path('like_post') }}',
                 method: 'POST',
@@ -41,11 +51,7 @@
                     postId: postId
                 },
                 success: function () {
-                    if ('thumbs-up-outline' === thumb.attr('name')) {
-                        thumb.attr('name', 'thumbs-up');
-                    } else {
-                        thumb.attr('name', 'thumbs-up-outline');
-                    }
+                    console.log(':)');
                 },
                 error: function () {
                     console.log(':(');

@@ -62,14 +62,26 @@ class InteractionController extends AbstractController
      *
      * @param Request                $request
      * @param PostRepository         $postRepo
+     * @param InteractionRepository  $interactionRepo
      * @param EntityManagerInterface $em
      *
      * @return JsonResponse
      */
-    public function likePost(Request $request, PostRepository $postRepo, EntityManagerInterface $em): JsonResponse
+    public function likePost(Request $request, PostRepository $postRepo, InteractionRepository $interactionRepo, EntityManagerInterface $em): JsonResponse
     {
+        $post = $postRepo->find($request->request->filter('postId', 0, FILTER_SANITIZE_NUMBER_INT));
+
+        $interaction = $interactionRepo->findOneBy(['type' => 'like', 'post' => $post, 'userId' => $this->getUser()->getId()]);
+
+        if (null !== $interaction) {
+            $em->remove($interaction);
+            $em->flush();
+
+            return $this->json(['success' => true]);
+        }
+
         $interaction = (new Interaction())
-            ->setPost($postRepo->find($request->request->filter('postId', 0, FILTER_SANITIZE_NUMBER_INT)))
+            ->setPost($post)
             ->setUserId($this->getUser()->getId())
             ->setType('like');
 
