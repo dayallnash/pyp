@@ -19,4 +19,12 @@ class HomepageController extends AbstractController
     {
         return $this->render('homepage/index.html.twig');
     }
+
+    /**
+     * @Route("/privacy", name="app_privacy_policy")
+     */
+    public function privacyPolicy()
+    {
+        return $this->render('homepage/privacy.html.twig');
+    }
 }
