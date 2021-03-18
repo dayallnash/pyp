@@ -38,10 +38,10 @@
 
             if ('thumbs-up-outline' === thumb.attr('name')) {
                 thumb.attr('name', 'thumbs-up');
-                likeCount.text(likeCount.text() + 1)
+                likeCount.text(Number(likeCount.text()) + 1)
             } else {
                 thumb.attr('name', 'thumbs-up-outline');
-                likeCount.text(likeCount.text() - 1)
+                likeCount.text(Number(likeCount.text()) - 1)
             }
 
             $.ajax({
