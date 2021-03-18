@@ -44,7 +44,7 @@
                 likeCount.text(Number(likeCount.text()) - 1)
 
                 if (0 === Number(likeCount.text())) {
-                    $('.like-small').hide();
+                    thumb.parent().find('.like-small').hide();
                 }
             }
 
