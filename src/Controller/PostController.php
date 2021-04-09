@@ -6,12 +6,17 @@ use App\Entity\Post;
 use App\Repository\InteractionRepository;
 use App\Service\PostService;
 use App\Service\UserRetriever;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class PostController.
+ */
 class PostController extends AbstractController
 {
     /**
@@ -60,5 +65,77 @@ class PostController extends AbstractController
             'likeCount' => $likeCount,
             'liked' => $liked,
         ]);
+    }
+
+    /**
+     * @Route("/post/edit/{postId}", requirements={"postId"="\d+"}, name="edit_post")
+     *
+     * @param Request                $request
+     * @param EntityManagerInterface $em
+     * @param int                    $postId
+     *
+     * @return JsonResponse
+     */
+    public function editPost(Request $request, EntityManagerInterface $em, int $postId = 0): Response
+    {
+        $post = $em->getRepository(Post::class)->find(filter_var($postId, FILTER_SANITIZE_NUMBER_INT));
+
+        $postContent = $request->request->filter('postContent', '', FILTER_SANITIZE_STRING);
+
+        if (null !== $post && empty($postContent)) {
+            return $this->render('post/edit.html.twig', [
+                'post' => $post,
+                'user' => $this->getUser(),
+            ]);
+        }
+
+        if (null !== $post) {
+            $post->setPostContent($postContent);
+
+            $em->persist($post);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_index');
+    }
+
+    /**
+     * @Route("/post/delete/{postId}", requirements={"postId"="\d+"}, name="delete_post")
+     *
+     * @param int                    $postId
+     * @param EntityManagerInterface $em
+     *
+     * @return Response
+     */
+    public function deletePost(EntityManagerInterface $em, int $postId = 0): Response
+    {
+        $postId = filter_var($postId, FILTER_SANITIZE_NUMBER_INT);
+
+        if (empty($postId)) {
+            return $this->redirectToRoute('app_index');
+        }
+
+        $post = $em->getRepository(Post::class)->find($postId);
+
+        $interactions = [];
+        $userPipePosts = [];
+        if (null !== $post) {
+            $interactions = $post->getInteractions();
+            $userPipePosts = $post->getUserPipePosts();
+        }
+
+        foreach ($interactions as $interaction) {
+            $em->remove($interaction);
+        }
+
+        foreach ($userPipePosts as $userPipePost) {
+            $em->remove($userPipePost);
+        }
+
+        $em->flush();
+
+        $this->addFlash('success', 'Successfully deleted post.');
+
+        return $this->redirectToRoute('app_index');
     }
 }

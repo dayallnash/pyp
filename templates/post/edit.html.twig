@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pipe | Edit Post{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        #post {
+            font-family: 'IBM Plex Mono', monospace;
+            font-style: italic;
+            font-weight: 300;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>
+        Pipe
+    </h1>
+
+    <style>
+        h5, .username-italic {
+            font-family: 'IBM Plex Mono', monospace;
+            font-style: italic;
+        }
+    </style>
+
+    <div class="card" style="min-width: 300px; box-sizing: content-box;">
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <h5 class="card-title">{{ user.username }}</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <form action="{{ path('edit_post', {postId: post.id}) }}" method="POST">
+                        <div class="input-group mb-3">
+                            <input type="text" name="postContent" id="post" class="form-control" value="{{ post.getPostContent }}">
+                            <button class="btn btn-outline-secondary" type="submit" id="post-btn">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" style="text-align: right;">
+                    <a href="{{ path('delete_post', {postId: post.id}) }}" class="btn btn-danger text-right">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
