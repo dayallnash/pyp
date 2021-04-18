@@ -3,25 +3,25 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use App\Entity\UserPipePost;
+use App\Entity\UserPypPost;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
 use Generator;
 
 /**
- * @method UserPipePost|null find($id, $lockMode = null, $lockVersion = null)
- * @method UserPipePost|null findOneBy(array $criteria, array $orderBy = null)
- * @method UserPipePost[]    findAll()
- * @method UserPipePost[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method UserPypPost|null find($id, $lockMode = null, $lockVersion = null)
+ * @method UserPypPost|null findOneBy(array $criteria, array $orderBy = null)
+ * @method UserPypPost[]    findAll()
+ * @method UserPypPost[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserPipePostRepository extends BaseRepository
+class UserPypPostRepository extends BaseRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, UserPipePost::class);
+        parent::__construct($registry, UserPypPost::class);
     }
 
-    public function getUsersOrderedByPipeCounts(string $orderBy = 'ASC'): array
+    public function getUsersOrderedByPypCounts(string $orderBy = 'ASC'): array
     {
         $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('COUNT(upp.id) upp_count, u')
@@ -35,7 +35,7 @@ class UserPipePostRepository extends BaseRepository
         return $query->execute();
     }
 
-    public function getUserPipePostsCount(int $userId): int
+    public function getUserPypPostsCount(int $userId): int
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
@@ -53,7 +53,7 @@ class UserPipePostRepository extends BaseRepository
 
         $results = $qb
             ->select('upp')
-            ->from(UserPipePost::class, 'upp')
+            ->from(UserPypPost::class, 'upp')
             ->where($qb->expr()->eq('upp.userId', ':userId'))
             ->setParameter('userId', $user->getId())
             ->getQuery();

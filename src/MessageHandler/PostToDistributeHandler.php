@@ -3,8 +3,8 @@
 namespace App\MessageHandler;
 
 use App\Entity\User;
-use App\Entity\UserPipePost;
-use App\Helper\PipeHelper;
+use App\Entity\UserPypPost;
+use App\Helper\PypHelper;
 use App\Message\PostToDistribute;
 use App\Service\InfluenceCalculator;
 use App\Service\UserRetriever;
@@ -27,17 +27,17 @@ class PostToDistributeHandler implements MessageHandlerInterface
 
     public function __invoke(PostToDistribute $post)
     {
-        $usersOrderedByPipeCounts = $this->em->getRepository(UserPipePost::class)->getUsersOrderedByPipeCounts();
+        $usersOrderedByPypCounts = $this->em->getRepository(UserPypPost::class)->getUsersOrderedByPypCounts();
 
         // Make sure user who posted always sees their own posts
-        $userPipePost = (new UserPipePost())->setPost($post->getPost())->setUserId($post->getPost()->getUserId());
-        $this->em->persist($userPipePost);
+        $userPypPost = (new UserPypPost())->setPost($post->getPost())->setUserId($post->getPost()->getUserId());
+        $this->em->persist($userPypPost);
 
         $influence = $this->influenceCalculator->calculate($this->userRetriever->retrieve($post->getPost()->getUserId()));
 
         $i = 0;
-        foreach ($usersOrderedByPipeCounts as $userOrderedByPipeCounts) {
-            if ($post->getPost()->getUserId() === $userOrderedByPipeCounts[0]->getId()) {
+        foreach ($usersOrderedByPypCounts as $userOrderedByPypCounts) {
+            if ($post->getPost()->getUserId() === $userOrderedByPypCounts[0]->getId()) {
                 continue;
             }
 
@@ -45,8 +45,8 @@ class PostToDistributeHandler implements MessageHandlerInterface
                 break;
             }
 
-            $userPipePost = (new UserPipePost())->setPost($post->getPost())->setUserId($userOrderedByPipeCounts[0]->getId());
-            $this->em->persist($userPipePost);
+            $userPypPost = (new UserPypPost())->setPost($post->getPost())->setUserId($userOrderedByPypCounts[0]->getId());
+            $this->em->persist($userPypPost);
         }
 
         try {

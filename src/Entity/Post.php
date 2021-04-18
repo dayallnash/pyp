@@ -31,9 +31,9 @@ class Post
     private $post_content;
 
     /**
-     * @ORM\OneToMany(targetEntity=UserPipePost::class, mappedBy="post", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=UserPypPost::class, mappedBy="post", orphanRemoval=true, cascade={"persist"})
      */
-    private $userPipePosts;
+    private $userPypPosts;
 
     /**
      * @ORM\Column(type="integer")
@@ -45,10 +45,16 @@ class Post
      */
     private $interactions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="post", cascade={"persist"})
+     */
+    private $reports;
+
     public function __construct()
     {
-        $this->userPipePosts = new ArrayCollection();
+        $this->userPypPosts = new ArrayCollection();
         $this->interactions = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -81,29 +87,29 @@ class Post
     }
 
     /**
-     * @return Collection|UserPipePost[]
+     * @return Collection|UserPypPost[]
      */
-    public function getUserPipePosts(): Collection
+    public function getUserPypPosts(): Collection
     {
-        return $this->userPipePosts;
+        return $this->userPypPosts;
     }
 
-    public function addUserPipePost(UserPipePost $userPipePost): self
+    public function addUserPypPost(UserPypPost $userPypPost): self
     {
-        if (!$this->userPipePosts->contains($userPipePost)) {
-            $this->userPipePosts[] = $userPipePost;
-            $userPipePost->setPost($this);
+        if (!$this->userPypPosts->contains($userPypPost)) {
+            $this->userPypPosts[] = $userPypPost;
+            $userPypPost->setPost($this);
         }
 
         return $this;
     }
 
-    public function removeUserPipePost(UserPipePost $userPipePost): self
+    public function removeUserPypPost(UserPypPost $userPypPost): self
     {
-        if ($this->userPipePosts->removeElement($userPipePost)) {
+        if ($this->userPypPosts->removeElement($userPypPost)) {
             // set the owning side to null (unless already changed)
-            if ($userPipePost->getPost() === $this) {
-                $userPipePost->setPost(null);
+            if ($userPypPost->getPost() === $this) {
+                $userPypPost->setPost(null);
             }
         }
 
@@ -146,6 +152,36 @@ class Post
             // set the owning side to null (unless already changed)
             if ($interaction->getPost() === $this) {
                 $interaction->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Report[]
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Report $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports[] = $report;
+            $report->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getPost() === $this) {
+                $report->setPost(null);
             }
         }
 

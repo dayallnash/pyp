@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\UserPipePostRepository;
+use App\Repository\UserPypPostRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=UserPipePostRepository::class)
+ * @ORM\Entity(repositoryClass=UserPypPostRepository::class)
  */
-class UserPipePost
+class UserPypPost
 {
     /**
      * @ORM\Id
@@ -18,7 +18,7 @@ class UserPipePost
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="userPipePosts", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="userPypPosts", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $post;

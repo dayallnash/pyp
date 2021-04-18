@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Pyp | Log in{% endblock %}
 
 {% block body %}
 
@@ -11,15 +11,15 @@
             grid-template-rows: 1fr 0fr 1fr 1fr;
             gap: 0 0;
             grid-template-areas:
-                ". pipe-header ."
+                ". pyp-header ."
                 "sign-in-header or register-header"
                 "sign-in-form or register-form"
                 ". . .";
         }
 
-        .pipe-header { grid-area: pipe-header; }
+        .pyp-header { grid-area: pyp-header; }
 
-        .pipe-header > h1 { font-size: xxx-large; }
+        .pyp-header > h1 { font-size: xxx-large; }
 
         .sign-in-header { grid-area: sign-in-header; }
 
@@ -42,8 +42,8 @@
     </style>
 
     <div class="grid-container">
-        <div class="pipe-header mx-auto my-auto">
-            <h1 class="h3 mb-3">Pipe</h1>
+        <div class="pyp-header mx-auto my-auto">
+            <h1 class="h3 mb-3">Pyp</h1>
         </div>
         <div class="sign-in-header">
             <h1 class="h3 mb-3 font-weight-normal">Sign in</h1>

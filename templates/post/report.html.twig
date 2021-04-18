@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Pyp | Edit Post{% endblock %}
+{% block title %}Pyp | Report Post{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -29,17 +29,22 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <form action="{{ path('edit_post', {postId: post.id}) }}" method="POST">
-                        <div class="input-group mb-3">
-                            <input type="text" name="postContent" id="post" class="form-control" value="{{ post.getPostContent }}">
-                            <button class="btn btn-outline-secondary" type="submit" id="post-btn">Save</button>
-                        </div>
-                    </form>
+                    <p class="card-text">{{ post.getPostContent }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-3" style="min-width: 300px; box-sizing: content-box;">
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <h5 class="card-title">Why do you want to report this post?</h5>
                 </div>
             </div>
             <div class="row">
-                <div class="col" style="text-align: right;">
-                    <a href="{{ path('delete_post', {postId: post.id}) }}" class="btn btn-danger text-right">Delete</a>
+                <div class="col">
+                    {{ render(controller('App\\Controller\\ReportReasonController::renderReasonTree', {reportReasonParentId: reasonId, postId: post.id})) }}
                 </div>
             </div>
         </div>

@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\Report;
+use App\Entity\ReportReason;
 use App\Repository\InteractionRepository;
+use App\Repository\UserPypPostRepository;
 use App\Service\PostService;
 use App\Service\UserRetriever;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,7 +61,7 @@ class PostController extends AbstractController
             }
         }
 
-        return $this->render('pipe/_post.html.twig', [
+        return $this->render('pyp/_post.html.twig', [
             'post' => $post,
             'user' => $userRetriever->retrieve($post->getUserId()),
             'commentCount' => $commentCount,
@@ -118,18 +121,18 @@ class PostController extends AbstractController
         $post = $em->getRepository(Post::class)->find($postId);
 
         $interactions = [];
-        $userPipePosts = [];
+        $userPypPosts = [];
         if (null !== $post) {
             $interactions = $post->getInteractions();
-            $userPipePosts = $post->getUserPipePosts();
+            $userPypPosts = $post->getUserPypPosts();
         }
 
         foreach ($interactions as $interaction) {
             $em->remove($interaction);
         }
 
-        foreach ($userPipePosts as $userPipePost) {
-            $em->remove($userPipePost);
+        foreach ($userPypPosts as $userPypPost) {
+            $em->remove($userPypPost);
         }
 
         $em->flush();
@@ -137,5 +140,58 @@ class PostController extends AbstractController
         $this->addFlash('success', 'Successfully deleted post.');
 
         return $this->redirectToRoute('app_index');
+    }
+
+    /**
+     * @Route("/post/report/{postId}", requirements={"postId"="\d+"}, name="report_post")
+     *
+     * @param Request                $request
+     * @param EntityManagerInterface $em
+     * @param int                    $postId
+     *
+     * @return Response
+     */
+    public function reportPost(Request $request, EntityManagerInterface $em, UserPypPostRepository $userPypPostRepository, int $postId = 0): Response
+    {
+        $post = $em->getRepository(Post::class)->find($postId);
+
+        if (null === $post) {
+            $this->addFlash('danger', 'Could not find post to report.');
+
+            return $this->redirectToRoute('app_index');
+        }
+
+        $reasonId = $request->request->filter('reportReasonParentId', 0, FILTER_SANITIZE_NUMBER_INT);
+
+        if (!empty($reasonId)) {
+            $reason = $em->getRepository(ReportReason::class)->find($reasonId);
+
+            if (null !== $reason && 0 === count($reason->getChildren())) {
+                $report = (new Report())->setType('post')->setPost($post)->setReason($reason);
+
+                $post->addReport($report);
+
+                $this->addFlash('warning', 'Post successfully reported. We will review this post shortly.');
+
+                $userPypPosts = $userPypPostRepository->findBy([
+                    'userId' => $this->getUser()->getId(),
+                    'post' => $post
+                ]);
+
+                if (!empty($userPypPosts)) {
+                    $em->remove($userPypPosts[0]);
+                    $em->flush();
+                }
+
+                return $this->redirectToRoute('app_index');
+            }
+        }
+
+        return $this->render('post/report.html.twig', [
+            'reportReasons' => $em->getRepository(ReportReason::class)->findAll(),
+            'post' => $post,
+            'user' => $this->getUser(),
+            'reasonId' => $reasonId,
+        ]);
     }
 }

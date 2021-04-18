@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Pipe | Home{% endblock %}
+{% block title %}Pyp | Home{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -10,8 +10,12 @@
             font-weight: 300;
         }
 
-        .customPopoverClass {
+        .popoverOwnPostClass {
             height: 110px;
+        }
+
+        .popoverNotOwnPostClass {
+            height: 65px;
         }
     </style>
 {% endblock %}
@@ -20,7 +24,7 @@
     <script>
         {#$(document).ready(function() {#}
         {#    $.ajax({#}
-        {#        url: '{{ path('app_load_unviewed_pipes', {user: app.user}) }}',#}
+        {#        url: '{{ path('app_load_unviewed_pyps', {user: app.user}) }}',#}
         {#        method: 'POST',#}
         {#        success: function (data) {#}
         {#            $('.card').first().before('<p>test</p>');#}
@@ -37,11 +41,9 @@
 
         function placePopovers() {
             const yourPosts = $('[data-toggle="popover"][data-your-post="true"]');
-
             let htmlPostOwned = '';
-
             yourPosts.each(function (key, yourPost) {
-                let $yourPost = $(yourPost);
+                const $yourPost = $(yourPost);
 
                 htmlPostOwned = '<div><p><a href="{{ path('edit_post') }}/'+$yourPost.data('postId')+'" class="btn btn-sm btn-outline-dark border-0">Edit</a></p></div class="mb-0">' +
                     '<div><p><a href="{{ path('delete_post') }}/'+$yourPost.data('postId')+'" class="btn btn-sm btn-outline-dark border-0">Delete</a></p></div>';
@@ -51,19 +53,25 @@
                     placement: 'bottom',
                     trigger: 'focus',
                     html: true,
-                    customClass: 'customPopoverClass'
+                    customClass: 'popoverOwnPostClass'
                 });
             });
 
-            const htmlPostNotOwned = '<div><p><a href="#" class="btn btn-sm btn-outline-dark border-0">Report</a></p></div>';
+            const otherPosts = $('[data-toggle="popover"]');
+            let htmlPostNotOwned = '';
+            otherPosts.each(function (key, otherPost) {
+                const $otherPost = $(otherPost);
 
-            $('[data-toggle="popover"]').popover({
-                content: htmlPostNotOwned,
-                placement: 'bottom',
-                trigger: 'focus',
-                html: true,
-                customClass: 'customPopoverClass'
-            });
+                htmlPostNotOwned = '<div><p><a href="{{ path('report_post') }}/'+$otherPost.data('postId')+'" class="btn btn-sm btn-outline-dark border-0">Report</a></p></div>';
+
+                $otherPost.popover({
+                    content: htmlPostNotOwned,
+                    placement: 'bottom',
+                    trigger: 'focus',
+                    html: true,
+                    customClass: 'popoverNotOwnPostClass'
+                });
+            })
         }
 
         function renderCommentForm(anchor) {
@@ -151,13 +159,13 @@
 
         <div class="row mb-3" style="color: dimgrey;">
             <div class="col">
-                Pipes distributed to you from the last 3 hours, updating every 15 seconds.
+                Pyps distributed to you from the last 3 hours, updating every 15 seconds.
             </div>
         </div>
 
         <div class="row">
             <div class="col">
-                {{ render(controller('App\\Controller\\PipeController::getUserPipe')) }}
+                {{ render(controller('App\\Controller\\PypController::getUserPyp')) }}
             </div>
         </div>
     {% endif %}

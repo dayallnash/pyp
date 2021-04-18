@@ -132,6 +132,9 @@
     "symfony/amqp-messenger": {
         "version": "v5.2.3"
     },
+    "symfony/asset": {
+        "version": "v5.2.4"
+    },
     "symfony/cache": {
         "version": "v5.2.3"
     },
