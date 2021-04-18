@@ -2,7 +2,7 @@
     {% if comment.body is not null and comment.body != '' %}
         <div class="row">
             <div class="col username-italic">
-                {{ userRetriever.retrieve(comment.userId).username }}:
+                {{ userRetriever.retrieve(comment.userId).username }}
             </div>
         </div>
         <div class="row">
