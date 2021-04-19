@@ -12,7 +12,7 @@
                 <h5 class="card-title">{{ user.username }}</h5>
             </div>
             <div class="col text-end">
-                <a tabindex="0" class="btn" role="button" data-post-id="{{ post.id }}" data-toggle="popover" {{ user.username == app.user.username ? 'data-your-post="true"' : '' }}>
+                <a tabindex="0" class="btn" role="button" data-post-id="{{ post.id }}" data-toggle="popover" {{ user.username == app.user.username ? 'data-your-post="true"' : 'data-your-post="false"' }}>
                     <i class="fas fa-ellipsis-v"></i>
                 </a>
             </div>

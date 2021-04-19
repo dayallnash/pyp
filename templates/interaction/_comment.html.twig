@@ -4,6 +4,13 @@
             <div class="col username-italic">
                 {{ userRetriever.retrieve(comment.userId).username }}:
             </div>
+            {% if userRetriever.retrieve(comment.userId).username != currentUser.username %}
+                <div class="col text-end">
+                    <a tabindex="0" class="btn" role="button" data-toggle="popover" data-your-comment="false" data-comment-id="{{ comment.id }}">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </a>
+                </div>
+            {% endif %}
         </div>
         <div class="row">
             <div class="col" style="word-wrap: break-word; max-width: 300px;">

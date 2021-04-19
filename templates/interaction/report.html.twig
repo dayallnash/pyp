@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Pyp | Report Post{% endblock %}
+{% block title %}Pyp | Report Comment{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -21,7 +21,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <p class="card-text">{{ post.getPostContent }}</p>
+                    <p class="card-text">{{ comment.getBody }}</p>
                 </div>
             </div>
         </div>
@@ -31,12 +31,12 @@
         <div class="card-body">
             <div class="row">
                 <div class="col">
-                    <h5 class="card-title">Why do you want to report this post?</h5>
+                    <h5 class="card-title">Why do you want to report this comment?</h5>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    {{ render(controller('App\\Controller\\ReportReasonController::renderReasonTree', {reportReasonParentId: reasonId, postId: post.id})) }}
+                    {{ render(controller('App\\Controller\\ReportReasonController::renderReasonTree', {reportReasonParentId: reasonId, commentId: comment.id})) }}
                 </div>
             </div>
         </div>

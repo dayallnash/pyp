@@ -40,38 +40,83 @@
         });
 
         function placePopovers() {
-            const yourPosts = $('[data-toggle="popover"][data-your-post="true"]');
+            const popovers = $('[data-toggle="popover"]');
+            let $popoverVar;
             let htmlPostOwned = '';
-            yourPosts.each(function (key, yourPost) {
-                const $yourPost = $(yourPost);
-
-                htmlPostOwned = '<div><p><a href="{{ path('edit_post') }}/'+$yourPost.data('postId')+'" class="btn btn-sm btn-outline-dark border-0">Edit</a></p></div class="mb-0">' +
-                    '<div><p><a href="{{ path('delete_post') }}/'+$yourPost.data('postId')+'" class="btn btn-sm btn-outline-dark border-0">Delete</a></p></div>';
-
-                $yourPost.popover({
-                    content: htmlPostOwned,
-                    placement: 'bottom',
-                    trigger: 'focus',
-                    html: true,
-                    customClass: 'popoverOwnPostClass'
-                });
-            });
-
-            const otherPosts = $('[data-toggle="popover"]');
+            let htmlCommentOwned = '';
             let htmlPostNotOwned = '';
-            otherPosts.each(function (key, otherPost) {
-                const $otherPost = $(otherPost);
+            let htmlCommentNotOwned = '';
+            let yourComment;
+            let yourPost;
+            let commentId;
+            let postId;
+            popovers.each(function (popoverKey, popoverVar) {
+                $popoverVar = $(popoverVar);
 
-                htmlPostNotOwned = '<div><p><a href="{{ path('report_post') }}/'+$otherPost.data('postId')+'" class="btn btn-sm btn-outline-dark border-0">Report</a></p></div>';
+                yourComment = $popoverVar.data('yourComment');
+                yourPost = $popoverVar.data('yourPost');
+                commentId = $popoverVar.data('commentId');
+                postId = $popoverVar.data('postId');
 
-                $otherPost.popover({
-                    content: htmlPostNotOwned,
-                    placement: 'bottom',
-                    trigger: 'focus',
-                    html: true,
-                    customClass: 'popoverNotOwnPostClass'
-                });
-            })
+                if (yourPost && postId && typeof yourComment === 'undefined') {
+                    htmlPostOwned = '<div><p><a href="{{ path('edit_post') }}/'+postId+'" class="btn btn-sm btn-outline-dark border-0">Edit</a></p></div class="mb-0">' +
+                        '<div><p><a href="{{ path('delete_post') }}/'+postId+'" class="btn btn-sm btn-outline-dark border-0">Delete</a></p></div>';
+
+                    $popoverVar.popover({
+                        content: htmlPostOwned,
+                        placement: 'bottom',
+                        trigger: 'focus',
+                        html: true,
+                        customClass: 'popoverOwnPostClass'
+                    });
+
+                    return;
+                }
+
+                {# TODO support comment editing & deletion #}
+                {#if (yourComment && commentId && typeof yourPost === 'undefined') {#}
+                {#    htmlCommentOwned = '<div><p><a href="{{ path('edit_comment') }}/'+commentId+'" class="btn btn-sm btn-outline-dark border-0">Edit</a></p></div class="mb-0">' +#}
+                {#        '<div><p><a href="{{ path('delete_comment') }}/'+commentId+'" class="btn btn-sm btn-outline-dark border-0">Delete</a></p></div>';#}
+
+                {#    $popoverVar.popover({#}
+                {#        content: htmlCommentOwned,#}
+                {#        placement: 'bottom',#}
+                {#        trigger: 'focus',#}
+                {#        html: true,#}
+                {#        customClass: 'popoverOwnPostClass'#}
+                {#    });#}
+
+                {#    return;#}
+                {#}#}
+
+                if (yourPost === false && postId && typeof yourComment === 'undefined') {
+                    htmlPostNotOwned = '<div><p><a href="{{ path('report_post') }}/'+postId+'" class="btn btn-sm btn-outline-dark border-0">Report</a></p></div>';
+
+                    $popoverVar.popover({
+                        content: htmlPostNotOwned,
+                        placement: 'bottom',
+                        trigger: 'focus',
+                        html: true,
+                        customClass: 'popoverNotOwnPostClass'
+                    });
+
+                    return;
+                }
+
+                if (yourComment === false && commentId && typeof yourPost === 'undefined') {
+                    htmlCommentNotOwned = '<div><p><a href="{{ path('report_comment') }}/'+commentId+'" class="btn btn-sm btn-outline-dark border-0">Report</a></p></div>';
+
+                    $popoverVar.popover({
+                        content: htmlCommentNotOwned,
+                        placement: 'bottom',
+                        trigger: 'focus',
+                        html: true,
+                        customClass: 'popoverNotOwnPostClass'
+                    });
+
+                    return;
+                }
+            });
         }
 
         function renderCommentForm(anchor) {

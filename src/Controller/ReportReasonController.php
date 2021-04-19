@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ReportReasonController extends AbstractController
 {
-    public function renderReasonTree(ReportReasonRepository $reportReasonRepository, int $reportReasonParentId = 0, int $postId = 0): Response
+    public function renderReasonTree(ReportReasonRepository $reportReasonRepository, int $reportReasonParentId = 0, int $postId = 0, int $commentId = 0): Response
     {
         if (0 === $reportReasonParentId) {
             return $this->render('report_reason/_reason_tree.html.twig', [
                 'reportReasons' => $reportReasonRepository->getTopLevelReportReasons(),
                 'reportReasonParentId' => null,
                 'postId' => $postId,
+                'commentId' => $commentId,
             ]);
         }
 
@@ -22,6 +23,7 @@ class ReportReasonController extends AbstractController
             'reportReasons' => $reportReasonRepository->find($reportReasonParentId)->getChildren(),
             'reportReasonParentId' => $reportReasonParentId,
             'postId' => $postId,
+            'commentId' => $commentId,
         ]);
     }
 }

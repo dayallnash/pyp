@@ -33,6 +33,11 @@ class Report
      */
     private $post;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Interaction::class, inversedBy="reports")
+     */
+    private $comment;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +75,18 @@ class Report
     public function setPost(?Post $post): self
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getComment(): ?Interaction
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?Interaction $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }

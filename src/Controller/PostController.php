@@ -147,12 +147,19 @@ class PostController extends AbstractController
      *
      * @param Request                $request
      * @param EntityManagerInterface $em
+     * @param UserPypPostRepository  $userPypPostRepository
+     * @param UserRetriever          $userRetriever
      * @param int                    $postId
      *
      * @return Response
      */
-    public function reportPost(Request $request, EntityManagerInterface $em, UserPypPostRepository $userPypPostRepository, int $postId = 0): Response
-    {
+    public function reportPost(
+        Request $request,
+        EntityManagerInterface $em,
+        UserPypPostRepository $userPypPostRepository,
+        UserRetriever $userRetriever,
+        int $postId = 0
+    ): Response {
         $post = $em->getRepository(Post::class)->find($postId);
 
         if (null === $post) {
@@ -190,7 +197,7 @@ class PostController extends AbstractController
         return $this->render('post/report.html.twig', [
             'reportReasons' => $em->getRepository(ReportReason::class)->findAll(),
             'post' => $post,
-            'user' => $this->getUser(),
+            'user' => $userRetriever->retrieve($post->getUserId()),
             'reasonId' => $reasonId,
         ]);
     }

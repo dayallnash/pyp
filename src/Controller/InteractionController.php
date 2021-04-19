@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Interaction;
 use App\Entity\Post;
+use App\Entity\Report;
 use App\Repository\InteractionRepository;
 use App\Repository\PostRepository;
+use App\Repository\ReportReasonRepository;
 use App\Service\UserRetriever;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,6 +31,7 @@ class InteractionController extends AbstractController
     {
         return $this->render('interaction/_comment.html.twig', [
             'userRetriever' => $userRetriever,
+            'currentUser' => $this->getUser(),
             'interactions' => $interactionRepo->findBy(['post' => $post]),
             'post' => $post,
         ]);
@@ -89,5 +92,59 @@ class InteractionController extends AbstractController
         $em->flush();
 
         return $this->json(['success' => true]);
+    }
+
+    /**
+     * @Route("/comment/report/{commentId}", requirements={"commentId"="\d+"}, name="report_comment")
+     *
+     * @param Request                $request
+     * @param EntityManagerInterface $em
+     * @param InteractionRepository  $interactionRepo
+     * @param ReportReasonRepository $reportReasonRepo
+     * @param UserRetriever          $userRetriever
+     * @param int                    $commentId
+     *
+     * @return Response
+     */
+    public function reportComment(
+        Request $request,
+        EntityManagerInterface $em,
+        InteractionRepository $interactionRepo,
+        ReportReasonRepository $reportReasonRepo,
+        UserRetriever $userRetriever,
+        int $commentId = 0
+    ): Response {
+        $comment = $interactionRepo->find($commentId);
+
+        if (null === $comment) {
+            $this->addFlash('danger', 'Could not find comment to report.');
+
+            return $this->redirectToRoute('app_index');
+        }
+
+        $reasonId = $request->request->filter('reportReasonParentId', 0, FILTER_SANITIZE_NUMBER_INT);
+
+        if (!empty($reasonId)) {
+            $reason = $reportReasonRepo->find($reasonId);
+
+            if (null !== $reason && 0 === count($reason->getChildren())) {
+                $report = (new Report())->setType('comment')->setComment($comment)->setReason($reason);
+
+                $comment->addReport($report);
+
+                $this->addFlash('warning', 'Comment successfully reported. We will review this comment shortly.');
+
+                // TODO: hide comment from logged in user upon being reported
+
+                return $this->redirectToRoute('app_index');
+            }
+        }
+
+        return $this->render('interaction/report.html.twig', [
+            'reportReasons' => $reportReasonRepo->findAll(),
+            'comment' => $comment,
+            'user' => $userRetriever->retrieve($comment->getUserId()),
+            'reasonId' => $reasonId,
+        ]);
     }
 }
