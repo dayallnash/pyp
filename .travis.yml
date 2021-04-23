@@ -6,6 +6,8 @@ services:
 before_install:
   - composer install
   - mysql -e 'CREATE DATABASE pyp_test;'
+  - mysql -e 'SET PASSWORD FOR `root`@`localhost` = PASSWORD("root");'
+  - mysql -e 'FLUSH PRIVILEGES;'
   - php bin/console doctrine:migrations:migrate --no-interaction
 script:
   - vendor/bin/phpunit
