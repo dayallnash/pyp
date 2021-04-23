@@ -4,8 +4,7 @@ services:
     image: mariadb:10.3.8
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
       MYSQL_DATABASE: pyp_test
-      MYSQL_PASSWORD: root
     ports:
       - 3306:3306

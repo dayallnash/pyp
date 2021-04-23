@@ -2,9 +2,9 @@ language: php
 php: 7.4
 services:
   - docker
+  - mysql
 before_install:
   - composer install
-  - docker-compose up -d
-  - php bin/console doctrine:migrations:migrate --no-interaction
+  - mysql -e 'CREATE DATABASE pyp_test;'
 script:
   - vendor/bin/phpunit
