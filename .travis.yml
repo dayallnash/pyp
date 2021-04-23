@@ -4,6 +4,6 @@ services:
   - docker
 before_install:
   - composer install
-  - docker-composer up
+  - docker-compose up
 script:
   - vendor/bin/phpunit
