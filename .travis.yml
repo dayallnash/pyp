@@ -1,6 +1,10 @@
 language: php
 php: 7.4
-before-script:
+services:
+  - docker
+before_install:
   - composer install
-  - ls
-  - docker-compose up
+  - docker pull mariadb
+  - docker run -p 127.0.0.1:3306:3306  --name mariadb -e MYSQL_ROOT_PASSWORD=root
+script:
+  - vendor/bin/phpunit
