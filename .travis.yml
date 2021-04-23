@@ -6,8 +6,9 @@ services:
 before_install:
   - composer install
   - mysql -e 'CREATE DATABASE pyp_test;'
-  - mysql -e 'SET PASSWORD FOR `root`@`localhost` = PASSWORD("root");'
-  - mysql -e 'FLUSH PRIVILEGES;'
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('root') where User='root'; update user set plugin='mysql_native_password'; FLUSH PRIVILEGES;"
+  - sudo mysql_upgrade -u root -proot
+  - sudo service mysql restart
   - php bin/console doctrine:migrations:migrate --no-interaction
 script:
   - vendor/bin/phpunit
