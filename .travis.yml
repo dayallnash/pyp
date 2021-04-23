@@ -3,12 +3,8 @@ php: 7.4
 services:
   - docker
 before_install:
-  - printf $(date +'%d/%m/%Y')
   - composer install
-  - printf $(date +'%d/%m/%Y')
   - docker-compose up -d
-  - printf $(date +'%d/%m/%Y')
   - php bin/console doctrine:migrations:migrate --no-interaction
 script:
-  - printf $(date +'%d/%m/%Y')
   - vendor/bin/phpunit
