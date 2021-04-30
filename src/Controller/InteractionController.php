@@ -158,4 +158,41 @@ class InteractionController extends AbstractController
             'reasonId' => $reasonId,
         ]);
     }
+
+    /**
+     * @Route("/comment/report/undo", name="undo_report_comment")
+     *
+     * @param Request                $request
+     * @param EntityManagerInterface $em
+     *
+     * @return JsonResponse
+     */
+    public function undoReportComment(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $commentId = $request->request->filter('commentId', 0, FILTER_VALIDATE_INT);
+
+        if (empty($commentId)) {
+            return $this->json(['success' => false]);
+        }
+
+        $comment = $em->getRepository(Interaction::class)->find($commentId);
+
+        if (null === $comment) {
+            return $this->json(['success' => false]);
+        }
+
+        $report = $em->getRepository(Report::class)->findOneBy([
+            'comment' => $comment,
+            'userId' => $this->getUser()->getId(),
+        ]);
+
+        if (null === $report) {
+            return $this->json(['success' => false]);
+        }
+
+        $em->remove($report);
+        $em->flush();
+
+        return $this->json(['success' => true]);
+    }
 }

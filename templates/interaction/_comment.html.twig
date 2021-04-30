@@ -23,10 +23,20 @@
                 <div class="col username-italic">
                     {{ userRetriever.retrieve(comment.userId).username }}
                 </div>
+                <div class="col text-end d-none">
+                    <a tabindex="0" class="btn" role="button" data-toggle="popover" data-your-comment="false" data-comment-id="{{ comment.id }}">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </a>
+                </div>
             </div>
             <div class="row">
                 <div class="col" style="color: #6c757d; word-wrap: break-word; max-width: 300px;">
-                    You've reported this comment.
+                    You've reported this comment. <a href="#" data-comment-id="{{ comment.id }}" onclick="undoReportComment($(this))">Undo</a>
+                </div>
+            </div>
+            <div class="row d-none">
+                <div class="col" style="word-wrap: break-word; max-width: 300px;">
+                    {{ comment.body }}
                 </div>
             </div>
         {% endif %}

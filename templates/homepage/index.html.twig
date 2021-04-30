@@ -151,6 +151,26 @@
                 }
             });
         }
+
+        function undoReportComment(anchor) {
+            $.ajax({
+                url: '{{ path('undo_report_comment') }}',
+                method: 'POST',
+                data: {
+                    commentId: anchor.data('commentId')
+                },
+                success: function (response) {
+                    if (response.success) {
+                        const parent = anchor.parent().parent();
+
+                        parent.hide();
+                        parent.next().removeClass('d-none');
+                        parent.prev().find('div:last-child').removeClass('d-none');
+                    }
+                }
+            })
+
+        }
     </script>
 {% endblock %}
 
