@@ -51,23 +51,15 @@ abstract class Base extends WebTestCase
         $application = new Application(self::$kernel);
         $application->setAutoExit(false);
 
-        $input = new ArrayInput([
-            'command' => 'doctrine:schema:drop',
-            '--force' => true,
-        ]);
+        $input = new StringInput('doctrine:schema:drop --force');
 
         $application->run($input);
 
-        $input = new ArrayInput([
-            'command' => 'doctrine:schema:create',
-        ]);
+        $input = new StringInput('doctrine:schema:create');
 
         $application->run($input);
 
-        $input = new ArrayInput(array(
-            'command' => 'doctrine:migrations:migrate',
-            '--no-interaction' => true,
-        ));
+        $input = new StringInput('doctrine:migrations:migrate --no-interaction');
 
         $application->run($input, new BufferedOutput());
 
