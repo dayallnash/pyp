@@ -53,7 +53,14 @@
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ label }} mt-3">
-                        {{ message }}
+                        <div class="row">
+                            <div class="col-11">
+                                {{ message }}
+                            </div>
+                            <div class="col-1 d-flex">
+                                <button type="button" class="btn-close" aria-label="Close" onclick="$(this).parent().parent().parent().hide()"></button>
+                            </div>
+                        </div>
                     </div>
                 {% endfor %}
             {% endfor %}
