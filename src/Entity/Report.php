@@ -38,6 +38,11 @@ class Report
      */
     private $comment;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $userId;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -87,6 +92,18 @@ class Report
     public function setComment(?Interaction $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(int $userId): self
+    {
+        $this->userId = $userId;
 
         return $this;
     }

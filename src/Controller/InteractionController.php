@@ -8,6 +8,7 @@ use App\Entity\Report;
 use App\Repository\InteractionRepository;
 use App\Repository\PostRepository;
 use App\Repository\ReportReasonRepository;
+use App\Repository\ReportRepository;
 use App\Service\UserRetriever;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,12 +28,19 @@ class InteractionController extends AbstractController
      *
      * @return Response
      */
-    public function renderComment(Post $post, InteractionRepository $interactionRepo, UserRetriever $userRetriever): Response
+    public function renderComment(Post $post, InteractionRepository $interactionRepo, ReportRepository $reportRepo, UserRetriever $userRetriever): Response
     {
+        $reportedComments = [];
+
+        foreach ($reportRepo->findBy(['type' => 'comment', 'userId' => $this->getUser()->getId()]) as $report) {
+            $reportedComments[] = $report->getComment();
+        }
+
         return $this->render('interaction/_comment.html.twig', [
             'userRetriever' => $userRetriever,
             'currentUser' => $this->getUser(),
             'interactions' => $interactionRepo->findBy(['post' => $post]),
+            'reportedComments' => $reportedComments,
             'post' => $post,
         ]);
     }
@@ -128,13 +136,16 @@ class InteractionController extends AbstractController
             $reason = $reportReasonRepo->find($reasonId);
 
             if (null !== $reason && 0 === count($reason->getChildren())) {
-                $report = (new Report())->setType('comment')->setComment($comment)->setReason($reason);
+                $report = (new Report())->setType('comment')->setComment($comment)->setReason($reason)->setUserId($this->getUser()->getId());
 
                 $comment->addReport($report);
 
-                $this->addFlash('warning', 'Comment successfully reported. We will review this comment shortly.');
+                $em->persist($report);
+                $em->persist($comment);
 
-                // TODO: hide comment from logged in user upon being reported
+                $em->flush();
+
+                $this->addFlash('warning', 'Comment successfully reported. We will review this comment shortly.');
 
                 return $this->redirectToRoute('app_index');
             }
