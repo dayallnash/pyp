@@ -19,7 +19,7 @@ class UserPypPost
 
     /**
      * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="userPypPosts", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
      */
     private $post;
 
