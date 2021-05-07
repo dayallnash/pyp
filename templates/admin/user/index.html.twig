@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h5>Current User:</h5>
+                <h5>User to edit:</h5>
             </div>
         </div>
         <div class="row">
@@ -33,9 +33,7 @@
                             <label for="currentUserControls">Controls:</label>
                         </div>
                         <div class="col">
-                            {#                    <a href="{{ path('hose_user_delete', {userId: currentUser.id}) }}">#}
                             <input type="button" class="btn btn-primary" value="Delete">
-                            {#                    </a>#}
                             <input type="submit" class="btn btn-primary" value="Update">
                         </div>
                     </div>
@@ -47,8 +45,30 @@
                 <h5>All Users:</h5>
             </div>
         </div>
-        {% for user in userGenerator %}
-
-        {% endfor %}
+        <div class="row">
+            <div class="col">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in userGenerator %}
+                            <tr>
+                                <th>{{ user.id }}</th>
+                                <th>{{ user.username }}</th>
+                                <th>
+                                    <a class="btn btn-primary" role="button" href="{{ path('hose_user_view', {userId: user.id}) }}">Edit</a>
+                                    <a class="btn btn-danger" role="button" href="{{ path('hose_user_delete', {userId: user.id}) }}">Delete</a>
+                                </th>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 {% endblock %}
