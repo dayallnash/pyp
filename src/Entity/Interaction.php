@@ -41,7 +41,7 @@ class Interaction
     private $userId;
 
     /**
-     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="post", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Report::class, mappedBy="comment", cascade={"persist"})
      */
     private $reports;
 
@@ -123,11 +123,8 @@ class Interaction
 
     public function removeReport(Report $report): self
     {
-        if ($this->reports->removeElement($report)) {
-            // set the owning side to null (unless already changed)
-            if ($report->getComment() === $this) {
-                $report->setComment(null);
-            }
+        if ($this->reports->removeElement($report) && $report->getComment() === $this) {
+            $report->setComment(null);
         }
 
         return $this;
