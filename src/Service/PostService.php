@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserInfluence;
+use App\Entity\UserPypPost;
 use App\Message\PostToDistribute;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,7 +35,13 @@ class PostService
             ->setDatetimePosted(new DateTime())
             ->setPostContent($content);
 
+        // Make sure user who posted always sees their own posts
+        $userPypPost = (new UserPypPost())
+            ->setUser($user)
+            ->setPost($post);
+
         $this->em->persist($post);
+        $this->em->persist($userPypPost);
         $this->em->flush();
 
         if (null !== $this->bus) {

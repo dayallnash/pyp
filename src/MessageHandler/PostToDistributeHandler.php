@@ -33,13 +33,7 @@ class PostToDistributeHandler implements MessageHandlerInterface
 
         $post = $this->em->getRepository(Post::class)->find($post->getPost()->getId());
 
-        // Make sure user who posted always sees their own posts
         $poster = $post->getUser();
-
-        $userPypPost = (new UserPypPost())->setPost($post)->setUser($poster);
-
-        $this->em->persist($userPypPost);
-        $this->em->flush();
 
         $influence = $this->influenceCalculator->calculate($poster);
 
