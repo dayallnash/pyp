@@ -161,6 +161,7 @@ class InteractionController extends AbstractController
         ]);
 
         if (null !== $report) {
+            $comment->removeReport($report);
             $em->remove($report);
             $em->flush();
         }
