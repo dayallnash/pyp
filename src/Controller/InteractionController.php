@@ -20,32 +20,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class InteractionController extends AbstractController
 {
     /**
-     * @Route("/interaction/comment", name="render_comment")
-     *
-     * @param Post                  $post
-     * @param InteractionRepository $interactionRepo
-     * @param UserRetriever         $userRetriever
-     *
-     * @return Response
-     */
-    public function renderComment(Post $post, InteractionRepository $interactionRepo, ReportRepository $reportRepo, UserRetriever $userRetriever): Response
-    {
-        $reportedComments = [];
-
-        foreach ($reportRepo->findBy(['type' => 'comment', 'userId' => $this->getUser()->getId()]) as $report) {
-            $reportedComments[] = $report->getComment();
-        }
-
-        return $this->render('interaction/_comment.html.twig', [
-            'userRetriever' => $userRetriever,
-            'currentUser' => $this->getUser(),
-            'interactions' => $interactionRepo->findBy(['post' => $post]),
-            'reportedComments' => $reportedComments,
-            'post' => $post,
-        ]);
-    }
-
-    /**
      * @Route("/interaction/comment/save", name="save_comment")
      *
      * @param Request                $request
@@ -59,7 +33,7 @@ class InteractionController extends AbstractController
         $interaction = (new Interaction())
             ->setPost($postRepo->find($request->query->filter('post', 0, FILTER_SANITIZE_NUMBER_INT)))
             ->setBody($request->request->filter('comment', '', FILTER_SANITIZE_STRING))
-            ->setUserId($this->getUser()->getId())
+            ->setUser($this->getUser())
             ->setType('comment');
 
         $em->persist($interaction);
@@ -82,7 +56,7 @@ class InteractionController extends AbstractController
     {
         $post = $postRepo->find($request->request->filter('postId', 0, FILTER_SANITIZE_NUMBER_INT));
 
-        $interaction = $interactionRepo->findOneBy(['type' => 'like', 'post' => $post, 'userId' => $this->getUser()->getId()]);
+        $interaction = $interactionRepo->findOneBy(['type' => 'like', 'post' => $post, 'user' => $this->getUser()]);
 
         if (null !== $interaction) {
             $em->remove($interaction);
@@ -93,7 +67,7 @@ class InteractionController extends AbstractController
 
         $interaction = (new Interaction())
             ->setPost($post)
-            ->setUserId($this->getUser()->getId())
+            ->setUser($this->getUser())
             ->setType('like');
 
         $em->persist($interaction);
@@ -136,7 +110,7 @@ class InteractionController extends AbstractController
             $reason = $reportReasonRepo->find($reasonId);
 
             if (null !== $reason && 0 === count($reason->getChildren())) {
-                $report = (new Report())->setType('comment')->setComment($comment)->setReason($reason)->setUserId($this->getUser()->getId());
+                $report = (new Report())->setType('comment')->setComment($comment)->setReason($reason)->setUser($this->getUser());
 
                 $comment->addReport($report);
 
@@ -154,7 +128,7 @@ class InteractionController extends AbstractController
         return $this->render('interaction/report.html.twig', [
             'reportReasons' => $reportReasonRepo->findAll(),
             'comment' => $comment,
-            'user' => $userRetriever->retrieve($comment->getUserId()),
+            'user' => $comment->getUser(),
             'reasonId' => $reasonId,
         ]);
     }
@@ -183,15 +157,13 @@ class InteractionController extends AbstractController
 
         $report = $em->getRepository(Report::class)->findOneBy([
             'comment' => $comment,
-            'userId' => $this->getUser()->getId(),
+            'user' => $this->getUser(),
         ]);
 
-        if (null === $report) {
-            return $this->json(['success' => false]);
+        if (null !== $report) {
+            $em->remove($report);
+            $em->flush();
         }
-
-        $em->remove($report);
-        $em->flush();
 
         return $this->json(['success' => true]);
     }

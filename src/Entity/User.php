@@ -37,9 +37,26 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\OneToMany(targetEntity=UserPypPost::class, mappedBy="user")
+     */
+    private $userPypPosts;
+
+    public function __construct()
+    {
+        $this->userPypPosts = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -64,15 +81,15 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $returnRoles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $returnRoles[] = 'ROLE_USER';
 
         if ('dayall' === $this->getUsername()) {
-            $roles[] = 'ROLE_ADMIN';
+            $returnRoles[] = 'ROLE_ADMIN';
         }
 
-        return array_unique($roles);
+        return array_unique($returnRoles);
     }
 
     public function setRoles(array $roles): self
@@ -112,5 +129,32 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getUserPypPosts(): Collection
+    {
+        return $this->userPypPosts;
+    }
+
+    public function addUserPypPost(UserPypPost $userPypPost): self
+    {
+        if (!$this->userPypPosts->contains($userPypPost)) {
+            $this->userPypPosts->add($userPypPost);
+            if ($userPypPost->getUser() !== $this) {
+                $userPypPost->setUser($this);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removeUserPypPost(UserPypPost $userPypPost): self
+    {
+        if ($this->userPypPosts->contains($userPypPost)) {
+            $this->userPypPosts->removeElement($userPypPost);
+            if ($userPypPost->getUser() === $this) {
+                $userPypPost->setUser(null);
+            }
+        }
     }
 }

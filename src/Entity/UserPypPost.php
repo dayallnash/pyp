@@ -18,15 +18,15 @@ class UserPypPost
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Post::class, inversedBy="userPypPosts", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Post::class, cascade={"persist"})
      * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
      */
     private $post;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="userPypPosts")
      */
-    private $userId;
+    private $user;
 
     public function getId(): ?int
     {
@@ -45,14 +45,14 @@ class UserPypPost
         return $this;
     }
 
-    public function getUserId(): ?int
+    public function getUser(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(int $userId): self
+    public function setUser(?User $user): self
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }

@@ -36,14 +36,14 @@ class Interaction
     private $body;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $userId;
-
-    /**
      * @ORM\OneToMany(targetEntity=Report::class, mappedBy="comment", cascade={"persist"})
      */
     private $reports;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -91,18 +91,6 @@ class Interaction
         return $this;
     }
 
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): self
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Report[]
      */
@@ -126,6 +114,18 @@ class Interaction
         if ($this->reports->removeElement($report) && $report->getComment() === $this) {
             $report->setComment(null);
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Entity\UserPypPost;
+use App\Service\UserRetriever;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
 use Generator;
@@ -33,18 +34,6 @@ class UserPypPostRepository extends BaseRepository
         $query = $qb->getQuery();
 
         return $query->execute();
-    }
-
-    public function getUserPypPostsCount(int $userId): int
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-
-        return $qb->select('COUNT(upp.id) upp_count')
-            ->from($this->_entityName, 'upp')
-            ->where($qb->expr()->eq('upp.userId', ':userId'))
-            ->setParameter('userId', $userId)
-            ->getQuery()
-            ->execute()[0]['upp_count'];
     }
 
     public function getAllPostsForUser(User $user): Generator

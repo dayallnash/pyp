@@ -30,7 +30,7 @@ class PostService
         }
 
         $post = (new Post())
-            ->setUserId($user->getId())
+            ->setUser($user)
             ->setDatetimePosted(new DateTime())
             ->setPostContent($content);
 

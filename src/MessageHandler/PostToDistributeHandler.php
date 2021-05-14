@@ -2,12 +2,11 @@
 
 namespace App\MessageHandler;
 
+use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserPypPost;
-use App\Helper\PypHelper;
 use App\Message\PostToDistribute;
 use App\Service\InfluenceCalculator;
-use App\Service\UserRetriever;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Throwable;
@@ -16,28 +15,37 @@ class PostToDistributeHandler implements MessageHandlerInterface
 {
     private EntityManagerInterface $em;
     private InfluenceCalculator $influenceCalculator;
-    private UserRetriever $userRetriever;
 
-    public function __construct(EntityManagerInterface $em, InfluenceCalculator $influenceCalculator, UserRetriever $userRetriever)
+    public function __construct(EntityManagerInterface $em, InfluenceCalculator $influenceCalculator)
     {
         $this->em = $em;
         $this->influenceCalculator = $influenceCalculator;
-        $this->userRetriever = $userRetriever;
     }
 
-    public function __invoke(PostToDistribute $post)
+    public function __invoke(PostToDistribute $post): void
     {
-        $usersOrderedByPypCounts = $this->em->getRepository(UserPypPost::class)->getUsersOrderedByPypCounts();
+        $users = $this->em->getRepository(User::class)->findAll();
+
+        // Sort users by amount of UserPypPosts they have viewable
+        usort($users, static function ($userA, $userB) {
+            $userA->getUserPypPosts()->count() <=> $userB->getUserPypPosts()->count();
+        });
+
+        $post = $this->em->getRepository(Post::class)->find($post->getPost()->getId());
 
         // Make sure user who posted always sees their own posts
-        $userPypPost = (new UserPypPost())->setPost($post->getPost())->setUserId($post->getPost()->getUserId());
-        $this->em->persist($userPypPost);
+        $poster = $post->getUser();
 
-        $influence = $this->influenceCalculator->calculate($this->userRetriever->retrieve($post->getPost()->getUserId()));
+        $userPypPost = (new UserPypPost())->setPost($post)->setUser($poster);
+
+        $this->em->persist($userPypPost);
+        $this->em->flush();
+
+        $influence = $this->influenceCalculator->calculate($poster);
 
         $i = 0;
-        foreach ($usersOrderedByPypCounts as $userOrderedByPypCounts) {
-            if ($post->getPost()->getUserId() === $userOrderedByPypCounts[0]->getId()) {
+        foreach ($users as $user) {
+            if ($post->getUser()->getId() === $user->getId()) {
                 continue;
             }
 
@@ -45,7 +53,8 @@ class PostToDistributeHandler implements MessageHandlerInterface
                 break;
             }
 
-            $userPypPost = (new UserPypPost())->setPost($post->getPost())->setUserId($userOrderedByPypCounts[0]->getId());
+            $userPypPost = (new UserPypPost())->setPost($post)->setUser($user);
+
             $this->em->persist($userPypPost);
         }
 

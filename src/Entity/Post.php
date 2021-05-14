@@ -31,16 +31,6 @@ class Post
     private $post_content;
 
     /**
-     * @ORM\OneToMany(targetEntity=UserPypPost::class, mappedBy="post", orphanRemoval=true, cascade={"persist"})
-     */
-    private $userPypPosts;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $userId;
-
-    /**
      * @ORM\OneToMany(targetEntity=Interaction::class, mappedBy="post", orphanRemoval=true)
      */
     private $interactions;
@@ -50,9 +40,13 @@ class Post
      */
     private $reports;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, cascade={"persist"})
+     */
+    private $user;
+
     public function __construct()
     {
-        $this->userPypPosts = new ArrayCollection();
         $this->interactions = new ArrayCollection();
         $this->reports = new ArrayCollection();
     }
@@ -87,48 +81,6 @@ class Post
     }
 
     /**
-     * @return Collection|UserPypPost[]
-     */
-    public function getUserPypPosts(): Collection
-    {
-        return $this->userPypPosts;
-    }
-
-    public function addUserPypPost(UserPypPost $userPypPost): self
-    {
-        if (!$this->userPypPosts->contains($userPypPost)) {
-            $this->userPypPosts[] = $userPypPost;
-            $userPypPost->setPost($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUserPypPost(UserPypPost $userPypPost): self
-    {
-        if ($this->userPypPosts->removeElement($userPypPost)) {
-            // set the owning side to null (unless already changed)
-            if ($userPypPost->getPost() === $this) {
-                $userPypPost->setPost(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): self
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Interaction[]
      */
     public function getInteractions(): Collection
@@ -148,11 +100,8 @@ class Post
 
     public function removeInteraction(Interaction $interaction): self
     {
-        if ($this->interactions->removeElement($interaction)) {
-            // set the owning side to null (unless already changed)
-            if ($interaction->getPost() === $this) {
-                $interaction->setPost(null);
-            }
+        if ($this->interactions->removeElement($interaction) && $interaction->getPost() === $this) {
+            $interaction->setPost(null);
         }
 
         return $this;
@@ -178,12 +127,21 @@ class Post
 
     public function removeReport(Report $report): self
     {
-        if ($this->reports->removeElement($report)) {
-            // set the owning side to null (unless already changed)
-            if ($report->getPost() === $this) {
-                $report->setPost(null);
-            }
+        if ($this->reports->removeElement($report) && $report->getPost() === $this) {
+            $report->setPost(null);
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

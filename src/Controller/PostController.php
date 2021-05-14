@@ -38,39 +38,6 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/render_individual_post", name="app_render_individual_post")
-     *
-     * @param Post                  $post
-     * @param UserRetriever         $userRetriever
-     * @param InteractionRepository $interactionRepo
-     *
-     * @return Response
-     */
-    public function renderPost(Post $post, UserRetriever $userRetriever, InteractionRepository $interactionRepo): Response
-    {
-        $commentCount = $likeCount = 0;
-        $liked = false;
-        foreach ($interactionRepo->findBy(['post' => $post]) as $interaction) {
-            if ('comment' === $interaction->getType()) {
-                ++$commentCount;
-            } else {
-                if ($interaction->getUserId() === $this->getUser()->getId()) {
-                    $liked = true;
-                }
-                ++$likeCount;
-            }
-        }
-
-        return $this->render('pyp/_post.html.twig', [
-            'post' => $post,
-            'user' => $userRetriever->retrieve($post->getUserId()),
-            'commentCount' => $commentCount,
-            'likeCount' => $likeCount,
-            'liked' => $liked,
-        ]);
-    }
-
-    /**
      * @Route("/post/edit/{postId}", requirements={"postId"="\d+"}, name="edit_post")
      *
      * @param Request                $request
@@ -148,7 +115,6 @@ class PostController extends AbstractController
      * @param Request                $request
      * @param EntityManagerInterface $em
      * @param UserPypPostRepository  $userPypPostRepository
-     * @param UserRetriever          $userRetriever
      * @param int                    $postId
      *
      * @return Response
@@ -157,7 +123,6 @@ class PostController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         UserPypPostRepository $userPypPostRepository,
-        UserRetriever $userRetriever,
         int $postId = 0
     ): Response {
         $post = $em->getRepository(Post::class)->find($postId);
@@ -174,14 +139,14 @@ class PostController extends AbstractController
             $reason = $em->getRepository(ReportReason::class)->find($reasonId);
 
             if (null !== $reason && 0 === count($reason->getChildren())) {
-                $report = (new Report())->setType('post')->setPost($post)->setReason($reason);
+                $report = (new Report())->setType('post')->setPost($post)->setReason($reason)->setUser($this->getUser());
 
                 $post->addReport($report);
 
                 $this->addFlash('warning', 'Post successfully reported. We will review this post shortly.');
 
                 $userPypPosts = $userPypPostRepository->findBy([
-                    'userId' => $this->getUser()->getId(),
+                    'user' => $this->getUser(),
                     'post' => $post
                 ]);
 
@@ -197,7 +162,7 @@ class PostController extends AbstractController
         return $this->render('post/report.html.twig', [
             'reportReasons' => $em->getRepository(ReportReason::class)->findAll(),
             'post' => $post,
-            'user' => $userRetriever->retrieve($post->getUserId()),
+            'user' => $post->getUser(),
             'reasonId' => $reasonId,
         ]);
     }
