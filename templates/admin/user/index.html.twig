@@ -2,72 +2,101 @@
 
 {% block title %}Hose | Users | Pyp{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        h5 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-style: italic;
+        }
+
+        .column-header {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="row">
             <div class="col">
-                <h5>User to edit:</h5>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5>User to edit:</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <form action="{{ path('hose_user_update') }}" method="POST">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="currentUserId">ID:</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="currentUserId" name="id" value="{{ currentUser.id }}" readonly required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="currentUserName">Username:</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="text" id="currentUserName" name="username" value="{{ currentUser.username }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="currentUserControls">Controls:</label>
+                                        </div>
+                                        <div class="col">
+                                            <input type="button" class="btn btn-primary" value="Delete">
+                                            <input type="submit" class="btn btn-primary" value="Update">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <form action="{{ path('hose_user_update') }}" method="POST">
-                    <div class="row">
-                        <div class="col">
-                            <label for="currentUserId">ID:</label>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5>All Users:</h5>
+                            </div>
                         </div>
-                        <div class="col">
-                            <input type="text" id="currentUserId" name="id" value="{{ currentUser.id }}" readonly required>
+                        <div class="row">
+                            <div class="col">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class="column-header">ID</th>
+                                        <th scope="col" class="column-header">Username</th>
+                                        <th scope="col" class="column-header"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for user in userGenerator %}
+                                        <tr>
+                                            <td>{{ user.id }}</td>
+                                            <td>{{ user.username }}</td>
+                                            <td>
+                                                <a class="btn btn-primary" role="button" href="{{ path('hose_user_view', {userId: user.id}) }}">Edit</a>
+                                                <a class="btn btn-danger" role="button" href="{{ path('hose_user_delete', {userId: user.id}) }}">Delete</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="currentUserName">Username:</label>
-                        </div>
-                        <div class="col">
-                            <input type="text" id="currentUserName" name="username" value="{{ currentUser.username }}" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="currentUserControls">Controls:</label>
-                        </div>
-                        <div class="col">
-                            <input type="button" class="btn btn-primary" value="Delete">
-                            <input type="submit" class="btn btn-primary" value="Update">
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <h5>All Users:</h5>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Username</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for user in userGenerator %}
-                            <tr>
-                                <th>{{ user.id }}</th>
-                                <th>{{ user.username }}</th>
-                                <th>
-                                    <a class="btn btn-primary" role="button" href="{{ path('hose_user_view', {userId: user.id}) }}">Edit</a>
-                                    <a class="btn btn-danger" role="button" href="{{ path('hose_user_delete', {userId: user.id}) }}">Delete</a>
-                                </th>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                </div>
             </div>
         </div>
     </div>

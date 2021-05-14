@@ -1,0 +1,97 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Hose | Reports | Pyp{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        h5, .username-italic {
+            font-family: 'IBM Plex Mono', monospace;
+            font-style: italic;
+        }
+
+        .column-header {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="column-header">ID</th>
+                                            <th scope="col" class="column-header">Report Type</th>
+                                            <th scope="col" class="column-header">Report Reason</th>
+                                            <th scope="col" class="column-header">Reported Item</th>
+                                            <th scope="col" class="column-header">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for report in reports %}
+                                            <tr>
+                                                <td>{{ report.id }}</td>
+                                                <td>{{ report.type }}</td>
+                                                <td>{{ report.reason.name }}</td>
+                                                <td><a type="button" class="btn btn-warning" href="#" data-item-id="{{ report.type == 'post' ? report.post.id : report.comment.id }}" onclick="showReportedItem($(this))">View reported item</a></td>
+                                                <td>TODO: Action buttons here</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                {% for report in reports %}
+                    <div class="row d-none item-content" id="{{ report.type == 'post' ? report.post.id : report.comment.id }}">
+                        <div class="col">
+                            <div class="card" style="min-width: 300px; box-sizing: content-box;">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            {% set user = report.type == 'post' ? report.post.user : report.comment.user %}
+                                            <h5 class="card-title username-italic">{{ user.username }}</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p class="card-text">
+                                                {{ report.type == 'post' ? report.post.postContent : report.comment.body }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function showReportedItem(anchor) {
+            const itemId = anchor.data('itemId');
+
+            $('.item-content').each(function (key, elem) {
+                elem = $(elem);
+                if (!$(elem).hasClass('d-none')) {
+                    $(elem).addClass('d-none');
+                }
+            });
+
+            $('#'+itemId).removeClass('d-none');
+        }
+    </script>
+{% endblock %}

@@ -2,6 +2,19 @@
 
 {% block title %}Hose | Queue | Pyp{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        h5 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-style: italic;
+        }
+
+        .column-header {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     {% set count = 0 %}
     {% set break = false %}
@@ -9,44 +22,57 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <table class="table table-hover table-striped">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Queue Name</th>
-                        <th>User</th>
-                        <th>Body</th>
-                        <th>Available At</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for message in messages %}
-                        {% if not break %}
-                            {% if count > 24 %}
-                                {% set break = true %}
-                            {% endif %}
-                            <tr>
-                                <td>{{ message.id }}</td>
-                                <td>{{ message.queueName }}</td>
-                                <td>
-                                    <a href="{{ path('hose_user_view', {userId: message.body|getPostUser.id}) }}">
-                                        {{ message.body|getPostUser.username }}
-                                    </a>
-                                </td>
-                                <td>{{ message.body|getPostContent }}</td>
-                                <td>{{ message.availableAt|date('Y-m-d H:i:s') }}</td>
-                                <td>
-                                    <a class="btn btn-danger" role="button" href="{{ path('hose_queue_delete', {messageId: message.id}) }}">
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endif %}
-                        {% set count = count + 1 %}
-                    {% endfor %}
-                    </tbody>
-                </table>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5>Queue Contents</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class="column-header">ID</th>
+                                        <th scope="col" class="column-header">Queue Name</th>
+                                        <th scope="col" class="column-header">User</th>
+                                        <th scope="col" class="column-header">Body</th>
+                                        <th scope="col" class="column-header">Available At</th>
+                                        <th scope="col" class="column-header">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for message in messages %}
+                                        {% if not break %}
+                                            {% if count > 24 %}
+                                                {% set break = true %}
+                                            {% endif %}
+                                            <tr>
+                                                <td>{{ message.id }}</td>
+                                                <td>{{ message.queueName }}</td>
+                                                <td>
+                                                    <a href="{{ path('hose_user_view', {userId: message.body|getPostUser.id}) }}">
+                                                        {{ message.body|getPostUser.username }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ message.body|getPostContent }}</td>
+                                                <td>{{ message.availableAt|date('Y-m-d H:i:s') }}</td>
+                                                <td>
+                                                    <a class="btn btn-danger" role="button" href="{{ path('hose_queue_delete', {messageId: message.id}) }}">
+                                                        Delete
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                        {% set count = count + 1 %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
