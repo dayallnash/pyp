@@ -75,4 +75,12 @@ class HomepageController extends AbstractController
     {
         return $this->render('homepage/privacy.html.twig');
     }
+
+    /**
+     * @Route("/{anything}", name="catch_all_route")
+     */
+    public function catchAllRoute()
+    {
+        return new Response();
+    }
 }
