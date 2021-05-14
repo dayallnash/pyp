@@ -77,9 +77,9 @@ class HomepageController extends AbstractController
     }
 
     /**
-     * @Route("/{anything}", name="catch_all_route")
+     * @Route("/sw.js", name="sw_js_route")
      */
-    public function catchAllRoute()
+    public function swJsRoute()
     {
         return new Response();
     }
