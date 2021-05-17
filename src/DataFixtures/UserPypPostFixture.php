@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Post;
+use App\Entity\User;
 use App\Entity\UserPypPost;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -18,19 +19,19 @@ class UserPypPostFixture extends Fixture
     public function load(ObjectManager $manager): void
     {
         $userPypPost = (new UserPypPost())
-            ->setUserId(1)
+            ->setUser($manager->getRepository(User::class)->find(1))
             ->setPost($manager->getRepository(Post::class)->find(1));
 
         $manager->persist($userPypPost);
 
         $userPypPost = (new UserPypPost())
-            ->setUserId(1)
+            ->setUser($manager->getRepository(User::class)->find(1))
             ->setPost($manager->getRepository(Post::class)->find(2));
 
         $manager->persist($userPypPost);
 
         $userPypPost = (new UserPypPost())
-            ->setUserId(2)
+            ->setUser($manager->getRepository(User::class)->find(2))
             ->setPost($manager->getRepository(Post::class)->find(3));
 
         $manager->persist($userPypPost);
