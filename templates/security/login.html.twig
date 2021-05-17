@@ -92,6 +92,10 @@
                 <input type="text" name="username" id="inputUsername" class="form-control" required>
                 <label for="inputPassword">Password</label>
                 <input type="password" name="password" id="inputPassword" class="form-control" required>
+                <label for="inputEmail">E-mail</label>
+                <input type="email" name="email" id="inputEmail" class="form-control" required>
+                <label for="inputMobile">Mobile (Optional)</label>
+                <input type="Mobile" name="Mobile" id="inputMobile" class="form-control" required>
 
                 <input type="hidden" name="_csrf_token"
                        value="{{ csrf_token('authenticate') }}"
