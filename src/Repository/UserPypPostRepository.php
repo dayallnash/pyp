@@ -22,20 +22,6 @@ class UserPypPostRepository extends BaseRepository
         parent::__construct($registry, UserPypPost::class);
     }
 
-    public function getUsersOrderedByPypCounts(string $orderBy = 'ASC'): array
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder()
-            ->select('COUNT(upp.id) upp_count, u')
-            ->from($this->_entityName, 'upp')
-            ->innerJoin(User::class, 'u', Expr\Join::WITH, 'u.id = upp.userId')
-            ->groupBy('upp.userId')
-            ->orderBy('upp_count', $orderBy);
-
-        $query = $qb->getQuery();
-
-        return $query->execute();
-    }
-
     public function getAllPostsForUser(User $user): Generator
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -43,8 +29,8 @@ class UserPypPostRepository extends BaseRepository
         $results = $qb
             ->select('upp')
             ->from(UserPypPost::class, 'upp')
-            ->where($qb->expr()->eq('upp.userId', ':userId'))
-            ->setParameter('userId', $user->getId())
+            ->where($qb->expr()->eq('upp.user', ':user'))
+            ->setParameter('user', $user)
             ->getQuery();
 
         foreach ($results->getResult() as $result) {

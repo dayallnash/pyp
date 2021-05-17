@@ -41,7 +41,7 @@ class Post
     private $reports;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="posts", cascade={"persist"})
      */
     private $user;
 

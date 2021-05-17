@@ -5,9 +5,11 @@ namespace App\MessageHandler;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserPypPost;
+use App\Exceptions\PostDistributionException;
 use App\Message\PostToDistribute;
 use App\Service\InfluenceCalculator;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Throwable;
 
@@ -22,7 +24,7 @@ class PostToDistributeHandler implements MessageHandlerInterface
         $this->influenceCalculator = $influenceCalculator;
     }
 
-    public function __invoke(PostToDistribute $post): void
+    public function __invoke(PostToDistribute $postToDistribute): void
     {
         $users = $this->em->getRepository(User::class)->findAll();
 
@@ -31,7 +33,11 @@ class PostToDistributeHandler implements MessageHandlerInterface
             $userA->getUserPypPosts()->count() <=> $userB->getUserPypPosts()->count();
         });
 
-        $post = $this->em->getRepository(Post::class)->find($post->getPost()->getId());
+        $post = $this->em->getRepository(Post::class)->find($postToDistribute->getPost()->getId());
+
+        if (null === $post) {
+            throw new PostDistributionException('Could not find Post referenced in PostToDistribute. Perhaps it has been deleted.');
+        }
 
         $poster = $post->getUser();
 
@@ -55,7 +61,7 @@ class PostToDistributeHandler implements MessageHandlerInterface
         try {
             $this->em->flush();
         } catch (Throwable $t) {
-            error_log($t->getTraceAsString()."\n>\n>\n".$t->getMessage().' > '.$t->getFile().' > '.$t->getLine());
+            throw new PostDistributionException(sprintf("%s %s %s > %s > %d", $t->getTraceAsString(), PHP_EOL, $t->getMessage(), $t->getFile(), $t->getLine()));
         }
     }
 }

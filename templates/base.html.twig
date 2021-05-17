@@ -35,9 +35,20 @@
     <body>
         <div class="container">
             {% if app.user %}
-                <div class="row">
+                <div class="row mt-2">
                     <div class="col text-end">
-                        <a href="{{ path('app_logout') }}" type="button" class="btn btn-default">Logout</a>
+                        <span>
+                            <a href="{{ path('my_account') }}" type="button" class="btn btn-outline-dark">
+                                <span class="username-italic">
+                                    {{ app.user.username }}
+                                </span>
+                                <br/>
+                                <small>
+                                    {{ '{' ~ app.user.userInfluence.influence ?? 500 ~ '}' }}
+                                </small>
+                            </a>
+                            <a href="{{ path('app_logout') }}" type="button" class="btn btn-default">Logout</a>
+                        </span>
                     </div>
                 </div>
             {% endif %}

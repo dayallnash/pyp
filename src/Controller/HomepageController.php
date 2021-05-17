@@ -71,7 +71,7 @@ class HomepageController extends AbstractController
     /**
      * @Route("/privacy", name="app_privacy_policy")
      */
-    public function privacyPolicy()
+    public function privacyPolicy(): Response
     {
         return $this->render('homepage/privacy.html.twig');
     }
@@ -79,7 +79,7 @@ class HomepageController extends AbstractController
     /**
      * @Route("/sw.js", name="sw_js_route")
      */
-    public function swJsRoute()
+    public function swJsRoute(): Response
     {
         return new Response();
     }

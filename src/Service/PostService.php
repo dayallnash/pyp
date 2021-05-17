@@ -26,7 +26,7 @@ class PostService
 
     public function savePost(User $user, string $content): void
     {
-        if (null === $this->em->getRepository(UserInfluence::class)->findOneBy(['userId' => $user->getId()])) {
+        if (null === $this->em->getRepository(UserInfluence::class)->findOneBy(['user' => $user])) {
             $this->influenceCalculator->initialiseInfluence($user);
         }
 

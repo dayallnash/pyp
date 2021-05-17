@@ -4,6 +4,8 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Entity\UserInfluence;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Expr\Comparison;
 use Doctrine\ORM\EntityManagerInterface;
 
 class InfluenceCalculator
@@ -19,7 +21,7 @@ class InfluenceCalculator
 
     public function initialiseInfluence(User $user): void
     {
-        $userInfluence =(new UserInfluence())->setUserId($user->getId())->setInfluence(self::DEFAULT_INFLUENCE);
+        $userInfluence = (new UserInfluence())->setUser($user)->setInfluence(self::DEFAULT_INFLUENCE);
 
         $this->em->persist($userInfluence);
         $this->em->flush();
@@ -27,8 +29,72 @@ class InfluenceCalculator
 
     public function calculate(User $user): int
     {
-        // TODO actual calculation
+        $userInfluence = (new UserInfluence())->setUser($user)->setInfluence(self::DEFAULT_INFLUENCE);
 
-        return self::DEFAULT_INFLUENCE / 10;
+        $userInfluence = $this->calculateInfluenceBasedOnInteractions($userInfluence);
+
+        return $userInfluence->getInfluence();
+    }
+
+    private function calculateInfluenceBasedOnInteractions(UserInfluence $userInfluence): UserInfluence
+    {
+        $userInfluence = $this->calculateInfluenceBasedOnLikes($userInfluence);
+
+        $userInfluence = $this->calculateInfluenceBasedOnComments($userInfluence);
+
+        if ($userInfluence->getInfluence() < self::DEFAULT_INFLUENCE) {
+            $userInfluence->setInfluence(self::DEFAULT_INFLUENCE);
+        }
+
+        $this->em->persist($userInfluence);
+        $this->em->flush();
+
+        return $userInfluence;
+    }
+
+    private function calculateInfluenceBasedOnLikes(UserInfluence $userInfluence): UserInfluence
+    {
+        $criteria = new Criteria();
+
+        $count = 0;
+        foreach ($userInfluence->getUser()->getPosts() as $post) {
+            $count += $post->getInteractions()->matching(
+                $criteria->where(new Comparison('type', '=', 'like'))
+            )->count();
+        }
+
+        $userInfluence->setInfluence($count * 10);
+
+        return $userInfluence;
+    }
+
+    private function calculateInfluenceBasedOnComments(UserInfluence $userInfluence): UserInfluence
+    {
+        $criteria = new Criteria();
+
+        $influenceRunningTotal = 0;
+        foreach ($userInfluence->getUser()->getPosts() as $post) {
+            $comments = $post->getInteractions()->matching(
+                $criteria->where(new Comparison('type', '=', 'comment'))
+            );
+
+            $uniqueUsers = [];
+            $uniqueCommentsCount = 0;
+            $secondaryCommentsCount = 0;
+            foreach ($comments as $comment) {
+                if (in_array($comment->getUser(), $uniqueUsers, true)) {
+                    ++$secondaryCommentsCount;
+                } else {
+                    $uniqueUsers[] = $comment->getUser();
+                    ++$uniqueCommentsCount;
+                }
+            }
+
+            $influenceRunningTotal += ($secondaryCommentsCount * 10) + ($uniqueCommentsCount * 50);
+        }
+
+        $userInfluence->setInfluence($influenceRunningTotal);
+
+        return $userInfluence;
     }
 }

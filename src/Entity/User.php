@@ -42,9 +42,20 @@ class User implements UserInterface
      */
     private $userPypPosts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="user")
+     */
+    private $posts;
+
+    /**
+     * @ORM\OneToOne(targetEntity=UserInfluence::class, mappedBy="user")
+     */
+    private $userInfluence;
+
     public function __construct()
     {
         $this->userPypPosts = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -156,5 +167,51 @@ class User implements UserInterface
                 $userPypPost->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Post[]
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts->add($post);
+            if ($post->getUser() !== $this) {
+                $post->setUser($this);
+            }
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        if ($this->posts->contains($post)) {
+            $this->posts->removeElement($post);
+            if ($post->getUser() === $this) {
+                $post->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUserInfluence(): ?UserInfluence
+    {
+        return $this->userInfluence;
+    }
+
+    public function setUserInfluence(UserInfluence $userInfluence): self
+    {
+        $this->userInfluence = $userInfluence;
+
+        return $this;
     }
 }

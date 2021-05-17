@@ -20,28 +20,16 @@ class UserInfluence
     /**
      * @ORM\Column(type="integer")
      */
-    private $userId;
+    private $influence;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="userInfluence")
      */
-    private $influence;
+    private $user;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): self
-    {
-        $this->userId = $userId;
-
-        return $this;
     }
 
     public function getInfluence(): ?int
@@ -52,6 +40,18 @@ class UserInfluence
     public function setInfluence(int $influence): self
     {
         $this->influence = $influence;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

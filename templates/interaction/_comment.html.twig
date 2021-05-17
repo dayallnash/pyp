@@ -3,9 +3,9 @@
         {% if comment not in reportedComments  %}
             <div class="row">
                 <div class="col username-italic">
-                    {{ userRetriever.retrieve(comment.userId).username }}
+                    {{ comment.user.username }}
                 </div>
-                {% if userRetriever.retrieve(comment.userId).username != currentUser.username %}
+                {% if comment.user.username != currentUser.username %}
                     <div class="col text-end">
                         <a tabindex="0" class="btn" role="button" data-toggle="popover" data-your-comment="false" data-comment-id="{{ comment.id }}">
                             <i class="fas fa-ellipsis-v"></i>
@@ -21,7 +21,7 @@
         {% else %}
             <div class="row mt-2">
                 <div class="col username-italic">
-                    {{ userRetriever.retrieve(comment.userId).username }}
+                    {{ comment.userId.username }}
                 </div>
                 <div class="col text-end d-none">
                     <a tabindex="0" class="btn" role="button" data-toggle="popover" data-your-comment="false" data-comment-id="{{ comment.id }}">
