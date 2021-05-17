@@ -43,7 +43,7 @@ abstract class Base extends WebTestCase
         if (null === self::$kernel) {
             self::bootKernel();
         }
-        
+
         if ('test' !== strtolower(self::$kernel->getContainer()->getParameter('app.env'))) {
             throw new RuntimeException('Error! You are not on the test environment. If you are seeing this from your dev machine, modify your .env.local APP_ENV variable to point at "test"');
         }
@@ -51,11 +51,11 @@ abstract class Base extends WebTestCase
         $application = new Application(self::$kernel);
         $application->setAutoExit(false);
 
-        $input = new StringInput('doctrine:schema:drop --force');
+        $input = new StringInput('doctrine:database:drop --force');
 
         $application->run($input);
 
-        $input = new StringInput('doctrine:schema:create');
+        $input = new StringInput('doctrine:database:create');
 
         $application->run($input);
 
