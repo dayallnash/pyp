@@ -37,6 +37,16 @@ class User implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="string", length=20, unique=true, name="mobile_number")
+     */
+    private $mobileNumber;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -97,6 +107,29 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getEmail(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getMobileNumber(): string
+    {
+        return (string) $this->mobileNumber;
+    }
+
+    public function setMobileNumber(string $mobileNumber): self
+    {
+        $this->mobileNumber = $mobileNumber;
+
+        return $this;
+    }
     /**
      * @see UserInterface
      */
