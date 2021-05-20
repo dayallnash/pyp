@@ -54,19 +54,7 @@ class SecurityController extends AbstractController
 
         $encodedPassword = $userPasswordEncoder->encodePassword($newUser, $request->request->filter('password', null, FILTER_SANITIZE_STRING));
 
-	$newUser->setPassword($encodedPassword);
-
-	$email = $request->request->filter('email', null, FILTER_SANITIZE_STRING);
-	
-	dump($email);
-
-	$newUser->setEmail($email);
-
-	$mobileNumber = $request->request->filter('mobileNumber', null, FILTER_SANITIZE_STRING);
-
-	dump($mobileNumber);
-
-	$newUser->setMobileNumber($mobileNumber);
+        $newUser->setPassword($encodedPassword);
 
         $em->persist($newUser);
         $em->flush();
