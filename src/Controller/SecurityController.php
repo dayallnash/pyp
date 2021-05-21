@@ -9,10 +9,13 @@ use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Throwable;
 
 class SecurityController extends AbstractController
 {
@@ -33,33 +36,50 @@ class SecurityController extends AbstractController
         GuardAuthenticatorHandler $guardAuthenticatorHandler,
         LoginFormAuthenticator $loginFormAuthenticator
     ): Response {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('app_index');
-        }
+        try {
+            if ($this->getUser()) {
+                return $this->redirectToRoute('app_index');
+            }
 
-        if (!$request->isMethod('post')) {
+            if (!$request->isMethod('post')) {
+                throw new MethodNotAllowedHttpException(['POST'], 'Incorrect HTTP request method received.');
+            }
+
+            $username = $request->request->filter('username', null, FILTER_SANITIZE_STRING);
+
+            if ($em->getRepository(User::class)->findOneBy(['username' => $username])) {
+                throw new BadRequestHttpException('Username already in use.');
+            }
+
+            $newUser = (new User())
+                ->setUsername($username)
+                ->setHoseUser('n');
+
+            $plainTextPassword = $request->request->filter('password', null, FILTER_SANITIZE_STRING);
+
+            if ('dev' !== $this->getParameter('app.env') && (
+                8 > strlen($plainTextPassword) ||
+                0 === preg_match_all('/[^a-z0-9A-Z]/', $plainTextPassword) ||
+                0 === preg_match_all('/[a-z]/', $plainTextPassword) ||
+                0 === preg_match_all('/[A-Z]/', $plainTextPassword) ||
+                0 === preg_match_all('/[\d]/', $plainTextPassword)
+            )) {
+                throw new BadRequestHttpException('Password requirements not met! You should provide a secure password of 8 characters or more with lowercase, uppercase, and special characters');
+            }
+
+            $encodedPassword = $userPasswordEncoder->encodePassword($newUser, $plainTextPassword);
+
+            $newUser->setPassword($encodedPassword);
+
+            $em->persist($newUser);
+            $em->flush();
+
+            return $guardAuthenticatorHandler->authenticateUserAndHandleSuccess($newUser, $request, $loginFormAuthenticator, 'main');
+        } catch (Throwable $t) {
+            $this->addFlash('danger', $t->getMessage());
+
             return $this->redirectToRoute('app_login');
         }
-
-        $username = $request->request->filter('username', null, FILTER_SANITIZE_STRING);
-
-        if ($em->getRepository(User::class)->findOneBy(['username' => $username])) {
-            $this->addFlash('danger', 'Username already in use.');
-
-            return $this->render('security/login.html.twig', ['error' => null, 'last_username' => null]);
-        }
-
-        $newUser = (new User())
-            ->setUsername($username);
-
-        $encodedPassword = $userPasswordEncoder->encodePassword($newUser, $request->request->filter('password', null, FILTER_SANITIZE_STRING));
-
-        $newUser->setPassword($encodedPassword);
-
-        $em->persist($newUser);
-        $em->flush();
-
-        return $guardAuthenticatorHandler->authenticateUserAndHandleSuccess($newUser, $request, $loginFormAuthenticator, 'main');
     }
 
     /**
@@ -86,7 +106,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/logout", name="app_logout")
      */
-    public function logout()
+    public function logout(): void
     {
         throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }

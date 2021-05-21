@@ -25,12 +25,14 @@ class UserFixture extends Fixture
         $user1->setUsername('test_user_1');
         $encodedPassword = $userPasswordEncoder->encodePassword($user1, 'test_user_1');
         $user1->setPassword($encodedPassword);
+        $user1->setHoseUser('n');
         $manager->persist($user1);
 
         $user2 = new User();
         $user2->setUsername('test_user_2');
         $encodedPassword = $userPasswordEncoder->encodePassword($user2, 'test_user_2');
         $user2->setPassword($encodedPassword);
+        $user2->setHoseUser('n');
         $manager->persist($user2);
 
         $manager->flush();

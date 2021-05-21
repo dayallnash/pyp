@@ -79,8 +79,12 @@ class UserController extends AbstractController
             return $this->redirectToRoute('hose_user_view');
         }
 
-        $user->setUsername($request->request->filter('username', $user->getUsername(), FILTER_SANITIZE_STRING,
-            [FILTER_FLAG_STRIP_HIGH, FILTER_FLAG_STRIP_LOW]));
+        $user->setUsername($request->request->filter(
+            'username',
+            $user->getUsername(),
+            FILTER_SANITIZE_STRING,
+            [FILTER_FLAG_STRIP_HIGH, FILTER_FLAG_STRIP_LOW]
+        ))->setHoseUser($request->request->filter('hose_user', $user->getHoseUser(), FILTER_VALIDATE_INT));
 
         $em->persist($user);
         $em->flush();

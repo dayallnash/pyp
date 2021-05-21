@@ -47,6 +47,17 @@
                                     </div>
                                     <div class="row">
                                         <div class="col">
+                                            <label for="hoseUser">Hose User:</label>
+                                        </div>
+                                        <div class="col">
+                                            <select class="form-control" id="hoseUser" name="hose_user" required>
+                                                <option value="y" {{ currentUser.hoseUser == 'y' ? 'selected' : '' }}>Yes</option>
+                                                <option value="n" {{ currentUser.hoseUser == 'n' ? 'selected' : '' }}>No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
                                             <label for="currentUserControls">Controls:</label>
                                         </div>
                                         <div class="col">

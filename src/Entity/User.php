@@ -52,6 +52,11 @@ class User implements UserInterface
      */
     private $userInfluence;
 
+    /**
+     * @ORM\Column(type="enum_yes_no", options={"default":"n"})
+     */
+    private $hoseUser;
+
     public function __construct()
     {
         $this->userPypPosts = new ArrayCollection();
@@ -96,7 +101,7 @@ class User implements UserInterface
         // guarantee every user at least has ROLE_USER
         $returnRoles[] = 'ROLE_USER';
 
-        if ('dayall' === $this->getUsername()) {
+        if ('y' === $this->getHoseUser()) {
             $returnRoles[] = 'ROLE_ADMIN';
         }
 
@@ -211,6 +216,18 @@ class User implements UserInterface
     public function setUserInfluence(UserInfluence $userInfluence): self
     {
         $this->userInfluence = $userInfluence;
+
+        return $this;
+    }
+
+    public function getHoseUser(): ?string
+    {
+        return $this->hoseUser;
+    }
+
+    public function setHoseUser(string $hoseUser): self
+    {
+        $this->hoseUser = $hoseUser;
 
         return $this;
     }
