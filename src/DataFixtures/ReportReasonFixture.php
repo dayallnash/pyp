@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class ReportReasonFixture extends Fixture
 {
-    public function load(ObjectManager $manager): void
+    public function load($manager): void
     {
         $reportReason1 = new ReportReason();
         $reportReason1->setName('report_reason_1');

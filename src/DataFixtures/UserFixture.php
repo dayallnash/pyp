@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 class UserFixture extends Fixture
 {
-    public function load(ObjectManager $manager): void
+    public function load($manager): void
     {
         $fixtureServiceLoader = new FixtureServiceLoader();
 

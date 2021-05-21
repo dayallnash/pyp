@@ -34,12 +34,8 @@ abstract class Base extends WebTestCase
     }
 
     public function loadFixturesParent(
-        array $classNames = [],
-        bool $append = false,
-        ?string $omName = null,
-        string $registryName = 'doctrine',
-        ?int $purgeMode = null
-    ): ?AbstractExecutor {
+        array $classNames = []
+    ): void {
         if (null === self::$kernel) {
             self::bootKernel();
         }
@@ -63,6 +59,10 @@ abstract class Base extends WebTestCase
 
         $application->run($input, new BufferedOutput());
 
-        return $this->loadFixtures($classNames, $append, $omName, $registryName, $purgeMode);
+        foreach ($classNames as $className) {
+            $class = new $className();
+
+            $class->load($this->getEntityManager());
+        }
     }
 }
