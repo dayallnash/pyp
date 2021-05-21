@@ -1,0 +1,362 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pyp | Home{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        #post, .input-comment-italic {
+            font-family: 'IBM Plex Mono', monospace;
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        .popoverOwnPostClass {
+            height: 110px;
+        }
+
+        .popoverNotOwnPostClass {
+            height: 65px;
+        }
+
+         h5, .username-italic {
+             font-family: 'IBM Plex Mono', monospace;
+             font-style: italic;
+         }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        {#$(document).ready(function() {#}
+        {#    $.ajax({#}
+        {#        url: '{{ path('app_load_unviewed_pyps', {user: app.user}) }}',#}
+        {#        method: 'POST',#}
+        {#        success: function (data) {#}
+        {#            $('.card').first().before('<p>test</p>');#}
+        {#        },#}
+        {#        error: function () {#}
+        {#            console.log(':(');#}
+        {#        }#}
+        {#    });#}
+        {#});#}
+
+        $(document).ready(function() {
+            placePopovers();
+        });
+
+        function placePopovers() {
+            const popovers = $('[data-toggle="popover"]');
+            let $popoverVar;
+            let htmlPostOwned = '';
+            let htmlCommentOwned = '';
+            let htmlPostNotOwned = '';
+            let htmlCommentNotOwned = '';
+            let yourComment;
+            let yourPost;
+            let commentId;
+            let postId;
+            popovers.each(function (popoverKey, popoverVar) {
+                $popoverVar = $(popoverVar);
+
+                yourComment = $popoverVar.data('yourComment');
+                yourPost = $popoverVar.data('yourPost');
+                commentId = $popoverVar.data('commentId');
+                postId = $popoverVar.data('postId');
+
+                if (yourPost && postId && typeof yourComment === 'undefined') {
+                    htmlPostOwned = '<div><p><a href="{{ path('edit_post') }}/'+postId+'" class="btn btn-sm btn-outline-dark border-0">Edit</a></p></div class="mb-0">' +
+                        '<div><p><a href="{{ path('delete_post') }}/'+postId+'" class="btn btn-sm btn-outline-dark border-0">Delete</a></p></div>';
+
+                    $popoverVar.popover({
+                        content: htmlPostOwned,
+                        placement: 'bottom',
+                        trigger: 'focus',
+                        html: true,
+                        customClass: 'popoverOwnPostClass'
+                    });
+
+                    return;
+                }
+
+                {# TODO support comment editing & deletion #}
+                {#if (yourComment && commentId && typeof yourPost === 'undefined') {#}
+                {#    htmlCommentOwned = '<div><p><a href="{{ path('edit_comment') }}/'+commentId+'" class="btn btn-sm btn-outline-dark border-0">Edit</a></p></div class="mb-0">' +#}
+                {#        '<div><p><a href="{{ path('delete_comment') }}/'+commentId+'" class="btn btn-sm btn-outline-dark border-0">Delete</a></p></div>';#}
+
+                {#    $popoverVar.popover({#}
+                {#        content: htmlCommentOwned,#}
+                {#        placement: 'bottom',#}
+                {#        trigger: 'focus',#}
+                {#        html: true,#}
+                {#        customClass: 'popoverOwnPostClass'#}
+                {#    });#}
+
+                {#    return;#}
+                {#}#}
+
+                if (yourPost === false && postId && typeof yourComment === 'undefined') {
+                    htmlPostNotOwned = '<div><p><a href="{{ path('report_post') }}/'+postId+'" class="btn btn-sm btn-outline-dark border-0">Report</a></p></div>';
+
+                    $popoverVar.popover({
+                        content: htmlPostNotOwned,
+                        placement: 'bottom',
+                        trigger: 'focus',
+                        html: true,
+                        customClass: 'popoverNotOwnPostClass'
+                    });
+
+                    return;
+                }
+
+                if (yourComment === false && commentId && typeof yourPost === 'undefined') {
+                    htmlCommentNotOwned = '<div><p><a href="{{ path('report_comment') }}/'+commentId+'" class="btn btn-sm btn-outline-dark border-0">Report</a></p></div>';
+
+                    $popoverVar.popover({
+                        content: htmlCommentNotOwned,
+                        placement: 'bottom',
+                        trigger: 'focus',
+                        html: true,
+                        customClass: 'popoverNotOwnPostClass'
+                    });
+
+                    return;
+                }
+            });
+        }
+
+        function renderCommentForm(anchor) {
+            $(anchor).parent().parent().parent().find('.js-comment-form').toggle();
+        }
+
+        function likePost(postId, thumb) {
+            thumb = $(thumb);
+
+            const likeCount = thumb.parent().find('.like-count');
+
+            if ('thumbs-up-outline' === thumb.attr('name')) {
+                thumb.attr('name', 'thumbs-up');
+                likeCount.text(Number(likeCount.text()) + 1)
+            } else {
+                thumb.attr('name', 'thumbs-up-outline');
+                likeCount.text(Number(likeCount.text()) - 1)
+
+                if (0 === Number(likeCount.text())) {
+                    thumb.parent().find('.like-small').hide();
+                }
+            }
+
+            $.ajax({
+                url: '{{ path('like_post') }}',
+                method: 'POST',
+                data: {
+                    postId: postId
+                },
+                error: function () {
+                    alert('Failed to like post. Please try again.');
+                }
+            });
+        }
+
+        function undoReportComment(anchor) {
+            $.ajax({
+                url: '{{ path('undo_report_comment') }}',
+                method: 'POST',
+                data: {
+                    commentId: anchor.data('commentId')
+                },
+                success: function (response) {
+                    if (response.success) {
+                        const parent = anchor.parent().parent();
+
+                        parent.hide();
+                        parent.next().removeClass('d-none');
+                        parent.prev().find('div:last-child').removeClass('d-none');
+                    }
+                }
+            })
+
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    {% if app.user is null %}
+        <div class="row mb-3 mt-3">
+            <div class="col-1">
+                Register:
+            </div>
+            <div class="col">
+                <a href="{{ path('app_register') }}" class="btn btn-primary">Here</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-1">
+                Login:
+            </div>
+            <div class="col">
+                <a href="{{ path('app_login') }}" class="btn btn-primary">Here</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col">
+                <form action="{{ path('app_post') }}" method="POST">
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <h2>
+                                        <label for="post" class="form-label">
+                                            Start a discussion
+                                        </label>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <input type="text" name="post" id="post" class="form-control" aria-describedby="post-btn">
+                                        <button class="btn btn-outline-secondary" type="submit" id="post-btn">Post</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row mb-3" style="color: dimgrey;">
+            <div class="col">
+                Pyps distributed to you from the last 3 hours.
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                {% set float = 'left' %}
+
+                {% for post in posts %}
+                    <div class="row">
+                        {% if float == 'right' %}
+                            <div class="col" style="border-right: 1px solid black"></div>
+                        {% endif %}
+                        <div class="col">
+                            <div style="float: {{ float }}; max-width: 45%;">
+                                <div class="card" style="min-width: 300px; box-sizing: content-box">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h5 class="card-title">{{ post.post.user.username }}</h5>
+                                            </div>
+                                            <div class="col text-end">
+                                                <a tabindex="0" class="btn" role="button" data-post-id="{{ post.post.id }}" data-toggle="popover" {{ post.user.username == app.user.username ? 'data-your-post="true"' : 'data-your-post="false"' }}>
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="card-text">{{ post.post.postContent }}</p>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row mt-2">
+                                            <div class="col">
+                                                <ion-icon name="{{ post.liked ? 'thumbs-up' : 'thumbs-up-outline' }}" onclick="likePost({{ post.post.id }}, this)"></ion-icon>
+                                                {% if post.likeCount > 0 %}
+                                                    <small class="like-small">&nbsp;<code>x <span class="like-count">{{ post.likeCount }}</span></code></small>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col">
+                                                <a href="#" onclick="renderCommentForm(this);">
+                                                    <code>
+                                                        {% if 0 == post.commentCount %}
+                                                            Comment
+                                                        {% elseif 1 == post.commentCount %}
+                                                            {{ post.commentCount }} comment
+                                                        {% else %}
+                                                            {{ post.commentCount }} comments
+                                                        {% endif %}
+                                                    </code>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row js-comment-form" style="display: none;">
+                                            <div class="col">
+                                                {% for comment in post.interactions %}
+                                                    {% if comment.body is not null and comment.body != '' %}
+                                                        {% if comment not in post.reportedComments  %}
+                                                            <div class="row">
+                                                                <div class="col username-italic">
+                                                                    {{ comment.user.username }}
+                                                                </div>
+                                                                {% if comment.user != currentUser %}
+                                                                    <div class="col text-end">
+                                                                        <a tabindex="0" class="btn" role="button" data-toggle="popover" data-your-comment="false" data-comment-id="{{ comment.id }}">
+                                                                            <i class="fas fa-ellipsis-v"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col" style="word-wrap: break-word; max-width: 300px;">
+                                                                    {{ comment.body }}
+                                                                </div>
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="row mt-2">
+                                                                <div class="col username-italic">
+                                                                    {{ comment.user.username }}
+                                                                </div>
+                                                                <div class="col text-end d-none">
+                                                                    <a tabindex="0" class="btn" role="button" data-toggle="popover" data-your-comment="false" data-comment-id="{{ comment.id }}">
+                                                                        <i class="fas fa-ellipsis-v"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col" style="color: #6c757d; word-wrap: break-word; max-width: 300px;">
+                                                                    You've reported this comment. <a href="#" data-comment-id="{{ comment.id }}" onclick="undoReportComment($(this))">Undo</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row d-none">
+                                                                <div class="col" style="word-wrap: break-word; max-width: 300px;">
+                                                                    {{ comment.body }}
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                <div class="row mt-4">
+                                                    <div class="col">
+                                                        <form action="{{ path('save_comment', {post: post.post.id}) }}" method="POST">
+                                                            <div class="input-group">
+                                                                <input class="input-comment-italic form-control" type="text" name="comment">
+                                                                <button class="btn btn-outline-secondary" type="submit">Save</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if float == 'left' %}
+                            <div class="col" style="border-left: 1px solid black;"></div>
+                        {% endif %}
+                    </div>
+
+                    {% if float == 'left' %}
+                        {% set float = 'right' %}
+                    {% else %}
+                        {% set float = 'left' %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
