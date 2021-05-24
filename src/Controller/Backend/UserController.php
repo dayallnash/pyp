@@ -3,9 +3,7 @@
 namespace App\Controller\Backend;
 
 use App\Entity\User;
-use App\Repository\MessengerMessagesRepository;
 use App\Repository\UserRepository;
-use App\Service\UserRetriever;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,17 +16,16 @@ class UserController extends AbstractController
      * @Route("/hose/user/view", name="hose_user_view")
      *
      * @param Request        $request
-     * @param UserRetriever  $userRetriever
      * @param UserRepository $userRepo
      *
      * @return Response
      */
-    public function userIndex(Request $request, UserRetriever $userRetriever, UserRepository $userRepo): Response
+    public function userIndex(Request $request, UserRepository $userRepo): Response
     {
         $userId = $request->query->filter('userId', 0, FILTER_SANITIZE_NUMBER_INT);
 
         if (!empty($userId)) {
-            $user = $userRetriever->retrieve($userId);
+            $user = $this->getDoctrine()->getRepository(User::class)->find($userId);
         } else {
             $user = $this->getUser();
         }

@@ -4,8 +4,6 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Entity\UserPypPost;
-use App\Service\UserRetriever;
-use Doctrine\ORM\Query\Expr;
 use Doctrine\Persistence\ManagerRegistry;
 use Generator;
 

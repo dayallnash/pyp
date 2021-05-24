@@ -3,13 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Interaction;
-use App\Entity\Post;
 use App\Entity\Report;
 use App\Repository\InteractionRepository;
 use App\Repository\PostRepository;
 use App\Repository\ReportReasonRepository;
-use App\Repository\ReportRepository;
-use App\Service\UserRetriever;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -83,7 +80,6 @@ class InteractionController extends AbstractController
      * @param EntityManagerInterface $em
      * @param InteractionRepository  $interactionRepo
      * @param ReportReasonRepository $reportReasonRepo
-     * @param UserRetriever          $userRetriever
      * @param int                    $commentId
      *
      * @return Response
@@ -93,7 +89,6 @@ class InteractionController extends AbstractController
         EntityManagerInterface $em,
         InteractionRepository $interactionRepo,
         ReportReasonRepository $reportReasonRepo,
-        UserRetriever $userRetriever,
         int $commentId = 0
     ): Response {
         $comment = $interactionRepo->find($commentId);

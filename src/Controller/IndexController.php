@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\UserPypPost;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;

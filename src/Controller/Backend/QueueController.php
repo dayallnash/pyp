@@ -2,11 +2,7 @@
 
 namespace App\Controller\Backend;
 
-use App\Entity\User;
 use App\Repository\MessengerMessagesRepository;
-use App\Repository\UserRepository;
-use App\Service\UserRetriever;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

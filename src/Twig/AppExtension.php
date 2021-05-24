@@ -2,7 +2,8 @@
 
 namespace App\Twig;
 
-use App\Service\UserRetriever;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -10,12 +11,12 @@ use Twig\TwigFilter;
 class AppExtension extends AbstractExtension
 {
     private SerializerInterface $serializer;
-    private UserRetriever $userRetriever;
+    private EntityManagerInterface $em;
 
-    public function __construct(SerializerInterface $serializer, UserRetriever $userRetriever)
+    public function __construct(SerializerInterface $serializer, EntityManagerInterface $em)
     {
         $this->serializer = $serializer;
-        $this->userRetriever = $userRetriever;
+        $this->em = $em;
     }
 
     public function getFilters()
@@ -37,6 +38,6 @@ class AppExtension extends AbstractExtension
     {
         $decodedEnvelope = $this->serializer->decode(['body' => $string]);
 
-        return $this->userRetriever->retrieve($decodedEnvelope->getMessage()->getPost()->getUserId());
+        return $this->em->getRepository(User::class)->find($decodedEnvelope->getMessage()->getPost()->getUserId());
     }
 }
