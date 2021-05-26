@@ -53,6 +53,14 @@ class SecurityController extends AbstractController
             ->setUsername($username);
 
         $encodedPassword = $userPasswordEncoder->encodePassword($newUser, $request->request->filter('password', null, FILTER_SANITIZE_STRING));
+	
+	$email = $request->request->filter('email', null, FILTER_SANITIZE_STRING);
+
+	$mobile = $request->request->filter('mobile', null, FILTER_SANITIZE_STRING);
+
+	$newUser->setEmail($email);
+
+	$newUser->setMobile($mobile);
 
         $newUser->setPassword($encodedPassword);
 
