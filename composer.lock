@@ -395,12 +395,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "6da84fd7075e9fc1293462d25a9963662256820b"
+                "reference": "a55eb4849b03c0c760535446cc126534e8c8c964"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/6da84fd7075e9fc1293462d25a9963662256820b",
-                "reference": "6da84fd7075e9fc1293462d25a9963662256820b",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/a55eb4849b03c0c760535446cc126534e8c8c964",
+                "reference": "a55eb4849b03c0c760535446cc126534e8c8c964",
                 "shasum": ""
             },
             "require": {
@@ -491,7 +491,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-13T05:54:50+00:00"
+            "time": "2021-08-02T16:45:34+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -1666,16 +1666,16 @@
         },
         {
             "name": "paragonie/sodium_compat",
-            "version": "v1.14.0",
+            "version": "v1.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/sodium_compat.git",
-                "reference": "a1cfe0b21faf9c0b61ac0c6188c4af7fd6fd0db3"
+                "reference": "2e856afe80bfc968b47da1f4a7e1ea8f03d06b38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/a1cfe0b21faf9c0b61ac0c6188c4af7fd6fd0db3",
-                "reference": "a1cfe0b21faf9c0b61ac0c6188c4af7fd6fd0db3",
+                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/2e856afe80bfc968b47da1f4a7e1ea8f03d06b38",
+                "reference": "2e856afe80bfc968b47da1f4a7e1ea8f03d06b38",
                 "shasum": ""
             },
             "require": {
@@ -1744,7 +1744,7 @@
                 "secret-key cryptography",
                 "side-channel resistant"
             ],
-            "time": "2020-12-03T16:26:19+00:00"
+            "time": "2021-05-25T12:58:14+00:00"
         },
         {
             "name": "psr/cache",
