@@ -10,7 +10,6 @@ sites:
     -
         map: pyp.local
         to: /home/vagrant/pyp/public
-        php: "7.4"
 databases:
     - pyp
 features:
