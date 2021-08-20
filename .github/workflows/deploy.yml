@@ -16,10 +16,10 @@ jobs:
 
           script: |
             cd /var/www
-            git clone https://github.com/dayallnash/pyp.git pyp_new
+            sudo git clone https://github.com/dayallnash/pyp.git pyp_new
             cd pyp_new
             /usr/bin/php7.4 /usr/local/bin/composer install --no-dev
             cd ..
-            mv /var/www/pyp /var/www/pyp_old
-            mv /var/www/pyp_new /var/www/pyp
-            rm -rf /var/www/pyp_old
+            sudo mv /var/www/pyp /var/www/pyp_old
+            sudo mv /var/www/pyp_new /var/www/pyp
+            sudo rm -rf /var/www/pyp_old
