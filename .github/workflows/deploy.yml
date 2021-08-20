@@ -18,7 +18,8 @@ jobs:
             cd /var/www
             git clone https://github.com/dayallnash/pyp.git pyp_new
             cd pyp_new
-            /usr/bin/php7.4 /usr/local/bin/composer install --no-dev
+            sudo -H -u www-data bash -c '/usr/local/bin/composer install --no-dev'
+            /usr/bin/php8.0 /usr/local/bin/composer install --no-dev
             cd ..
             chmod -R 775 pyp_new
             chown -R www-data:www-data pyp_new
