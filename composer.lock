@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "539f22214076ad99fe5172dfa728ba46",
+    "content-hash": "57fe79253dbf22f0aa8da1b15b3474fa",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -2757,7 +2757,7 @@
         },
         {
             "name": "symfony/doctrine-messenger",
-            "version": "v5.2.12",
+            "version": "v5.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/doctrine-messenger.git",
@@ -2810,7 +2810,7 @@
             "description": "Symfony Doctrine Messenger Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/doctrine-messenger/tree/v5.2.12"
+                "source": "https://github.com/symfony/doctrine-messenger/tree/v5.3.4"
             },
             "funding": [
                 {
@@ -4551,16 +4551,16 @@
         },
         {
             "name": "symfony/redis-messenger",
-            "version": "v5.2.12",
+            "version": "v5.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/redis-messenger.git",
-                "reference": "451d5e2dc8d5e0ebb26edf9312292027f231bddc"
+                "reference": "1eed27264bc2b965c37460bb2e36b602ed6ba694"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/redis-messenger/zipball/451d5e2dc8d5e0ebb26edf9312292027f231bddc",
-                "reference": "451d5e2dc8d5e0ebb26edf9312292027f231bddc",
+                "url": "https://api.github.com/repos/symfony/redis-messenger/zipball/1eed27264bc2b965c37460bb2e36b602ed6ba694",
+                "reference": "1eed27264bc2b965c37460bb2e36b602ed6ba694",
                 "shasum": ""
             },
             "require": {
@@ -4598,7 +4598,7 @@
             "description": "Symfony Redis extension Messenger Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/redis-messenger/tree/v5.2.12"
+                "source": "https://github.com/symfony/redis-messenger/tree/v5.3.4"
             },
             "funding": [
                 {
@@ -4614,7 +4614,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-21T12:38:00+00:00"
+            "time": "2021-07-21T12:40:44+00:00"
         },
         {
             "name": "symfony/routing",
