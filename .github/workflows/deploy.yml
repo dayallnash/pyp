@@ -18,12 +18,12 @@ jobs:
 
           script: |
             cd /var/www
-            echo $SSH_PASSWORD | sudo -S git clone https://github.com/dayallnash/pyp.git pyp_new
+            echo "$SSH_PASSWORD" | sudo -S git clone https://github.com/dayallnash/pyp.git pyp_new
             cd pyp_new
             /usr/bin/php7.4 /usr/local/bin/composer install --no-dev
             cd ..
-            echo $SSH_PASSWORD | sudo -S chmod -R 775 pyp_new
-            echo $SSH_PASSWORD | sudo -S chown -R www-data:www-data pyp_new
-            echo $SSH_PASSWORD | sudo -S  mv /var/www/pyp /var/www/pyp_old
-            echo $SSH_PASSWORD | sudo -S  mv /var/www/pyp_new /var/www/pyp
-            echo $SSH_PASSWORD | sudo -S  rm -rf /var/www/pyp_old
+            echo "$SSH_PASSWORD" | sudo -S chmod -R 775 pyp_new
+            echo "$SSH_PASSWORD" | sudo -S chown -R www-data:www-data pyp_new
+            echo "$SSH_PASSWORD" | sudo -S  mv /var/www/pyp /var/www/pyp_old
+            echo "$SSH_PASSWORD" | sudo -S  mv /var/www/pyp_new /var/www/pyp
+            echo "$SSH_PASSWORD" | sudo -S  rm -rf /var/www/pyp_old
