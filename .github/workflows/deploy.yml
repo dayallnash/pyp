@@ -13,8 +13,13 @@ jobs:
           host: ${{secrets.SSH_HOST}}
           key: ${{secrets.SSH_KEY}}
           username: ${{secrets.SSH_USERNAME}}
-          
+
           script: |
-            cd /var/www/pyp
-            git pull
+            cd /var/www
+            git clone https://github.com/dayallnash/pyp.git pyp_new
+            cd pyp_new
             /usr/bin/php7.4 /usr/local/bin/composer install --no-dev
+            cd ..
+            mv /var/www/pyp /var/www/pyp_old
+            mv /var/www/pyp_new /var/www/pyp
+            rm -rf /var/www/pyp_old
