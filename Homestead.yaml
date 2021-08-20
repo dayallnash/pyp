@@ -2,9 +2,6 @@ ip: 192.168.10.10
 memory: 4096
 cpus: 4
 provider: virtualbox
-#authorize: ~/.ssh/id_rsa.pub
-#keys:
-#    - ~/.ssh/id_rsa
 folders:
     -
         map: C:\Users\dale.nash\pyp
