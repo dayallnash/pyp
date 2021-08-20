@@ -92,9 +92,9 @@
 	
 	function formatEmail() {
 		let regex = /\S+@\S+\.\S+/;
-		let emailInputNode = document.getElementById('inputEmail')	//jquery didn't work well for me
+		let emailInputNode = document.getElementById('inputEmail')
 		let emailErrorNode = document.getElementById('emailError')
-		if (regex.test(emailInputNode.innerHTML)) {
+		if (regex.test(emailInputNode.value)) {
 			emailErrorNode.innerHTML = ""
 			return 1
 		}
@@ -106,9 +106,9 @@
 
 	function formatMobile() {
 		let regex = /(\+[0-9]{12})|(0[0-9]{10})/;
-		let mobileInputNode = document.getElementById('inputMobile')	//jquery didn't work well for me
+		let mobileInputNode = document.getElementById('inputMobile')
 		let mobileErrorNode = document.getElementById('mobileError')
-		if (regex.test(mobileInputNode.innerHTML)) {
+		if (regex.test(mobileInputNode.value)) {
 			mobileErrorNode.innerHTML = ""
 			return 1
 		}
