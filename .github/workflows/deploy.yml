@@ -19,9 +19,9 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
 
           script: |
-            echo $SSH_HOST
-            echo $SSH_KEY
-            echo $SSH_USERNAME
+            echo "$SSH_HOST"
+            echo "$SSH_KEY"
+            echo "$SSH_USERNAME"
             cd /var/www
             sudo git clone https://github.com/dayallnash/pyp.git pyp_new
             cd pyp_new
