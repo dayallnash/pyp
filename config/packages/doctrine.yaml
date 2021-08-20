@@ -6,7 +6,7 @@ doctrine:
                 url: '%env(resolve:DATABASE_URL)%'
                 driver: 'pdo_mysql'
                 charset: utf8mb4
-                server_version: 'mariadb-10.3.8'
+                server_version: '%env(resolve:DATABASE_SERVER_VERSION)%'
         types:
             enum_yes_no: App\DBAL\Type\EnumYesNo
     orm:

@@ -1,0 +1,24 @@
+ip: 192.168.10.10
+memory: 4096
+cpus: 4
+provider: virtualbox
+#authorize: ~/.ssh/id_rsa.pub
+#keys:
+#    - ~/.ssh/id_rsa
+folders:
+    -
+        map: C:\Users\dale.nash\pyp
+        to: /home/vagrant/pyp
+sites:
+    -
+        map: pyp.local
+        to: /home/vagrant/pyp/public
+        php: "7.4"
+        type: "apache"
+databases:
+    - pyp
+features:
+    -
+        mysql: true
+name: pyp
+hostname: pyp
