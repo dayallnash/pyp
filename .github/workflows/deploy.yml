@@ -13,6 +13,7 @@ jobs:
           SSH_HOST: ${{secrets.SSH_HOST}}
           SSH_KEY: ${{secrets.SSH_KEY}}
           SSH_USERNAME: ${{secrets.SSH_USERNAME}}
+          SSH_PASSWORD: ${{secrets.SSH_PASSWORD}}
         with:
           host: ${{secrets.SSH_HOST}}
           key: ${{secrets.SSH_KEY}}
@@ -22,6 +23,11 @@ jobs:
             echo "$SSH_HOST"
             echo "$SSH_KEY"
             echo "$SSH_USERNAME"
+            echo "$SSH_PASSWORD"
+            echo $SSH_HOST
+            echo $SSH_KEY
+            echo $SSH_USERNAME
+            echo $SSH_PASSWORD
             cd /var/www
             sudo git clone https://github.com/dayallnash/pyp.git pyp_new
             cd pyp_new
