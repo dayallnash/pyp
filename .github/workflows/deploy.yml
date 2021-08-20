@@ -9,17 +9,24 @@ jobs:
     steps:
       - name: Deploy
         uses: appleboy/ssh-action@v0.1.4
+        env:
+          SSH_HOST: ${{secrets.SSH_HOST}}
+          SSH_KEY: ${{secrets.SSH_KEY}}
+          SSH_USERNAME: ${{secrets.SSH_USERNAME}}
         with:
           host: ${{secrets.SSH_HOST}}
           key: ${{secrets.SSH_KEY}}
           username: ${{secrets.SSH_USERNAME}}
 
           script: |
+            echo $SSH_HOST
+            echo $SSH_KEY
+            echo $SSH_USERNAME
             cd /var/www
             sudo git clone https://github.com/dayallnash/pyp.git pyp_new
             cd pyp_new
             /usr/bin/php7.4 /usr/local/bin/composer install --no-dev
             cd ..
-            sudo mv /var/www/pyp /var/www/pyp_old
+            sudo -S mv /var/www/pyp /var/www/pyp_old
             sudo mv /var/www/pyp_new /var/www/pyp
             sudo rm -rf /var/www/pyp_old
