@@ -26,3 +26,5 @@ jobs:
             mv /var/www/pyp /var/www/pyp_old
             mv /var/www/pyp_new /var/www/pyp
             rm -rf /var/www/pyp_old
+            cd /var/www/pyp
+            php bin/console doctrine:migrations:migrate --no-interaction
