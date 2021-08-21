@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "62693c2abd4c1c66b079335a3693e2de",
+    "content-hash": "d8466da2d97485d39ceff97b4456f444",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -6322,6 +6322,60 @@
             "time": "2020-11-14T09:36:49+00:00"
         },
         {
+            "name": "laravel/homestead",
+            "version": "v12.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/homestead.git",
+                "reference": "d1a25b5242de5a578f40d4438700e03500ab9d9e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/homestead/zipball/d1a25b5242de5a578f40d4438700e03500ab9d9e",
+                "reference": "d1a25b5242de5a578f40d4438700e03500ab9d9e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0",
+                "symfony/console": "~5.1",
+                "symfony/process": "~5.1",
+                "symfony/yaml": "~5.1"
+            },
+            "require-dev": {
+                "dms/phpunit-arraysubset-asserts": "^0.2.1",
+                "phpunit/phpunit": "^9.5"
+            },
+            "bin": [
+                "bin/homestead"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Homestead\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                },
+                {
+                    "name": "Joe Ferguson",
+                    "email": "joe@joeferguson.me"
+                }
+            ],
+            "description": "A virtual machine for web artisans.",
+            "support": {
+                "issues": "https://github.com/laravel/homestead/issues",
+                "source": "https://github.com/laravel/homestead/tree/v12.4.1"
+            },
+            "time": "2021-08-20T02:05:07+00:00"
+        },
+        {
             "name": "liip/functional-test-bundle",
             "version": "4.4.2",
             "source": {
@@ -9081,6 +9135,68 @@
             "time": "2021-07-15T21:37:44+00:00"
         },
         {
+            "name": "symfony/process",
+            "version": "v5.2.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/process.git",
+                "reference": "d16634ee55b895bd85ec714dadc58e4428ecf030"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/process/zipball/d16634ee55b895bd85ec714dadc58e4428ecf030",
+                "reference": "d16634ee55b895bd85ec714dadc58e4428ecf030",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/polyfill-php80": "^1.16"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Process\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Executes commands in sub-processes",
+            "homepage": "https://symfony.com",
+            "support": {
+                "source": "https://github.com/symfony/process/tree/v5.2.12"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-07-23T15:54:19+00:00"
+        },
+        {
             "name": "theseer/tokenizer",
             "version": "1.2.1",
             "source": {
@@ -9197,8 +9313,10 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
+        "php": "^8.0",
         "ext-ctype": "*",
-        "ext-iconv": "*"
+        "ext-iconv": "*",
+        "ext-xml": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"
