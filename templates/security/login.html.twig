@@ -87,11 +87,62 @@
             </form>
         </div>
         <div class="register-form">
+        {% block javascripts %}
+	<script> 
+	
+	function formatEmail() {
+		let regex = /\S+@\S+\.\S+/;
+		let emailInputNode = document.getElementById('inputEmail')
+		let emailErrorNode = document.getElementById('emailError')
+		if (regex.test(emailInputNode.value)) {
+			emailErrorNode.innerHTML = ""
+			return 1
+		}
+		else {
+			emailErrorNode.innerHTML = "This is not a valid email address."
+			return 0
+		}
+	}
+
+	function formatMobile() {
+		let regex = /(\+[0-9]{12})|(0[0-9]{10})/;
+		let mobileInputNode = document.getElementById('inputMobile')
+		let mobileErrorNode = document.getElementById('mobileError')
+		if (regex.test(mobileInputNode.value)) {
+			mobileErrorNode.innerHTML = ""
+			return 1
+		}
+		else {
+			mobileErrorNode.innerHTML = "This mobile number is not valid."
+			return 0
+		}
+	}
+ 	
+	function strictInput(inputObject, allowedString) {
+		$(inputObject).keypress( function(e) {
+			var chr = String.fromCharCode(e.which);
+			if (allowedString.indexOf(chr) < 0)
+			return false;
+		});
+	}
+		
+
+	</script>
+	{% endblock %}
             <form method="post" action="/register">
                 <label for="inputUsername">Username</label>
                 <input type="text" name="username" id="inputUsername" class="form-control" required>
-                <label for="inputPassword">Password</label>
+                
+		<label for="inputPassword">Password</label>
                 <input type="password" name="password" id="inputPassword" class="form-control" required>
+                
+		<label for="inputEmail">E-mail</label>
+		<input type="email" name="email" id="inputEmail" class="form-control" onfocusout="formatEmail()" required>
+		<p id="emailError"></p>
+
+                <label for="inputMobile">Mobile (Optional)</label>
+		<input type="text" name="mobile" id="inputMobile" class="form-control" onfocusin="strictInput(this, '+1234567890')" onfocusout="formatMobile()" maxlength="12" required>
+		<p id="mobileError"></p>
 
                 <input type="hidden" name="_csrf_token"
                        value="{{ csrf_token('authenticate') }}"

@@ -27,6 +27,16 @@ class User implements UserInterface
     private $username;
 
     /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $email;
+ 
+    /**
+     * @ORM\Column(type="string", length=180)
+     */
+    private $mobile;
+    
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -130,6 +140,37 @@ class User implements UserInterface
         return $this;
     }
 
+
+    /**
+     * @see UserInterface
+     */
+    public function getEmail(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+
+    /**
+     * @see UserInterface
+     */
+    public function getMobile(): string
+    {
+        return (string) $this->mobile;
+    }
+
+    public function setMobile(string $mobile): self
+    {
+        $this->mobile = $mobile;
+
+        return $this;
+    }
     /**
      * @see UserInterface
      */
