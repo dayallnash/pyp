@@ -2000,22 +2000,22 @@
         },
         {
             "name": "symfony/amqp-messenger",
-            "version": "v5.3.4",
+            "version": "v5.2.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/amqp-messenger.git",
-                "reference": "7444d23daba4551f550d4a19c4d10c6eefa87615"
+                "reference": "62736870b28c31041d48a1554e01261b03564d35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/amqp-messenger/zipball/7444d23daba4551f550d4a19c4d10c6eefa87615",
-                "reference": "7444d23daba4551f550d4a19c4d10c6eefa87615",
+                "url": "https://api.github.com/repos/symfony/amqp-messenger/zipball/62736870b28c31041d48a1554e01261b03564d35",
+                "reference": "62736870b28c31041d48a1554e01261b03564d35",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
                 "symfony/deprecation-contracts": "^2.1",
-                "symfony/messenger": "^5.3"
+                "symfony/messenger": "^5.1"
             },
             "require-dev": {
                 "symfony/event-dispatcher": "^4.4|^5.0",
@@ -2049,7 +2049,7 @@
             "description": "Symfony AMQP extension Messenger Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/amqp-messenger/tree/v5.3.4"
+                "source": "https://github.com/symfony/amqp-messenger/tree/v5.2.12"
             },
             "funding": [
                 {
@@ -2065,7 +2065,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-21T12:40:44+00:00"
+            "time": "2021-07-21T12:38:00+00:00"
         },
         {
             "name": "symfony/asset",
@@ -3257,16 +3257,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.13.4",
+            "version": "v1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "d81196c3f3b544e32997b67e955fb8291fdfe770"
+                "reference": "b298435b9df8d7c7d7d5473d4b9f850a7844d7ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/d81196c3f3b544e32997b67e955fb8291fdfe770",
-                "reference": "d81196c3f3b544e32997b67e955fb8291fdfe770",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/b298435b9df8d7c7d7d5473d4b9f850a7844d7ea",
+                "reference": "b298435b9df8d7c7d7d5473d4b9f850a7844d7ea",
                 "shasum": ""
             },
             "require": {
@@ -3305,7 +3305,7 @@
             "description": "Composer plugin for Symfony",
             "support": {
                 "issues": "https://github.com/symfony/flex/issues",
-                "source": "https://github.com/symfony/flex/tree/v1.13.4"
+                "source": "https://github.com/symfony/flex/tree/v1.14.0"
             },
             "funding": [
                 {
@@ -3321,7 +3321,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-08-03T08:14:48+00:00"
+            "time": "2021-08-20T17:26:27+00:00"
         },
         {
             "name": "symfony/framework-bundle",
@@ -4552,16 +4552,16 @@
         },
         {
             "name": "symfony/redis-messenger",
-            "version": "v5.3.4",
+            "version": "v5.2.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/redis-messenger.git",
-                "reference": "1eed27264bc2b965c37460bb2e36b602ed6ba694"
+                "reference": "451d5e2dc8d5e0ebb26edf9312292027f231bddc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/redis-messenger/zipball/1eed27264bc2b965c37460bb2e36b602ed6ba694",
-                "reference": "1eed27264bc2b965c37460bb2e36b602ed6ba694",
+                "url": "https://api.github.com/repos/symfony/redis-messenger/zipball/451d5e2dc8d5e0ebb26edf9312292027f231bddc",
+                "reference": "451d5e2dc8d5e0ebb26edf9312292027f231bddc",
                 "shasum": ""
             },
             "require": {
@@ -4599,7 +4599,7 @@
             "description": "Symfony Redis extension Messenger Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/redis-messenger/tree/v5.3.4"
+                "source": "https://github.com/symfony/redis-messenger/tree/v5.2.12"
             },
             "funding": [
                 {
@@ -4615,7 +4615,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-21T12:40:44+00:00"
+            "time": "2021-07-21T12:38:00+00:00"
         },
         {
             "name": "symfony/routing",
@@ -6377,16 +6377,16 @@
         },
         {
             "name": "liip/functional-test-bundle",
-            "version": "4.4.2",
+            "version": "4.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipFunctionalTestBundle.git",
-                "reference": "f5fe0fc6543c8166d3b94bcf2fa803cdf2383141"
+                "reference": "e37469daa8f63205948f5576c100fd8080d612e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipFunctionalTestBundle/zipball/f5fe0fc6543c8166d3b94bcf2fa803cdf2383141",
-                "reference": "f5fe0fc6543c8166d3b94bcf2fa803cdf2383141",
+                "url": "https://api.github.com/repos/liip/LiipFunctionalTestBundle/zipball/e37469daa8f63205948f5576c100fd8080d612e7",
+                "reference": "e37469daa8f63205948f5576c100fd8080d612e7",
                 "shasum": ""
             },
             "require": {
@@ -6450,9 +6450,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipFunctionalTestBundle/issues",
-                "source": "https://github.com/liip/LiipFunctionalTestBundle/tree/4.4.2"
+                "source": "https://github.com/liip/LiipFunctionalTestBundle/tree/4.4.3"
             },
-            "time": "2021-08-06T12:38:52+00:00"
+            "time": "2021-08-20T15:48:47+00:00"
         },
         {
             "name": "liip/test-fixtures-bundle",
