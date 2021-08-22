@@ -3,7 +3,10 @@ doctrine:
         default_connection: default
         connections:
             default:
-                url: '%env(resolve:DATABASE_URL)%'
+                dbname: pyp
+                host: localhost
+                port: 3306
+                password: '%env(DATABASE_PASSWORD)%'
                 driver: 'pdo_mysql'
                 charset: utf8mb4
                 server_version: '%env(resolve:DATABASE_SERVER_VERSION)%'
