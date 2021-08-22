@@ -17,6 +17,7 @@ jobs:
           script: |
             cd /var/www
             git clone https://github.com/dayallnash/pyp.git pyp_new
+            cp prod.decrypt.private.php pyp/config/secrets/prod
             chmod -R 775 pyp_new
             chown -R www-data:www-data pyp_new
             cd pyp_new
