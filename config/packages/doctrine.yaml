@@ -5,6 +5,7 @@ doctrine:
             default:
                 dbname: pyp
                 host: localhost
+                user: '%env(DATABASE_USER)%'
                 port: 3306
                 password: '%env(DATABASE_PASSWORD)%'
                 driver: 'pdo_mysql'
