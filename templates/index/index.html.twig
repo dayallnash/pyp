@@ -22,6 +22,13 @@
              font-family: 'IBM Plex Mono', monospace;
              font-style: italic;
          }
+
+        .sprite {
+            background: url('asset/img/pipe2.png') repeat -1px 0;
+            width: 31px;
+            position: absolute;
+            right: 49%;
+        }
     </style>
 {% endblock %}
 
@@ -40,8 +47,13 @@
         {#    });#}
         {#});#}
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             placePopovers();
+            $('.sprite').each(function (key, elem) {
+                const rowHeight = $(elem).parent().height();
+
+                $(elem).height(rowHeight);
+            });
         });
 
         function placePopovers() {
@@ -219,8 +231,9 @@
             {% set float = 'left' %}
 
             {% for post in posts %}
-                <div class="row mb-2">
-                    <div class="{{ float is same as 'right' ? 'offset-lg-6 col-lg-6' : 'col-lg-6' }}">
+                <div class="row">
+                    <div class="sprite"></div>
+                    <div class="px-4 {{ float is same as 'right' ? 'offset-lg-6 col-lg-6' : 'col-lg-6' }}" style="padding-bottom: 25px;{{ float is same as 'right' ? '' : '' }}">
                         <div class="card" style="min-width: 310px; box-sizing: content-box">
                             <div class="card-body">
                                 <div class="row">
