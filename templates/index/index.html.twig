@@ -219,8 +219,8 @@
             {% set float = 'left' %}
 
             {% for post in posts %}
-                <div class="row">
-                    <div class="d-flex {{ float is same as 'right' ? 'justify-content-end' : 'justify-content-start' }}">
+                <div class="row mb-2">
+                    <div class="{{ float is same as 'right' ? 'offset-lg-6 col-lg-6' : 'col-lg-6' }}">
                         <div class="card" style="min-width: 310px; box-sizing: content-box">
                             <div class="card-body">
                                 <div class="row">
