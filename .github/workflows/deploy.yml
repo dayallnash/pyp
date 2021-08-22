@@ -20,6 +20,12 @@ jobs:
             chmod -R 775 pyp_new
             chown -R www-data:www-data pyp_new
             cd pyp_new
+            APP_RUNTIME_ENV=prod php bin/console secrets:generate-keys
+            echo "$(cat /var/www/database_password.txt)" | APP_RUNTIME_ENV=prod php bin/console secrets:set DATABASE_PASSWORD -
+            cd ..
+            chmod -R 775 pyp_new
+            chown -R www-data:www-data pyp_new
+            cd pyp_new
             sudo -H -u www-data bash -c '/usr/local/bin/composer install --no-dev'
             /usr/bin/php8.0 /usr/local/bin/composer install --no-dev
             cd ..
@@ -27,4 +33,4 @@ jobs:
             mv /var/www/pyp_new /var/www/pyp
             rm -rf /var/www/pyp_old
             cd /var/www/pyp
-            php bin/console doctrine:migrations:migrate --no-interaction
+            sudo -H -u www-data bash -c 'php bin/console doctrine:migrations:migrate --no-interaction'
