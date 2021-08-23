@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "973811b9f94d0d8cc12d87d0e14805cc",
+    "content-hash": "0a8e117119dc0de75593dcbd2c21c304",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -2830,16 +2830,16 @@
         },
         {
             "name": "symfony/dotenv",
-            "version": "v5.2.14",
+            "version": "v5.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dotenv.git",
-                "reference": "12888c9c46ac750ec5c1381db5bf3d534e7d70cb"
+                "reference": "b6d44663cff8c9880ee64d232870293a11e14cd6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dotenv/zipball/12888c9c46ac750ec5c1381db5bf3d534e7d70cb",
-                "reference": "12888c9c46ac750ec5c1381db5bf3d534e7d70cb",
+                "url": "https://api.github.com/repos/symfony/dotenv/zipball/b6d44663cff8c9880ee64d232870293a11e14cd6",
+                "reference": "b6d44663cff8c9880ee64d232870293a11e14cd6",
                 "shasum": ""
             },
             "require": {
@@ -2880,7 +2880,7 @@
                 "environment"
             ],
             "support": {
-                "source": "https://github.com/symfony/dotenv/tree/v5.2.14"
+                "source": "https://github.com/symfony/dotenv/tree/v5.3.6"
             },
             "funding": [
                 {
@@ -2896,7 +2896,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-29T06:18:06+00:00"
+            "time": "2021-07-29T06:20:01+00:00"
         },
         {
             "name": "symfony/error-handler",
