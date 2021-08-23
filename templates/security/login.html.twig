@@ -118,11 +118,15 @@
 		}
 	}
  	
-	function strictInput(inputObject, allowedString) {
-		$(inputObject).keypress( function(e) {
+	function strictInput(inputObject, allowedString) 
+	{
+		$(inputObject).keypress(function(e) 
+		{
 			var chr = String.fromCharCode(e.which);
 			if (allowedString.indexOf(chr) < 0)
-			return false;
+				{
+					return false;
+				}
 		});
 	}
 		
@@ -141,7 +145,7 @@
 		<p id="emailError"></p>
 
                 <label for="inputMobile">Mobile (Optional)</label>
-		<input type="text" name="mobile" id="inputMobile" class="form-control" onfocusin="strictInput(this, '+1234567890')" onfocusout="formatMobile()" maxlength="12" required>
+		<input type="text" name="mobile" id="inputMobile" class="form-control" onfocusin="strictInput(this, '+1234567890')" onfocusout="formatMobile()" maxlength="13" required>
 		<p id="mobileError"></p>
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
