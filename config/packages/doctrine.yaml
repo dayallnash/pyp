@@ -3,7 +3,7 @@ doctrine:
         default_connection: default
         connections:
             default:
-                dbname: pyp
+                dbname: '%env(DATABASE_NAME)%'
                 host: localhost
                 user: '%env(DATABASE_USER)%'
                 port: 3306

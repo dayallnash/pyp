@@ -4,11 +4,11 @@ services:
   - docker
   - mysql
 before_install:
-  - composer install
-  - sudo mysql -e 'CREATE DATABASE pyp_test;'
-  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('root') where User='root'; update user set plugin='mysql_native_password'; FLUSH PRIVILEGES;"
   - touch .env.local
   - echo "APP_ENV=test" > .env.local
+  - composer install --no-interaction
+  - sudo mysql -e 'CREATE DATABASE pyp_test;'
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('root') where User='root'; update user set plugin='mysql_native_password'; FLUSH PRIVILEGES;"
   - php bin/console doctrine:migrations:migrate --no-interaction
 script:
   - vendor/bin/phpunit
