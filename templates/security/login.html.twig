@@ -91,9 +91,9 @@
 	<script> 
 	
 	function formatEmail() {
-		let regex = /\S+@\S+\.\S+/;
-		let emailInputNode = document.getElementById('inputEmail');
-		let emailErrorNode = document.getElementById('emailError');
+		const regex = /\S+@\S+\.\S+/;
+		const emailInputNode = document.getElementById('inputEmail');
+		const emailErrorNode = document.getElementById('emailError');
 		if (regex.test(emailInputNode.value)) {
 			emailErrorNode.innerHTML = ""
 			return 1
@@ -105,9 +105,9 @@
 	}
 
 	function formatMobile() {
-		let regex = /(\+[0-9]{12})|(0[0-9]{10})/;
-		let mobileInputNode = document.getElementById('inputMobile');
-		let mobileErrorNode = document.getElementById('mobileError');
+		const regex = /(\+[0-9]{12})|(0[0-9]{10})/;
+		const mobileInputNode = document.getElementById('inputMobile');
+		const mobileErrorNode = document.getElementById('mobileError');
 		if (regex.test(mobileInputNode.value)) {
 			mobileErrorNode.innerHTML = ""
 			return 1
@@ -144,9 +144,7 @@
 		<input type="text" name="mobile" id="inputMobile" class="form-control" onfocusin="strictInput(this, '+1234567890')" onfocusout="formatMobile()" maxlength="12" required>
 		<p id="mobileError"></p>
 
-                <input type="hidden" name="_csrf_token"
-                       value="{{ csrf_token('authenticate') }}"
-                >
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                 <div class="checkbox mb-3">
                     <label>
