@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Pyp | The Social Network for Real Conversation{% endblock %}</title>
-
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
         <link href="{{ asset('asset/css/ibm-plex-mono-google-font.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
@@ -100,16 +100,20 @@
                     {% endif %}
                     <div class="col text-end">
                         <span>
-                            <a href="{{ path('my_account') }}" type="button" class="btn btn-outline-dark">
-                                <span class="username-italic">
-                                    {{ app.user.username }}
-                                </span>
-                                <br/>
-                                <small>
-                                    {{ '{' ~ app.user.userInfluence.influence ?? 500 ~ '}' }}
-                                </small>
-                            </a>
-                            <a href="{{ path('app_logout') }}" type="button" class="btn btn-default">Logout</a>
+                            <button type="button" class="btn btn-outline-dark">
+                                <a href="{{ path('my_account') }}" class="text-reset text-decoration-none">
+                                    <span class="username-italic">
+                                        {{ app.user.username }}
+                                    </span>
+                                    <br/>
+                                    <small>
+                                        {{ '{' ~ app.user.userInfluence.influence ?? 500 ~ '}' }}
+                                    </small>
+                                </a>
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                <a href="{{ path('app_logout') }}" class="text-reset text-decoration-none">Logout</a>
+                            </button>
                         </span>
                     </div>
                 </div>

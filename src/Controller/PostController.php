@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Entity\Report;
 use App\Entity\ReportReason;
+use App\Entity\UserPypPost;
 use App\Repository\UserPypPostRepository;
 use App\Service\PostService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -83,13 +84,16 @@ class PostController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
 
+        /** @var Post|null $post */
         $post = $em->getRepository(Post::class)->find($postId);
 
         $interactions = [];
         $userPypPosts = [];
         if (null !== $post) {
             $interactions = $post->getInteractions();
-            $userPypPosts = $post->getUserPypPosts();
+            $userPypPosts = $em->getRepository(UserPypPost::class)->findBy(['post' => $post]);
+
+            $em->remove($post);
         }
 
         foreach ($interactions as $interaction) {
