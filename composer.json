@@ -22,7 +22,7 @@
         "symfony/framework-bundle": "5.2.*",
         "symfony/messenger": "5.3.*",
         "symfony/proxy-manager-bridge": "5.2.*",
-        "symfony/security-bundle": "5.2.*",
+        "symfony/security-bundle": "5.3.*",
         "symfony/stopwatch": "5.3.*",
         "symfony/twig-bundle": "5.2.*",
         "symfony/web-profiler-bundle": "5.2.*",
