@@ -17,14 +17,14 @@ jobs:
           script: |
             cd /var/www
             git clone https://github.com/dayallnash/pyp.git pyp_new
-            cd pyp_new
-            sudo -H -u www-data bash -c '/usr/local/bin/composer install --no-dev'
-            /usr/bin/php8.0 /usr/local/bin/composer install --no-dev
-            cd ..
+            cp prod.decrypt.private.php pyp_new/config/secrets/prod
             chmod -R 775 pyp_new
             chown -R www-data:www-data pyp_new
+            cd pyp_new
+            sudo -H -u www-data bash -c '/usr/local/bin/composer install --no-dev'
+            cd ..
             mv /var/www/pyp /var/www/pyp_old
             mv /var/www/pyp_new /var/www/pyp
             rm -rf /var/www/pyp_old
             cd /var/www/pyp
-            php bin/console doctrine:migrations:migrate --no-interaction
+            sudo -H -u www-data bash -c 'php bin/console doctrine:migrations:migrate --no-interaction'
