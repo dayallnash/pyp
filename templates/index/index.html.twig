@@ -23,11 +23,27 @@
              font-style: italic;
          }
 
-        .sprite {
-            background: url('asset/img/pipe2.png') repeat -1px 0;
-            width: 31px;
+        .pipespritelong {
+            background: url('asset/img/pipespritelong.png') repeat -1px 0;
+            width: 32px;
             position: absolute;
             right: 49%;
+        }
+
+        .pipespritejunction--left {
+            background: url('asset/img/pipespritejunction.png') no-repeat -1px 0;
+            width: 32px;
+            position: absolute;
+            right: 49%;
+        }
+
+        .pipespritejunction--right {
+            background: url('asset/img/pipespritejunction.png') no-repeat -1px 0;
+            width: 32px;
+            position: absolute;
+            right: 49%;
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
         }
     </style>
 {% endblock %}
@@ -49,7 +65,7 @@
 
         $(document).ready(function () {
             placePopovers();
-            $('.sprite').each(function (key, elem) {
+            $('.pipespritelong, .pipespritejunction--left, .pipespritejunction--right').each(function (key, elem) {
                 const rowHeight = $(elem).parent().height();
 
                 $(elem).height(rowHeight);
@@ -232,7 +248,8 @@
 
             {% for post in posts %}
                 <div class="row">
-                    <div class="sprite"></div>
+                    <div class="pipespritelong"></div>
+                    <div class="pipespritejunction--{{ float }}"></div>
                     <div class="px-4 {{ float is same as 'right' ? 'offset-lg-6 col-lg-6' : 'col-lg-6' }}" style="padding-bottom: 25px;{{ float is same as 'right' ? '' : '' }}">
                         <div class="card" style="min-width: 310px; box-sizing: content-box">
                             <div class="card-body">
