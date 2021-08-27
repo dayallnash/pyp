@@ -35,7 +35,7 @@
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "laravel/homestead": "^12.4",
         "liip/functional-test-bundle": "^4.3",
-        "liip/test-fixtures-bundle": "^1.11",
+        "liip/test-fixtures-bundle": "^2.0",
         "phpunit/phpunit": "^9.5",
         "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "^5.2",
