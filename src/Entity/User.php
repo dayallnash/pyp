@@ -141,12 +141,9 @@ class User implements UserInterface
     }
 
 
-    /**
-     * @see UserInterface
-     */
     public function getEmail(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     public function setEmail(string $email): self
@@ -157,9 +154,6 @@ class User implements UserInterface
     }
 
 
-    /**
-     * @see UserInterface
-     */
     public function getMobile(): string
     {
         return (string) $this->mobile;

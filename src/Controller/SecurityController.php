@@ -70,7 +70,7 @@ class SecurityController extends AbstractController
             $encodedPassword = $userPasswordEncoder->encodePassword($newUser, $plainTextPassword);
             $newUser->setPassword($encodedPassword);
 
-	        $email = $request->request->filter('email', null, FILTER_SANITIZE_STRING);
+            $email = $request->request->filter('email', null, FILTER_SANITIZE_STRING);
 
             $newUser->setEmail($email);
 
@@ -79,8 +79,8 @@ class SecurityController extends AbstractController
             $newUser->setMobile($mobile);
 
             $newUser->setPassword($encodedPassword);
-                $em->persist($newUser);
-                $em->flush();
+            $em->persist($newUser);
+            $em->flush();
 
             return $guardAuthenticatorHandler->authenticateUserAndHandleSuccess($newUser, $request, $loginFormAuthenticator, 'main');
         } catch (Throwable $t) {

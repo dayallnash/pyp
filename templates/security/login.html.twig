@@ -128,45 +128,42 @@
 {% block javascripts %}
     <script>
 
-	function formatEmail() {
-		const regex = /\S+@\S+\.\S+/;
-		const emailInputNode = document.getElementById('inputEmail');
-		const emailErrorNode = document.getElementById('emailError');
-		if (regex.test(emailInputNode.value)) {
-			emailErrorNode.innerHTML = ""
-			return 1
-		}
-		else {
-			emailErrorNode.innerHTML = "This is not a valid email address."
-			return 0
-		}
-	}
+    function formatEmail() {
+        const regex = /\S+@\S+\.\S+/;
+        const emailInputNode = document.getElementById('inputEmail');
+        const emailErrorNode = document.getElementById('emailError');
+        if (regex.test(emailInputNode.value)) {
+            emailErrorNode.innerHTML = ""
+            return 1
+        }
+        else {
+            emailErrorNode.innerHTML = "This is not a valid email address."
+            return 0
+        }
+    }
 
-	function formatMobile() {
-		const regex = /(\+[0-9]{12})|(0[0-9]{10})/;
-		const mobileInputNode = document.getElementById('inputMobile');
-		const mobileErrorNode = document.getElementById('mobileError');
-		if (regex.test(mobileInputNode.value)) {
-			mobileErrorNode.innerHTML = ""
-			return 1
-		}
-		else {
-			mobileErrorNode.innerHTML = "This mobile number is not valid."
-			return 0
-		}
-	}
- 	
-	function strictInput(inputObject, allowedString) 
-	{
-		$(inputObject).keypress(function(e) 
-		{
-			var chr = String.fromCharCode(e.which);
-			if (allowedString.indexOf(chr) < 0)
-				{
-					return false;
-				}
-		});
-	}
+    function formatMobile() {
+        const regex = /(\+[0-9]{12})|(0[0-9]{10})/;
+        const mobileInputNode = document.getElementById('inputMobile');
+        const mobileErrorNode = document.getElementById('mobileError');
+        if (regex.test(mobileInputNode.value)) {
+            mobileErrorNode.innerHTML = ""
+            return 1
+        }
+        else {
+            mobileErrorNode.innerHTML = "This mobile number is not valid."
+            return 0
+        }
+    }
+     
+    function strictInput(inputObject, allowedString) {
+        $(inputObject).keypress(function(e) {
+            var chr = String.fromCharCode(e.which);
+            if (allowedString.indexOf(chr) < 0) {
+                return false;
+            }
+        });
+    }
 
 
     </script>
