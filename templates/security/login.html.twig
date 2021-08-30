@@ -133,12 +133,12 @@
         const emailInputNode = document.getElementById('inputEmail');
         const emailErrorNode = document.getElementById('emailError');
         if (regex.test(emailInputNode.value)) {
-            emailErrorNode.innerHTML = ""
-            return 1
+            emailErrorNode.innerHTML = "";
+            return 1;
         }
         else {
-            emailErrorNode.innerHTML = "This is not a valid email address."
-            return 0
+            emailErrorNode.innerHTML = "This is not a valid email address.";
+            return 0;
         }
     }
 
@@ -147,12 +147,16 @@
         const mobileInputNode = document.getElementById('inputMobile');
         const mobileErrorNode = document.getElementById('mobileError');
         if (regex.test(mobileInputNode.value)) {
-            mobileErrorNode.innerHTML = ""
-            return 1
+            mobileErrorNode.innerHTML = "";
+            return 1;
+
+        } else if (mobileInputNode.value == "") {
+            mobileErrorNode.innerHTML = "";
+            return 1;
         }
         else {
-            mobileErrorNode.innerHTML = "This mobile number is not valid."
-            return 0
+            mobileErrorNode.innerHTML = "This mobile number is not valid.";
+            return 0;
         }
     }
      
