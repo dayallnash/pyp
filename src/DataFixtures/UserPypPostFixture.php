@@ -5,9 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Entity\UserPypPost;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectManager;
 
 class UserPypPostFixture
 {

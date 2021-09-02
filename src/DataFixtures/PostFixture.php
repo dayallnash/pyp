@@ -5,11 +5,10 @@ namespace App\DataFixtures;
 use App\Entity\Post;
 use App\Entity\User;
 use DateTime;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class PostFixture extends Fixture
+class PostFixture
 {
     private EntityManagerInterface $em;
 
@@ -20,10 +19,8 @@ class PostFixture extends Fixture
 
     /**
      * @depends UserFixture
-     *
-     * @param ObjectManager $manager
      */
-    public function load(ObjectManager $manager): void
+    public function load(): void
     {
         $user1 = $this->em->getRepository(User::class)->find(1);
         $user2 = $this->em->getRepository(User::class)->find(2);

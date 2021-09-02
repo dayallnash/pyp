@@ -3,9 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\ReportReason;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectManager;
 
 class ReportReasonFixture
 {
