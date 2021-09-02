@@ -17,4 +17,4 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';
 FLUSH PRIVILEGES;  
 ```
 
-Your tests should now run without error. You can check this by running `./home/vagrant/pyp/vendor/bin/phpunit` from anywhere in your Vagrant box.
+Your tests should now run without error. You can check this by running `./home/vagrant/pyp/vendor/bin/simple-phpunit` from anywhere in your Vagrant box.

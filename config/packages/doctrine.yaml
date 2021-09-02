@@ -11,6 +11,8 @@ doctrine:
                 driver: 'pdo_mysql'
                 charset: utf8mb4
                 server_version: '%env(resolve:DATABASE_SERVER_VERSION)%'
+                mapping_types:
+                    enum: string
         types:
             enum_yes_no: App\DBAL\Type\EnumYesNo
     orm:

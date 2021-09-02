@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Throwable;
@@ -24,7 +24,7 @@ class SecurityController extends AbstractController
      *
      * @param Request                      $request
      * @param EntityManagerInterface       $em
-     * @param UserPasswordEncoderInterface $userPasswordEncoder
+     * @param UserPasswordHasherInterface  $passwordHasher
      * @param GuardAuthenticatorHandler    $guardAuthenticatorHandler
      * @param LoginFormAuthenticator       $loginFormAuthenticator
      *
@@ -32,7 +32,7 @@ class SecurityController extends AbstractController
      */
     public function register(Request $request,
         EntityManagerInterface $em,
-        UserPasswordEncoderInterface $userPasswordEncoder,
+        UserPasswordHasherInterface $passwordHasher,
         GuardAuthenticatorHandler $guardAuthenticatorHandler,
         LoginFormAuthenticator $loginFormAuthenticator
     ): Response {
@@ -67,7 +67,7 @@ class SecurityController extends AbstractController
                 throw new BadRequestHttpException('Password requirements not met! You should provide a secure password of 8 characters or more with lowercase, uppercase, and special characters');
             }
 
-            $encodedPassword = $userPasswordEncoder->encodePassword($newUser, $plainTextPassword);
+            $encodedPassword = $passwordHasher->hashPassword($newUser, $plainTextPassword);
 
             $newUser->setPassword($encodedPassword);
 

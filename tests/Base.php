@@ -54,7 +54,7 @@ abstract class Base extends WebTestCase
         $application->run($input, new BufferedOutput());
 
         foreach ($classNames as $className) {
-            $class = new $className();
+            $class = self::$kernel->getContainer()->get($className);
 
             $class->load($this->getEntityManager());
         }

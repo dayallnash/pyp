@@ -3,12 +3,15 @@
 namespace App\DataFixtures;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class FixtureServiceLoader extends WebTestCase
 {
-    public static function bootFixtureKernel(): KernelInterface
+    public static function bootFixtureContainer(): ContainerInterface
     {
-        return parent::bootKernel();
+        parent::bootKernel();
+
+        return (new FixtureServiceLoader())->getContainer();
     }
 }
