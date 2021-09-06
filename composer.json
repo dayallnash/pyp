@@ -8,7 +8,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-xml": "*",
-        "composer/package-versions-deprecated": "1.11.99.1",
+        "composer/package-versions-deprecated": "1.11.99.3",
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.8",
