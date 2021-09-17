@@ -42,7 +42,7 @@
                                             <label for="currentUserName">Username:</label>
                                         </div>
                                         <div class="col">
-                                            <input type="text" id="currentUserName" name="username" value="{{ currentUser.username }}" required>
+                                            <input type="text" id="currentUserName" name="username" value="{{ currentUser.userIdentifier }}" required>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -95,7 +95,7 @@
                                     {% for user in userGenerator %}
                                         <tr>
                                             <td>{{ user.id }}</td>
-                                            <td>{{ user.username }}</td>
+                                            <td>{{ user.userIdentifier }}</td>
                                             <td>
                                                 <a class="btn btn-primary" role="button" href="{{ path('hose_user_view', {userId: user.id}) }}">Edit</a>
                                                 <a class="btn btn-danger" role="button" href="{{ path('hose_user_delete', {userId: user.id}) }}">Delete</a>

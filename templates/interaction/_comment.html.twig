@@ -3,9 +3,9 @@
         {% if comment not in reportedComments  %}
             <div class="row">
                 <div class="col username-italic">
-                    {{ comment.user.username }}
+                    {{ comment.user.userIdentifier }}
                 </div>
-                {% if comment.user.username != currentUser.username %}
+                {% if comment.user.userIdentifier != currentUser.userIdentifier %}
                     <div class="col text-end">
                         <a tabindex="0" class="btn" role="button" data-toggle="popover" data-your-comment="false" data-comment-id="{{ comment.id }}">
                             <i class="fas fa-ellipsis-v"></i>

