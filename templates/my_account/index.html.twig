@@ -22,38 +22,76 @@
 
 {% block body %}
     <div class="row">
-        <div class="col">
+        <div class="col d-none d-md-block">
             <h2>
                 Your Account
             </h2>
         </div>
+        <div class="col text-right d-md-none d-sm-block mt-3 mb-3">
+            <div class="navbar navbar-light bg-light">
+                <div class="container-fluid">
+                    <div class="navbar-brand">
+                        Your Account
+                    </div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link text-decoration-none text-reset" href="#">Change your password</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-decoration-none text-reset" href="#">Update your mobile number</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-decoration-none text-reset" href="#">Update your email preferences</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-decoration-none text-reset" href="#">Delete your account</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
-        <div class="col-3">
-            <div class="row">
-                <div class="col">
-                    Change your password
+        <div class="col-md-3 col-sm-12">
+            <div class="d-none d-md-block">
+                <div class="row">
+                    <div class="col">
+                        <a href="#" class="text-decoration-none text-reset">
+                            Change your password
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    Update your mobile number
+                <div class="row">
+                    <div class="col">
+                        <a href="#" class="text-decoration-none text-reset">
+                            Update your mobile number
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    Update your email preferences
+                <div class="row">
+                    <div class="col">
+                        <a href="#" class="text-decoration-none text-reset">
+                            Update your email preferences
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    Delete your account
+                <div class="row">
+                    <div class="col">
+                        <a href="#" class="text-decoration-none text-reset">
+                            Delete your account
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col">
             <div class="row">
-                <div class="offset-2 col-10 text-center">
+                <div class="offset-md-2 col-md-10 col-sm-12 text-center">
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
@@ -73,64 +111,115 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="offset-3 col-6" style="height: 38px;">
-                                    <a id="profile-edit_name--toggle" class="text-decoration-none text-dark" href="#">Add your full name  <i class="fa fa-pencil-alt" aria-hidden="true" style="font-size: 0.8em"></i></a>
-                                    <input class="form-control" id="profile-edit_name--input" type="text" name="full_name" style="display: none;">
+                            <form method="post">
+                                <div class="row">
+                                    <div class="offset-3 col-6">
+                                        <a id="profile-edit_name--toggle" class="text-decoration-none text-dark" href="#">Add your full name  <i class="fa fa-pencil-alt" aria-hidden="true" style="font-size: 0.8em"></i></a>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-12">
+                                                <label for="profile-edit_first_name--input" style="display: none;">First name:</label>
+                                                <input class="form-control" id="profile-edit_first_name--input" type="text" name="first_name" value="{{ user.firstName ?? '' }}" style="display: none;">
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <label for="profile-edit_last_name--input" style="display: none;">Last name:</label>
+                                                <input class="form-control" id="profile-edit_last_name--input" type="text" name="last_name" value="{{ user.lastName ?? '' }}" style="display: none;">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mt-1">
-                                <div class="offset-3 col-6" style="height: 38px;">
-                                    <a id="profile-edit_bio--toggle" class="text-decoration-none text-dark" href="#">Add a short bio to describe yourself <i class="fa fa-pencil-alt" aria-hidden="true" style="font-size: 0.8em"></i></a>
-                                    <input class="form-control" id="profile-edit_bio--input" type="text" name="bio" style="display: none;">
+                                <div class="row mt-3">
+                                    <div class="offset-3 col-6">
+                                        <a id="profile-edit_bio--toggle" class="text-decoration-none text-dark" href="#">Add a short bio to describe yourself <i class="fa fa-pencil-alt" aria-hidden="true" style="font-size: 0.8em"></i></a>
+                                        <label for="profile-edit_bio--input" style="display: none;">Bio (255 chars remaining):</label>
+                                        <input class="form-control" id="profile-edit_bio--input" type="text" name="bio" value="{{ user.bio ?? '' }}" style="display: none;" maxlength="255">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mt-1">
-                                <div class="offset-3 col-6" style="height: 38px;">
-                                    <a id="profile-edit_location--toggle" class="text-decoration-none text-dark" href="#">Add a location  <i class="fa fa-pencil-alt" aria-hidden="true" style="font-size: 0.8em"></i></a>
-                                    <input class="form-control" id="profile-edit_location--input" type="text" name="location" style="display: none;">
+{#                                <div class="row mt-1">#}
+{#                                    <div class="offset-3 col-6">#}
+{#                                        <a id="profile-edit_location--toggle" class="text-decoration-none text-dark" href="#">Add a location  <i class="fa fa-pencil-alt" aria-hidden="true" style="font-size: 0.8em"></i></a>#}
+{#                                        <input class="form-control" id="profile-edit_location--input" type="text" name="location" style="display: none;">#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="row mt-1">#}
+{#                                    <div class="offset-3 col-6">#}
+{#                                        <a id="profile-edit_interests--toggle" class="text-decoration-none text-dark" href="#">Follow your interests  <i class="fa fa-pencil-alt" aria-hidden="true" style="font-size: 0.8em"></i></a>#}
+{#                                        <input class="form-control" id="profile-edit_interests--input" type="text" name="interests" style="display: none;">#}
+{#                                    </div>#}
+{#                                </div>#}
+                                <div class="row mt-4">
+                                    <div class="offset-3 col-6">
+                                        <input id="submit-btn" type="submit" class="btn btn-outline-dark" value="Save" style="display: none;">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row mt-1">
-                                <div class="offset-3 col-6" style="height: 38px;">
-                                    <a id="profile-edit_interests--toggle" class="text-decoration-none text-dark" href="#">Follow your interests  <i class="fa fa-pencil-alt" aria-hidden="true" style="font-size: 0.8em"></i></a>
-                                    <input class="form-control" id="profile-edit_interests--input" type="text" name="interests" style="display: none;">
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {% set userHasFirstName = false %}
+    {% set userHasLastName = false %}
+    {% if user.firstName|length is not same as 0 %}
+        {% set userHasFirstName = true %}
+    {% endif %}
+    {% if user.lastName|length is not same as 0 %}
+        {% set userHasLastName = true %}
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
     <script>
         $(document).ready(() => {
             const editNameToggle = $('#profile-edit_name--toggle');
-            editNameToggle.on('click', () => {
+            {% set userHasFirstName = false %}
+            {% set userHasLastName = false %}
+            {% if user.firstName|length is not same as 0 %}
+                {% set userHasFirstName = true %}
+            {% endif %}
+            {% if user.lastName|length is not same as 0 %}
+                {% set userHasLastName = true %}
+            {% endif %}
+            {% if userHasFirstName is not same as true and userHasLastName is not same as true %}
+                editNameToggle.on('click', () => {
+            {% endif %}
                 editNameToggle.hide();
-                $('#profile-edit_name--input').show();
-            });
+                $('#profile-edit_first_name--input, #profile-edit_last_name--input, label[for=profile-edit_first_name--input], label[for=profile-edit_last_name--input], #submit-btn').show();
+            {% if userHasFirstName is not same as true and userHasLastName is not same as true %}
+                });
+            {% endif %}
 
             const editBioToggle = $('#profile-edit_bio--toggle');
-            editBioToggle.on('click', () => {
+            {% set userHasBio = false %}
+            {% if user.bio|length is not same as 0 %}
+                {% set userHasBio = true %}
+            {% endif %}
+            {% if userHasBio is not same as true %}
+                editBioToggle.on('click', () => {
+            {% endif %}
                 editBioToggle.hide();
-                $('#profile-edit_bio--input').show();
+                $('#profile-edit_bio--input, label[for=profile-edit_bio--input], #submit-btn').show();
+            {% if userHasBio is not same as true %}
+                });
+            {% endif %}
+
+            const bioInput = $('#profile-edit_bio--input');
+            bioInput.on('keyup', () => {
+                $('label[for=profile-edit_bio--input]').text('Bio (' + Number(255 - bioInput.val().length).toString() + ' chars remaining):');
             });
 
-            const editLocationToggle = $('#profile-edit_location--toggle');
-            editLocationToggle.on('click', () => {
-                editLocationToggle.hide();
-                $('#profile-edit_location--input').show();
-            });
-
-            const editInterestsToggle = $('#profile-edit_interests--toggle');
-            editInterestsToggle.on('click', () => {
-                editInterestsToggle.hide();
-                $('#profile-edit_interests--input').show();
-            });
+            // const editLocationToggle = $('#profile-edit_location--toggle');
+            // editLocationToggle.on('click', () => {
+            //     editLocationToggle.hide();
+            //     $('#profile-edit_location--input, #submit-btn').show();
+            // });
+            //
+            // const editInterestsToggle = $('#profile-edit_interests--toggle');
+            // editInterestsToggle.on('click', () => {
+            //     editInterestsToggle.hide();
+            //     $('#profile-edit_interests--input, #submit-btn').show();
+            // });
         });
     </script>
 {% endblock %}
