@@ -14,26 +14,18 @@
                         <div class="card-body">
                             <form method="post">
                                 <div class="row">
-                                    <div class="offset-3 col-6">
-                                        <label for="password-change_current_password--input">Current Password:</label>
-                                        <input type="password" class="form-control" id="password-change_current_password--input" name="current_password" maxlength="255">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="offset-3 col-6">
-                                        <label for="password-change_new_password--input">New Password:</label>
-                                        <input type="password" class="form-control" id="password-change_current_password--input" name="new_password_1" maxlength="255">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="offset-3 col-6">
-                                        <label for="password-change_verify_password--input">Verify New Password:</label>
-                                        <input type="password" class="form-control" id="password-change_current_password--input" name="new_password_2" maxlength="255">
+                                    <div class="col text-center">
+                                        Are you <strong>sure</strong> you want to delete your account? Once your account is deleted, your data will be gone forever and <strong>your account, with all of its posts, comments and influence will be totally unrecoverable</strong>.
                                     </div>
                                 </div>
                                 <div class="row mt-4">
                                     <div class="offset-3 col-6">
-                                        <input id="submit-btn" type="submit" class="btn btn-outline-dark" value="Save">
+                                        <input type="button" class="btn btn-outline-dark" onclick="window.location.href = '{{ path('my_account') }}';" value="On second thoughts...">
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="offset-3 col-6">
+                                        <input id="submit-btn" type="submit" class="btn btn-danger" value="Yes, please delete my account" onclick="return confirm('Are you totally, totally sure about that?');">
                                     </div>
                                 </div>
                             </form>
@@ -46,6 +38,6 @@
 {% endblock %}
 
 {% block title %}
-    Pyp | Change Password
+    Pyp | Delete Account
 {% endblock %}
 
