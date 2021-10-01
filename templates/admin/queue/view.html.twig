@@ -53,7 +53,7 @@
                                                 <td>{{ message.queueName }}</td>
                                                 <td>
                                                     <a href="{{ path('hose_user_view', {userId: message.body|getPostUser.id}) }}">
-                                                        {{ message.body|getPostUser.username }}
+                                                        {{ message.body|getPostUser.userIdentifier }}
                                                     </a>
                                                 </td>
                                                 <td>{{ message.body|getPostContent }}</td>

@@ -26,39 +26,43 @@ class PostToDistributeHandler implements MessageHandlerInterface
 
     public function __invoke(PostToDistribute $postToDistribute): void
     {
-        $users = $this->em->getRepository(User::class)->findAll();
-
-        // Sort users by amount of UserPypPosts they have viewable
-        usort($users, static function ($userA, $userB) {
-            $userA->getUserPypPosts()->count() <=> $userB->getUserPypPosts()->count();
-        });
-
-        $post = $this->em->getRepository(Post::class)->find($postToDistribute->getPost()->getId());
-
-        if (null === $post) {
-            throw new PostDistributionException('Could not find Post referenced in PostToDistribute. Perhaps it has been deleted.');
-        }
-
-        $poster = $post->getUser();
-
-        $influence = $this->influenceCalculator->calculate($poster);
-
-        $i = 0;
-        foreach ($users as $user) {
-            if ($post->getUser()->getId() === $user->getId()) {
-                continue;
-            }
-
-            if ($i >= $influence) {
-                break;
-            }
-
-            $userPypPost = (new UserPypPost())->setPost($post)->setUser($user);
-
-            $this->em->persist($userPypPost);
-        }
-
         try {
+            $users = $this->em->getRepository(User::class)->findAll();
+
+            // Sort users by amount of UserPypPosts they have viewable
+            usort($users, static function ($userA, $userB) {
+                $userA->getUserPypPosts()->count() <=> $userB->getUserPypPosts()->count();
+            });
+
+            $post = $this->em->getRepository(Post::class)->find($postToDistribute->getPost()->getId());
+
+            if (null === $post) {
+                throw new PostDistributionException('Could not find Post referenced in PostToDistribute. Perhaps it has been deleted.');
+            }
+
+            $poster = $post->getUser();
+
+            if (null === $poster->getUserInfluence()) {
+                $influence = $this->influenceCalculator->calculate($poster, $this->em);
+            } else {
+                $influence = $poster->getUserInfluence()->getInfluence();
+            }
+
+            $i = 0;
+            foreach ($users as $user) {
+                if ($post->getUser()->getId() === $user->getId()) {
+                    continue;
+                }
+
+                if ($i >= $influence) {
+                    break;
+                }
+
+                $userPypPost = (new UserPypPost())->setPost($post)->setUser($user);
+
+                $this->em->persist($userPypPost);
+            }
+
             $this->em->flush();
         } catch (Throwable $t) {
             throw new PostDistributionException(sprintf("%s %s %s > %s > %d", $t->getTraceAsString(), PHP_EOL, $t->getMessage(), $t->getFile(), $t->getLine()));

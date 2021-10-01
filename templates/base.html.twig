@@ -15,6 +15,11 @@
                 font-style: italic;
             }
 
+            h5, .username-italic {
+                font-family: 'IBM Plex Mono', monospace;
+                font-style: italic;
+            }
+
             input {
                 font-family: 'IBM Plex Mono', monospace;
                 font-style: italic;
@@ -103,7 +108,7 @@
                             <button type="button" class="btn btn-outline-dark">
                                 <a href="{{ path('my_account') }}" class="text-reset text-decoration-none">
                                     <span class="username-italic">
-                                        {{ app.user.username }}
+                                        {{ app.user.userIdentifier }}
                                     </span>
                                     <br/>
                                     <small>

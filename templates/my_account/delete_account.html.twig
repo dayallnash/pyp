@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ include('my_account/partials/top_menu.html.twig') }}
+    <div class="row">
+        {{ include('my_account/partials/sidebar_menu.html.twig') }}
+        <div class="col">
+            <div class="row">
+                <div class="offset-md-2 col-md-10 col-sm-12 text-center">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ include('my_account/partials/username_circle.html.twig') }}
+                        </div>
+                        <div class="card-body">
+                            <form method="post">
+                                <div class="row">
+                                    <div class="col text-center">
+                                        Are you <strong>sure</strong> you want to delete your account? Once your account is deleted, your data will be gone forever and <strong>your account, with all of its posts, comments and influence will be totally unrecoverable</strong>.
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="offset-3 col-6">
+                                        <input type="button" class="btn btn-outline-dark" onclick="window.location.href = '{{ path('my_account') }}';" value="On second thoughts...">
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="offset-3 col-6">
+                                        <input id="submit-btn" type="submit" class="btn btn-danger" value="Yes, please delete my account" onclick="return confirm('Are you totally, totally sure about that?');">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block title %}
+    Pyp | Delete Account
+{% endblock %}
+

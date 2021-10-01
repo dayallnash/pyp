@@ -27,16 +27,16 @@ class InfluenceCalculator
         $this->em->flush();
     }
 
-    public function calculate(User $user): int
+    public function calculate(User $user, ?EntityManagerInterface $em = null): int
     {
         $userInfluence = (new UserInfluence())->setUser($user)->setInfluence(self::DEFAULT_INFLUENCE);
 
-        $userInfluence = $this->calculateInfluenceBasedOnInteractions($userInfluence);
+        $userInfluence = $this->calculateInfluenceBasedOnInteractions($userInfluence, $em ?? $this->em);
 
         return $userInfluence->getInfluence();
     }
 
-    private function calculateInfluenceBasedOnInteractions(UserInfluence $userInfluence): UserInfluence
+    private function calculateInfluenceBasedOnInteractions(UserInfluence $userInfluence, EntityManagerInterface $em): UserInfluence
     {
         $userInfluence = $this->calculateInfluenceBasedOnLikes($userInfluence);
 
@@ -46,8 +46,7 @@ class InfluenceCalculator
             $userInfluence->setInfluence(self::DEFAULT_INFLUENCE);
         }
 
-        $this->em->persist($userInfluence);
-        $this->em->flush();
+        $em->persist($userInfluence);
 
         return $userInfluence;
     }

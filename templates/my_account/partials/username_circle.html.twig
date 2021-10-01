@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col">
+        <div class="username-circle--container">
+            <img class="username-circle--image rounded-circle" src="data:image/svg+xml;charset=UTF-8,%3Csvg width='65' height='65' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 65 65' preserveAspectRatio='none'%3E%3Cdefs%3E%3C/defs%3E%3Cg id='holder_17bf4415110'%3E%3Crect width='65' height='65' fill='%23777'%3E%3C/rect%3E%3C/g%3E%3C/svg%3E">
+            <div class="username-circle--text username-italic text-uppercase font-weight-bold">
+                {{ user.userIdentifier|first }}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col">
+        <h5 class="username-italic">{{ user.userIdentifier }}</h5>
+    </div>
+</div>
+
+{% block stylesheets %}
+    <style>
+        .username-circle--container {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        .username-circle--text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: larger;
+        }
+    </style>
+{% endblock %}
