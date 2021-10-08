@@ -27,6 +27,7 @@ class UserFixture
         $user1->setUsername('test_user_1');
         $hashedPassword = $this->hasher->hashPassword($user1, 'test_user_1');
         $user1->setPassword($hashedPassword);
+        $user1->setEmail('dale.nash@example.com');
         $user1->setHoseUser('n');
         $this->em->persist($user1);
 
@@ -34,6 +35,7 @@ class UserFixture
         $user2->setUsername('test_user_2');
         $hashedPassword = $this->hasher->hashPassword($user2, 'test_user_2');
         $user2->setPassword($hashedPassword);
+        $user1->setEmail('dale.nash2@example.com');
         $user2->setHoseUser('n');
         $this->em->persist($user2);
 
