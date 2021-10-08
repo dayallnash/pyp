@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
@@ -22,16 +23,18 @@ class SecurityController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      *
-     * @param Request                      $request
-     * @param EntityManagerInterface       $em
-     * @param UserPasswordHasherInterface  $passwordHasher
-     * @param GuardAuthenticatorHandler    $guardAuthenticatorHandler
-     * @param LoginFormAuthenticator       $loginFormAuthenticator
+     * @param Request                     $request
+     * @param EntityManagerInterface      $em
+     * @param UserRepository              $userRepo
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @param GuardAuthenticatorHandler   $guardAuthenticatorHandler
+     * @param LoginFormAuthenticator      $loginFormAuthenticator
      *
      * @return Response
      */
     public function register(Request $request,
         EntityManagerInterface $em,
+        UserRepository $userRepo,
         UserPasswordHasherInterface $passwordHasher,
         GuardAuthenticatorHandler $guardAuthenticatorHandler,
         LoginFormAuthenticator $loginFormAuthenticator
@@ -47,7 +50,7 @@ class SecurityController extends AbstractController
 
             $username = $request->request->filter('username', null, FILTER_SANITIZE_STRING);
 
-            if ($em->getRepository(User::class)->findOneBy(['username' => $username])) {
+            if ($userRepo->findOneBy(['username' => $username])) {
                 throw new BadRequestHttpException('Username already in use.');
             }
 
@@ -71,7 +74,11 @@ class SecurityController extends AbstractController
 
             $newUser->setPassword($encodedPassword);
 
-            $email = $request->request->filter('email', null, FILTER_SANITIZE_STRING);
+            $email = $request->request->filter('email', null, FILTER_SANITIZE_EMAIL);
+
+            if (empty($email) || null !== $userRepo->findOneBy(['email' => $email])) {
+                throw new BadRequestHttpException('Please provide a valid email address.');
+            }
 
             $newUser->setEmail($email);
 
