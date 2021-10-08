@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -28,13 +29,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $username;
 
     /**
+     * @ORM\Column(type="string", length=180, unique=true, nullable=false)
+     */
+    private $email;
+ 
+    /**
+     * @ORM\Column(type="string", length=13, unique=true, nullable=true)
+     */
+    private $mobile;
+    
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $password;
 
@@ -73,7 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $bio;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->userPypPosts = new ArrayCollection();
         $this->posts = new ArrayCollection();
@@ -151,6 +162,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+
+    public function getMobile(): string
+    {
+        return (string) $this->mobile;
+    }
+
+    public function setMobile(string $mobile): self
+    {
+        $this->mobile = $mobile;
+
+        return $this;
+    }
     /**
      * @see UserInterface
      */
