@@ -40,6 +40,7 @@ class UserFixture
         $this->em->persist($user2);
 
         $this->em->flush();
+
         $this->em->getConnection()->beginTransaction();
     }
 }
