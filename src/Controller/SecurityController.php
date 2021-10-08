@@ -71,7 +71,7 @@ class SecurityController extends AbstractController
 
             $newUser->setPassword($encodedPassword);
 
-	        $email = $request->request->filter('email', null, FILTER_SANITIZE_STRING);
+            $email = $request->request->filter('email', null, FILTER_SANITIZE_STRING);
 
             $newUser->setEmail($email);
 

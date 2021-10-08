@@ -28,12 +28,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180, unique=true, nullable=false)
      */
     private $email;
  
     /**
-     * @ORM\Column(type="string", length=180)
+     * @ORM\Column(type="string", length=13)
      */
     private $mobile;
     
@@ -162,12 +162,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    /**
-     * @see UserInterface
-     */
     public function getEmail(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     public function setEmail(string $email): self
@@ -178,9 +175,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    /**
-     * @see UserInterface
-     */
     public function getMobile(): string
     {
         return (string) $this->mobile;

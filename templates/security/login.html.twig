@@ -106,7 +106,7 @@
 
                         <div class="form-group mb-3">
                             <label class="form-label" for="inputMobile">Mobile (Optional)</label>
-                            <input type="text" name="mobile" id="inputMobile" class="form-control" onfocusin="strictInput(this, '+1234567890')" onfocusout="formatMobile()" maxlength="12" required>
+                            <input type="text" name="mobile" id="inputMobile" class="form-control" onfocusin="strictInput(this, '+1234567890')" onfocusout="formatMobile()" maxlength="13" required>
                             <p id="mobileError"></p>
                         </div>
 
@@ -128,41 +128,46 @@
 {% block javascripts %}
     <script>
 
-        function formatEmail() {
-            let regex = /\S+@\S+\.\S+/;
-            let emailInputNode = document.getElementById('inputEmail')
-            let emailErrorNode = document.getElementById('emailError')
-            if (regex.test(emailInputNode.value)) {
-                emailErrorNode.innerHTML = ""
-                return 1
-            }
-            else {
-                emailErrorNode.innerHTML = "This is not a valid email address."
-                return 0
-            }
+    function formatEmail() {
+        const regex = /\S+@\S+\.\S+/;
+        const emailInputNode = document.getElementById('inputEmail');
+        const emailErrorNode = document.getElementById('emailError');
+        if (regex.test(emailInputNode.value)) {
+            emailErrorNode.innerHTML = "";
+            return 1;
         }
+        else {
+            emailErrorNode.innerHTML = "This is not a valid email address.";
+            return 0;
+        }
+    }
 
-        function formatMobile() {
-            let regex = /(\+[0-9]{12})|(0[0-9]{10})/;
-            let mobileInputNode = document.getElementById('inputMobile')
-            let mobileErrorNode = document.getElementById('mobileError')
-            if (regex.test(mobileInputNode.value)) {
-                mobileErrorNode.innerHTML = ""
-                return 1
-            }
-            else {
-                mobileErrorNode.innerHTML = "This mobile number is not valid."
-                return 0
-            }
-        }
+    function formatMobile() {
+        const regex = /(\+[0-9]{12})|(0[0-9]{10})/;
+        const mobileInputNode = document.getElementById('inputMobile');
+        const mobileErrorNode = document.getElementById('mobileError');
+        if (regex.test(mobileInputNode.value)) {
+            mobileErrorNode.innerHTML = "";
+            return 1;
 
-        function strictInput(inputObject, allowedString) {
-            $(inputObject).keypress( function(e) {
-                var chr = String.fromCharCode(e.which);
-                if (allowedString.indexOf(chr) < 0)
-                    return false;
-            });
+        } else if (mobileInputNode.value == "") {
+            mobileErrorNode.innerHTML = "";
+            return 1;
         }
+        else {
+            mobileErrorNode.innerHTML = "This mobile number is not valid.";
+            return 0;
+        }
+    }
+     
+    function strictInput(inputObject, allowedString) {
+        $(inputObject).keypress(function(e) {
+            var chr = String.fromCharCode(e.which);
+            if (allowedString.indexOf(chr) < 0) {
+                return false;
+            }
+        });
+    }
 
 
     </script>
