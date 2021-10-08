@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "662a75e9cda786bcbcc9ad092828009c",
+    "content-hash": "0ff60646bd0ec47824aa71aafcd9f849",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1519,6 +1519,54 @@
                 }
             ],
             "time": "2021-05-22T16:11:15+00:00"
+        },
+        {
+            "name": "jetbrains/phpstorm-stubs",
+            "version": "v2021.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JetBrains/phpstorm-stubs.git",
+                "reference": "a09a014a1984d2ac875c6b1220b7f17ca7d0a873"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JetBrains/phpstorm-stubs/zipball/a09a014a1984d2ac875c6b1220b7f17ca7d0a873",
+                "reference": "a09a014a1984d2ac875c6b1220b7f17ca7d0a873",
+                "shasum": ""
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "@stable",
+                "nikic/php-parser": "@stable",
+                "php": "^8.0",
+                "phpdocumentor/reflection-docblock": "@stable",
+                "phpunit/phpunit": "@stable"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "PhpStormStubsMap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "description": "PHP runtime & extensions header files for PhpStorm",
+            "homepage": "https://www.jetbrains.com/phpstorm",
+            "keywords": [
+                "autocomplete",
+                "code",
+                "inference",
+                "inspection",
+                "jetbrains",
+                "phpstorm",
+                "stubs",
+                "type"
+            ],
+            "support": {
+                "source": "https://github.com/JetBrains/phpstorm-stubs/tree/v2021.2"
+            },
+            "time": "2021-06-06T20:58:57+00:00"
         },
         {
             "name": "laminas/laminas-code",
@@ -6415,16 +6463,16 @@
         },
         {
             "name": "laravel/homestead",
-            "version": "v12.5.0",
+            "version": "v12.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/homestead.git",
-                "reference": "3bdecca99cf914bc9a8af4a9a024448b055db28d"
+                "reference": "cd25cb0215380571da116f8a5ffd8be1e0fc891c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/homestead/zipball/3bdecca99cf914bc9a8af4a9a024448b055db28d",
-                "reference": "3bdecca99cf914bc9a8af4a9a024448b055db28d",
+                "url": "https://api.github.com/repos/laravel/homestead/zipball/cd25cb0215380571da116f8a5ffd8be1e0fc891c",
+                "reference": "cd25cb0215380571da116f8a5ffd8be1e0fc891c",
                 "shasum": ""
             },
             "require": {
@@ -6463,9 +6511,9 @@
             "description": "A virtual machine for web artisans.",
             "support": {
                 "issues": "https://github.com/laravel/homestead/issues",
-                "source": "https://github.com/laravel/homestead/tree/v12.5.0"
+                "source": "https://github.com/laravel/homestead/tree/v12.7.0"
             },
-            "time": "2021-09-02T18:15:15+00:00"
+            "time": "2021-10-04T14:18:19+00:00"
         },
         {
             "name": "liip/functional-test-bundle",
