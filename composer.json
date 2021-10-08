@@ -12,6 +12,7 @@
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.8",
+        "jetbrains/phpstorm-stubs": "^2021.2",
         "paragonie/sodium_compat": "^1.14",
         "sensio/framework-extra-bundle": "^6.0",
         "symfony/asset": "^5.3",
