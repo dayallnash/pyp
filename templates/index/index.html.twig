@@ -18,10 +18,28 @@
             height: 65px;
         }
 
-         h5, .username-italic {
-             font-family: 'IBM Plex Mono', monospace;
-             font-style: italic;
-         }
+        .pipespritelong {
+            background: url('asset/img/pipespritelong.png') repeat -1px 0;
+            width: 32px;
+            position: absolute;
+            right: 49%;
+        }
+
+        .pipespritejunction--left {
+            background: url('asset/img/pipespritejunction.png') no-repeat -1px 0;
+            width: 32px;
+            position: absolute;
+            right: 49%;
+        }
+
+        .pipespritejunction--right {
+            background: url('asset/img/pipespritejunction.png') no-repeat -1px 0;
+            width: 32px;
+            position: absolute;
+            right: 49%;
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+        }
     </style>
 {% endblock %}
 
@@ -40,8 +58,13 @@
         {#    });#}
         {#});#}
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             placePopovers();
+            $('.pipespritelong, .pipespritejunction--left, .pipespritejunction--right').each(function (key, elem) {
+                const rowHeight = $(elem).parent().height();
+
+                $(elem).height(rowHeight);
+            });
         });
 
         function placePopovers() {
@@ -219,16 +242,18 @@
             {% set float = 'left' %}
 
             {% for post in posts %}
-                <div class="row mb-2">
-                    <div class="{{ float is same as 'right' ? 'offset-lg-6 col-lg-6' : 'col-lg-6' }}">
+                <div class="row">
+                    <div class="pipespritelong"></div>
+                    <div class="pipespritejunction--{{ float }}"></div>
+                    <div class="px-4 {{ float is same as 'right' ? 'offset-lg-6 col-lg-6' : 'col-lg-6' }}" style="padding-bottom: 25px;{{ float is same as 'right' ? '' : '' }}">
                         <div class="card" style="min-width: 310px; box-sizing: content-box">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title">{{ post.post.user.username }}</h5>
+                                        <h5 class="card-title">{{ post.post.user.userIdentifier }}</h5>
                                     </div>
                                     <div class="col text-end">
-                                        <a tabindex="0" class="btn" role="button" data-post-id="{{ post.post.id }}" data-toggle="popover" {{ post.user.username == app.user.username ? 'data-your-post="true"' : 'data-your-post="false"' }}>
+                                        <a tabindex="0" class="btn" role="button" data-post-id="{{ post.post.id }}" data-toggle="popover" {{ post.user.userIdentifier == app.user.username ? 'data-your-post="true"' : 'data-your-post="false"' }}>
                                             <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
                                         </a>
                                     </div>
@@ -267,7 +292,7 @@
                                                 {% if comment not in post.reportedComments  %}
                                                     <div class="row">
                                                         <div class="col username-italic">
-                                                            {{ comment.user.username }}
+                                                            {{ comment.user.userIdentifier }}
                                                         </div>
                                                         {% if comment.user != currentUser %}
                                                             <div class="col text-end">
@@ -285,7 +310,7 @@
                                                 {% else %}
                                                     <div class="row mt-2">
                                                         <div class="col username-italic">
-                                                            {{ comment.user.username }}
+                                                            {{ comment.user.userIdentifier }}
                                                         </div>
                                                         <div class="col text-end d-none">
                                                             <a tabindex="0" class="btn" role="button" data-toggle="popover" data-your-comment="false" data-comment-id="{{ comment.id }}">

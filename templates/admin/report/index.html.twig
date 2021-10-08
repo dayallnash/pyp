@@ -59,7 +59,7 @@
                                     <div class="row">
                                         <div class="col">
                                             {% set user = report.type == 'post' ? report.post.user : report.comment.user %}
-                                            <h5 class="card-title username-italic">{{ user.username }}</h5>
+                                            <h5 class="card-title username-italic">{{ user.userIdentifier }}</h5>
                                         </div>
                                     </div>
                                     <div class="row">

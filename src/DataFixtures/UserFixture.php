@@ -3,39 +3,41 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserFixture extends Fixture
+class UserFixture
 {
-    public function load($manager): void
+    private UserPasswordHasherInterface $hasher;
+    private EntityManagerInterface $em;
+
+    public function __construct(UserPasswordHasherInterface $hasher, EntityManagerInterface $em)
     {
-        $fixtureServiceLoader = new FixtureServiceLoader();
+        $this->hasher = $hasher;
+        $this->em = $em;
+    }
 
-        $kernel = $fixtureServiceLoader::bootFixtureKernel();
-
-        $userPasswordEncoder = $kernel->getContainer()->get(UserPasswordEncoder::class);
-
-        if (null === $userPasswordEncoder) {
+    public function load(): void
+    {
+        if (null === $this->hasher) {
             return;
         }
 
         $user1 = new User();
         $user1->setUsername('test_user_1');
-        $encodedPassword = $userPasswordEncoder->encodePassword($user1, 'test_user_1');
-        $user1->setPassword($encodedPassword);
+        $hashedPassword = $this->hasher->hashPassword($user1, 'test_user_1');
+        $user1->setPassword($hashedPassword);
         $user1->setHoseUser('n');
-        $manager->persist($user1);
+        $this->em->persist($user1);
 
         $user2 = new User();
         $user2->setUsername('test_user_2');
-        $encodedPassword = $userPasswordEncoder->encodePassword($user2, 'test_user_2');
-        $user2->setPassword($encodedPassword);
+        $hashedPassword = $this->hasher->hashPassword($user2, 'test_user_2');
+        $user2->setPassword($hashedPassword);
         $user2->setHoseUser('n');
-        $manager->persist($user2);
+        $this->em->persist($user2);
 
-        $manager->flush();
-        $manager->getConnection()->beginTransaction();
+        $this->em->flush();
+        $this->em->getConnection()->beginTransaction();
     }
 }

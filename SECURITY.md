@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Pre-alpha has no security support.
+Alpha has no security support.
 
 ## Reporting a Vulnerability
 
