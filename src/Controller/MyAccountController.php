@@ -4,16 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Interaction;
 use App\Entity\Post;
-use App\Entity\Report;
 use App\Entity\UserInfluence;
-use App\Entity\UserPypPost;
+use App\Repository\ReportRepository;
+use App\Repository\UserPypPostRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MyAccountController extends AbstractController
@@ -23,6 +21,10 @@ class MyAccountController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $em): Response
     {
+        if (null === $this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
+
         if ($request->isMethod(Request::METHOD_GET)) {
             return $this->render('my_account/index.html.twig', [
                 'user' => $this->getUser(),
@@ -64,8 +66,11 @@ class MyAccountController extends AbstractController
     /**
      * @Route("/my/account/change-password", name="my_account_change_password")
      */
-    public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
-    {
+    public function changePassword(
+        Request $request,
+        UserPasswordHasherInterface $passwordHasher,
+        EntityManagerInterface $em
+    ): Response {
         if ($request->isMethod(Request::METHOD_GET)) {
             return $this->render('my_account/change_password.html.twig', [
                 'user' => $this->getUser(),
@@ -111,8 +116,12 @@ class MyAccountController extends AbstractController
     /**
      * @Route("/my/account/delete-account", name="my_account_delete_account")
      */
-    public function deleteAccount(Request $request, EntityManagerInterface $em): Response
-    {
+    public function deleteAccount(
+        Request $request,
+        EntityManagerInterface $em,
+        ReportRepository $reportRepo,
+        UserPypPostRepository $userPypPostRepo
+    ): Response {
         if ($request->isMethod(Request::METHOD_GET)) {
             return $this->render('my_account/delete_account.html.twig', [
                 'user' => $this->getUser(),
@@ -139,11 +148,11 @@ class MyAccountController extends AbstractController
             $em->remove($post);
         }
 
-        foreach ($em->getRepository(UserPypPost::class)->findBy(['user' => $user]) as $userPypPost) {
+        foreach ($userPypPostRepo->findBy(['user' => $user]) as $userPypPost) {
             $em->remove($userPypPost);
         }
 
-        foreach ($em->getRepository(UserPypPost::class)->findBy(['post' => $posts]) as $userPypPost) {
+        foreach ($userPypPostRepo->findBy(['post' => $posts]) as $userPypPost) {
             $em->remove($userPypPost);
         }
 
@@ -155,15 +164,15 @@ class MyAccountController extends AbstractController
             $em->remove($interaction);
         }
 
-        foreach ($em->getRepository(Report::class)->findBy(['user' => $user]) as $report) {
+        foreach ($reportRepo->findBy(['user' => $user]) as $report) {
             $em->remove($report);
         }
 
-        foreach ($em->getRepository(Report::class)->findBy(['post' => $posts]) as $report) {
+        foreach ($reportRepo->findBy(['post' => $posts]) as $report) {
             $em->remove($report);
         }
 
-        foreach ($em->getRepository(Report::class)->findBy(['comment' => $comments]) as $report) {
+        foreach ($reportRepo->findBy(['comment' => $comments]) as $report) {
             $em->remove($report);
         }
 
