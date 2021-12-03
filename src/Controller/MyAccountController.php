@@ -21,7 +21,9 @@ class MyAccountController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $em): Response
     {
-        if (null === $this->getUser()) {
+        $user = $this->getUser();
+
+        if (null === $user) {
             return $this->redirectToRoute('app_home');
         }
 
@@ -34,8 +36,6 @@ class MyAccountController extends AbstractController
         $firstName = $request->request->filter('first_name', null, FILTER_SANITIZE_STRING);
         $lastName = $request->request->filter('last_name', null, FILTER_SANITIZE_STRING);
         $bio = $request->request->filter('bio', null, FILTER_SANITIZE_STRING);
-
-        $user = $this->getUser();
 
         if (null !== $firstName && '' !== $firstName && $user->getFirstName() !== $firstName) {
             $user->setFirstName($firstName);
