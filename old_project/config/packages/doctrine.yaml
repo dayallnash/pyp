@@ -1,0 +1,28 @@
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                dbname: '%env(DATABASE_NAME)%'
+                host: localhost
+                user: '%env(DATABASE_USER)%'
+                port: 3306
+                password: '%env(DATABASE_PASSWORD)%'
+                driver: 'pdo_mysql'
+                charset: utf8mb4
+                server_version: '%env(resolve:DATABASE_SERVER_VERSION)%'
+                mapping_types:
+                    enum: string
+        types:
+            enum_yes_no: App\DBAL\Type\EnumYesNo
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            App:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App

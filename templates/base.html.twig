@@ -1,163 +1,17 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Pyp | The Social Network for Real Conversation{% endblock %}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-        <link href="{{ asset('asset/css/ibm-plex-mono-google-font.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        {% block stylesheets %}
+        {% endblock %}
 
-        <style>
-            h1 {
-                font-family: 'IBM Plex Mono', monospace;
-                font-style: italic;
-            }
-
-            h5, .username-italic {
-                font-family: 'IBM Plex Mono', monospace;
-                font-style: italic;
-            }
-
-            input {
-                font-family: 'IBM Plex Mono', monospace;
-                font-style: italic;
-                font-weight: 300;
-            }
-
-            body {
-                font-family: 'IBM Plex Sans', sans-serif;
-            }
-        </style>
-
-        {% block stylesheets %}{% endblock %}
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
-        {# If SF dev debug toolbar is present on page, add in Bootstrap breakpoint helper element #}
-        {% if app.environment == 'dev' %}
-            <script>
-                $(document).ready(function() {
-                    $(window).resize(renderBreakpointSymfonyDebugPill);
-
-                    const initialSfDebugRender = window.setInterval(renderBreakpointSymfonyDebugPill, 10);
-                    const clearSfDebugRender = window.setInterval(function() {
-                        if (0 !== $('.sf-toolbar-status-yellow').length) {
-                            window.clearInterval(initialSfDebugRender);
-                            window.clearInterval(clearSfDebugRender);
-                        }
-                    }, 20)
-                });
-
-                function renderBreakpointSymfonyDebugPill() {
-                    const viewport = $(window).width();
-                    let breakpoint = '';
-
-                    if ('' === breakpoint && viewport < 576) {
-                        breakpoint = 'xs';
-                    }
-
-                    if ('' === breakpoint && viewport < 768) {
-                        breakpoint = 'sm';
-                    }
-
-                    if ('' === breakpoint && viewport < 992) {
-                        breakpoint = 'md';
-                    }
-
-                    if ('' === breakpoint && viewport < 1200) {
-                        breakpoint = 'lg';
-                    }
-
-                    if ('' === breakpoint && viewport < 1400) {
-                        breakpoint = 'xl';
-                    }
-
-                    if ('' === breakpoint && viewport >= 1400) {
-                        breakpoint = 'xxl';
-                    }
-
-                    const breakpointElem = $('.sf-toolbar-status-yellow');
-                    if (0 === breakpointElem.length) {
-                        $('<div class="sf-cli sf-toolbar-block sf-toolbar-block-sf-cli sf-toolbar-status-yellow"><div class="sf-toolbar-icon" style="font-size: 11pt; margin-top: 8px;">' + breakpoint + '</div></div>').insertBefore('.sf-toolbar-block-sf-cli');
-                    } else {
-                        breakpointElem.find('.sf-toolbar-icon').text(breakpoint);
-                    }
-                }
-            </script>
-        {% endif %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+{% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
     </head>
     <body>
-        <div class="container mb-2">
-            {% if app.user %}
-                <div class="row mt-2">
-                    {% if app.request.attributes.get('_route') != 'app_login' %}
-                        <div class="col">
-                            <h1>
-                                <a href="{{ path('app_index') }}" class="text-reset">
-                                    Pyp
-                                </a>
-                            </h1>
-                        </div>
-                    {% endif %}
-                    <div class="col text-end">
-                        <span>
-                            <button type="button" class="btn btn-outline-dark">
-                                <a href="{{ path('my_account') }}" class="text-reset text-decoration-none">
-                                    <span class="username-italic">
-                                        {{ app.user.userIdentifier }}
-                                    </span>
-                                    <br/>
-                                    <small>
-                                        {{ '{' ~ app.user.userInfluence.influence ?? 500 ~ '}' }}
-                                    </small>
-                                </a>
-                            </button>
-                            <button type="button" class="btn btn-default">
-                                <a href="{{ path('app_logout') }}" class="text-reset text-decoration-none">Logout</a>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-            {% endif %}
-            {% if isHome is defined %}
-                <div class="row mt-2">
-                    {% if app.request.attributes.get('_route') != 'app_login' %}
-                        <div class="col">
-                            <h1>
-                                <a href="{{ path('app_index') }}" class="text-reset">
-                                    Pyp
-                                </a>
-                            </h1>
-                        </div>
-                    {% endif %}
-                    <div class="col text-end">
-                        <span>
-                            <a href="{{ path('app_login') }}" class="text-muted text-decoration-none">Register / Login</a>
-                        </span>
-                    </div>
-                </div>
-            {% endif %}
-
-            {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ label }} mt-3">
-                        <div class="row">
-                            <div class="col-11">
-                                {{ message }}
-                            </div>
-                            <div class="col-1 d-flex">
-                                <button type="button" class="btn-close" aria-label="Close" onclick="$(this).parent().parent().parent().hide()"></button>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endfor %}
-
-            {% block body %}{% endblock %}
-        </div>
+        {% block body %}{% endblock %}
     </body>
 </html>
