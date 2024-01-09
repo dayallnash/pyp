@@ -1,4 +1,4 @@
-/frontend/.idea/
+/.idea/
 
 ###> symfony/framework-bundle ###
 /frontend/.env.local
