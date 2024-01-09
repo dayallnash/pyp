@@ -3,8 +3,18 @@
 version: '3'
 
 services:
-###> doctrine/doctrine-bundle ###
-  database:
+  frontend:
+    build: ./frontend
+    ports:
+      - "80"
+    volumes:
+      - ./frontend:/var/www/html
+    working_dir: /var/www/html/public
+    networks:
+      - frontend
+      - api_net
+
+  frontend_db:
     image: mariadb:${MARIADB_VERSION:-11.2.2}
     environment:
       # You should definitely change the password in production
@@ -12,20 +22,42 @@ services:
       MARIADB_USER: pyp
       MARIADB_DATABASE: pyp
     volumes:
-      - database_data:/var/lib/mysql
+      - frontend_db_data:/var/lib/mysql
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+    networks:
+      - frontend
 
-  webapp:
-    build: .
+  user_microservice:
+    build: ./user_microservice
     ports:
       - "80"
     volumes:
-      - .:/var/www/html
+      - ./user_microservice:/var/www/html
     working_dir: /var/www/html/public
+    networks:
+      - user_microservice
+      - api_net
+
+  user_microservice_db:
+    image: mariadb:${MARIADB_VERSION:-11.2.2}
+    environment:
+      # You should definitely change the password in production
+      MARIADB_ROOT_PASSWORD: ${MARIADB_PASSWORD:-!ChangeMe!}
+      MARIADB_USER: pyp
+      MARIADB_DATABASE: pyp
+    volumes:
+      - user_microservice_db_data:/var/lib/mysql
+    networks:
+      - user_microservice
 
 volumes:
 ###> doctrine/doctrine-bundle ###
-  database_data: {}
+  frontend_db_data: {}
+  user_microservice_db_data: {}
 ###< doctrine/doctrine-bundle ###
+
+networks:
+  api_net:
+  frontend:
+  user_microservice:
